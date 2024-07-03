@@ -1,0 +1,3 @@
+nest g mo nombre_modulo
+nest g service nombre_servicio
+nest g co nombre_controler

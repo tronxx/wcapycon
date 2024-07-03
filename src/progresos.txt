@@ -1,0 +1,7 @@
+Los progresos de los programas
+clientes          ok        2024-06-28
+proveedores         ok      2024-06-28
+regimenes           ok      2024-06-28
+usocfdi             ok      2024-06-28
+promotores
+
