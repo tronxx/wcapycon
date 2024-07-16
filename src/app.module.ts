@@ -68,6 +68,8 @@ import { UsdocfdiModule } from './usdocfdi/usdocfdi.module';
 import { Usocfdi } from './usdocfdi/entities';
 import { PromotoresModule } from './promotores/promotores.module';
 import { Promotor } from './promotores/entities';
+import { AvalesModule } from './avales/avales.module';
+import { Aval } from './avales/entities';
 
 config();
 // const   
@@ -129,6 +131,7 @@ const {
         ServMantos, ServmantosxVehiculo, Usuarios, Poligas, Renpogas, 
         Poliserv, Renposerv, Ciasedocta, Inven, Kardex, Exist, Series,
         Cliente, Vendedor, Proveedor, Regimenes, Promotor, Usocfdi,
+        Aval,
          join(__dirname, './**/**/*entity*{.ts,.js}')],
       synchronize: true,
     }),
@@ -164,6 +167,7 @@ const {
     RegimenesModule,
     UsdocfdiModule,
     PromotoresModule,
+    AvalesModule,
     ],
   controllers: [AppController],
   providers: [AppService],

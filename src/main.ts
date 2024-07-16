@@ -12,21 +12,26 @@ const {
   PRODUCTION,
 } = process.env
 
+
 async function bootstrap() {
+  let app = null;
+
   let httpsOptions = {};
   console.log("Production:", PRODUCTION);
   if(PRODUCTION=='true') {
-    httpsOptions = {
+     httpsOptions = {
       key: fs.readFileSync('./secrets/privkey.pem'),
       cert: fs.readFileSync('./secrets/cert.pem'),
     };
-  }
- 
-  const app = await NestFactory.create(AppModule, {
+    app = await NestFactory.create(AppModule, {
    httpsOptions,
   }
   );
- 
+     
+  } else {
+    app = await NestFactory.create(AppModule);
+  }
+  
 
 //  const app = await NestFactory.create(AppModule);
 //  const options = {
@@ -58,8 +63,9 @@ async function bootstrap() {
   );
   await app.listen(3000);
   logger.log(`Server is running in ${await app.getUrl()} `);
+  logger.log(`HttpsOptions: ${ JSON.stringify(httpsOptions)}`);
   const misentities = join(__dirname, './**/**/*entity{.ts,.js}');
-  logger.log(misentities);
+  logger.log(`Mis Entitities ${misentities} `);
 
 }
 bootstrap();
