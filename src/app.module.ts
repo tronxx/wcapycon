@@ -72,6 +72,8 @@ import { AvalesModule } from './avales/avales.module';
 import { Aval } from './avales/entities';
 import { VentasModule } from './ventas/ventas.module';
 import { CartapromModule } from './cartaprom/cartaprom.module';
+import { Cartaprom } from './cartaprom/entities';
+import { Ventas } from './ventas/entities';
 
 config();
 // const   
@@ -133,7 +135,7 @@ const {
         ServMantos, ServmantosxVehiculo, Usuarios, Poligas, Renpogas, 
         Poliserv, Renposerv, Ciasedocta, Inven, Kardex, Exist, Series,
         Cliente, Vendedor, Proveedor, Regimenes, Promotor, Usocfdi,
-        Aval,
+        Aval, Ventas, Cartaprom,
          join(__dirname, './**/**/*entity*{.ts,.js}')],
       synchronize: true,
     }),
