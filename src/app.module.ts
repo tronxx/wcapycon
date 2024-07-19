@@ -70,6 +70,8 @@ import { PromotoresModule } from './promotores/promotores.module';
 import { Promotor } from './promotores/entities';
 import { AvalesModule } from './avales/avales.module';
 import { Aval } from './avales/entities';
+import { VentasModule } from './ventas/ventas.module';
+import { CartapromModule } from './cartaprom/cartaprom.module';
 
 config();
 // const   
@@ -168,6 +170,8 @@ const {
     UsdocfdiModule,
     PromotoresModule,
     AvalesModule,
+    VentasModule,
+    CartapromModule,
     ],
   controllers: [AppController],
   providers: [AppService],
