@@ -6,7 +6,7 @@ export class CreateVentasDto {
 
 
     @IsInt()
-    idcliente: number;
+    idventa: number;
 
     @IsString()
     fecha: string;

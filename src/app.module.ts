@@ -74,6 +74,10 @@ import { VentasModule } from './ventas/ventas.module';
 import { CartapromModule } from './cartaprom/cartaprom.module';
 import { Cartaprom } from './cartaprom/entities';
 import { Ventas } from './ventas/entities';
+import { MovclisModule } from './movclis/movclis.module';
+import { Movclis } from './movclis/entities';
+import { ConceptosModule } from './conceptos/conceptos.module';
+import { Conceptos } from './conceptos/entities';
 
 config();
 // const   
@@ -135,7 +139,7 @@ const {
         ServMantos, ServmantosxVehiculo, Usuarios, Poligas, Renpogas, 
         Poliserv, Renposerv, Ciasedocta, Inven, Kardex, Exist, Series,
         Cliente, Vendedor, Proveedor, Regimenes, Promotor, Usocfdi,
-        Aval, Ventas, Cartaprom,
+        Aval, Ventas, Cartaprom, Movclis, Conceptos,
          join(__dirname, './**/**/*entity*{.ts,.js}')],
       synchronize: true,
     }),
@@ -174,6 +178,8 @@ const {
     AvalesModule,
     VentasModule,
     CartapromModule,
+    MovclisModule,
+    ConceptosModule,
     ],
   controllers: [AppController],
   providers: [AppService],
