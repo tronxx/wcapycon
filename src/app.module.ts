@@ -78,6 +78,10 @@ import { MovclisModule } from './movclis/movclis.module';
 import { Movclis } from './movclis/entities';
 import { ConceptosModule } from './conceptos/conceptos.module';
 import { Conceptos } from './conceptos/entities';
+import { FacturasModule } from './facturas/facturas.module';
+import { Facturas } from './facturas/entities';
+import { RenfacModule } from './renfac/renfac.module';
+import { Renfac } from './renfac/entities';
 
 config();
 // const   
@@ -139,7 +143,7 @@ const {
         ServMantos, ServmantosxVehiculo, Usuarios, Poligas, Renpogas, 
         Poliserv, Renposerv, Ciasedocta, Inven, Kardex, Exist, Series,
         Cliente, Vendedor, Proveedor, Regimenes, Promotor, Usocfdi,
-        Aval, Ventas, Cartaprom, Movclis, Conceptos,
+        Aval, Ventas, Cartaprom, Movclis, Conceptos, Facturas, Renfac,
          join(__dirname, './**/**/*entity*{.ts,.js}')],
       synchronize: true,
     }),
@@ -180,6 +184,8 @@ const {
     CartapromModule,
     MovclisModule,
     ConceptosModule,
+    FacturasModule,
+    RenfacModule,
     ],
   controllers: [AppController],
   providers: [AppService],
