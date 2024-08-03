@@ -24,7 +24,7 @@ export class Renfac {
     conse: number;
 
 
-    @Column({type: 'varchar', length:4, nullable: false})
+    @Column({type: 'varchar', length:13, nullable: false})
     codigo: string;
 
     @Column({type: 'varchar', length:100, nullable: false})

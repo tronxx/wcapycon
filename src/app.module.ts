@@ -82,6 +82,10 @@ import { FacturasModule } from './facturas/facturas.module';
 import { Facturas } from './facturas/entities';
 import { RenfacModule } from './renfac/renfac.module';
 import { Renfac } from './renfac/entities';
+import { PolizasModule } from './polizas/polizas.module';
+import { Polizas } from './polizas/entities';
+import { RenpolModule } from './renpol/renpol.module';
+import { Renpol } from './renpol/entities';
 
 config();
 // const   
@@ -144,6 +148,7 @@ const {
         Poliserv, Renposerv, Ciasedocta, Inven, Kardex, Exist, Series,
         Cliente, Vendedor, Proveedor, Regimenes, Promotor, Usocfdi,
         Aval, Ventas, Cartaprom, Movclis, Conceptos, Facturas, Renfac,
+        Polizas, Renpol,
          join(__dirname, './**/**/*entity*{.ts,.js}')],
       synchronize: true,
     }),
@@ -186,6 +191,8 @@ const {
     ConceptosModule,
     FacturasModule,
     RenfacModule,
+    PolizasModule,
+    RenpolModule,
     ],
   controllers: [AppController],
   providers: [AppService],

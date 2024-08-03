@@ -50,8 +50,26 @@ export class RenfacService {
     }
 
     async createOne(dto: CreateRenfacDto) {
-        const renfac = this.renfacRepository.create(dto);
-        return await this.renfacRepository.save(renfac);
+        const signosparam = '?,'.repeat(12) + '?';
+        const agregafac = await this.renfacRepository
+        .query( `CALL add_renfac(${signosparam})`,
+          [ 
+            dto.idfactura,
+            dto.idventa,
+            dto.codigo,
+            dto.descri,
+            dto.serie,
+            dto.preciou,
+            dto.canti,
+            dto.piva,
+            dto.importe,
+            dto.iva,
+            dto.folio,
+            dto.status,
+            dto.cia
+          ]
+        );
+        return (agregafac);
 
     }
 

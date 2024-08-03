@@ -49,11 +49,10 @@ export class MovclisService {
     }
 
     async createOne(dto: CreateMovclisDto) {
+        const signosparam = '?,'.repeat(15) + '?';
         
         const agregamov = await this.movclisRepository
-        .query( `CALL add_movcli(
-            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
-          )`,
+        .query( `CALL add_movcli(${signosparam})`,
           [ 
             dto.idventa,
             dto.fecha,

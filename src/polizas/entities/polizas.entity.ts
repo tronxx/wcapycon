@@ -9,35 +9,36 @@ import {
     UpdateDateColumn
   } from 'typeorm';
 
-@Entity('facturas')
-@Unique(['serie', 'numero', 'cia'])
-export class Facturas {
+@Entity('polizas')
+@Unique(['tda', 'fecha', 'cia'])
+export class Polizas {
     @PrimaryGeneratedColumn()
     id: number;
 
     @Column({type: 'varchar', length:4, nullable: false})
-    serie: string;
-
-    @Column({type: 'integer'})
-    numero: number;
-
-    @Column({type: 'integer'})
-    idventa: number;
+    tda: string;
 
     @Column({type: 'date', nullable:false})
     fecha: string;
 
-    @Column({type: 'integer'})
-    iduuid: number;
+    @Column({type: 'double precision'})
+    bonif: number;
+
+    @Column({type: 'double precision'})
+    recar: number;
 
     @Column({type: 'double precision'})
     importe: number;
 
-    @Column({type: 'double precision'})
-    iva: number;
+    @Column({type: 'integer'})
+    idtienda: number;
 
-    @Column({type: 'double precision'})
-    total: number;
+    @Column({type: 'integer'})
+    iduuid: number;
+
+    @Column({type: 'integer'})
+    idfactura: number;
+
 
     @Column({type: 'varchar', length:1})
     status: string;
