@@ -9,7 +9,7 @@ import {
     PrimaryColumn
   } from 'typeorm';
 
-@Entity('reigmenes')
+@Entity('regimenes')
 
 export class Regimenes {
     @PrimaryGeneratedColumn()

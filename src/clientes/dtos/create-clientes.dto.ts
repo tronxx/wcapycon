@@ -9,7 +9,13 @@ export class CreateClientesDto {
     nombre: string;
 
     @IsString()
-    direc: string;
+    calle: string;
+
+    @IsString()
+    numpredio: string;
+
+    @IsString()
+    colonia: string;
 
     @IsString()
     telefono: string;
@@ -20,7 +26,6 @@ export class CreateClientesDto {
     @IsString()
     codpostal: string;
 
-    
     @IsString()
     idciudad: number;
 

@@ -25,7 +25,13 @@ export class Cliente {
     nombre: string;
 
     @Column({type: 'varchar', length:100})
-    direc: string;
+    calle: string;
+
+    @Column({type: 'varchar', length:100})
+    numpredio: string;
+
+    @Column({type: 'varchar', length:100})
+    colonia: string;
 
     @Column({type: 'varchar', length:20})
     codpostal: string;
@@ -44,6 +50,9 @@ export class Cliente {
 
     @Column({type: 'integer',  default:1})
     idregimen: number;
+
+    @Column({type: 'varchar', length:20, nullable:false})
+    rfc: string;
 
     @Column({type: 'integer',  default:1})
     cia: number;

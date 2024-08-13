@@ -86,6 +86,7 @@ import { PolizasModule } from './polizas/polizas.module';
 import { Polizas } from './polizas/entities';
 import { RenpolModule } from './renpol/renpol.module';
 import { Renpol } from './renpol/entities';
+import { Nombres } from './clientes/entities';
 
 config();
 // const   
@@ -148,7 +149,7 @@ const {
         Poliserv, Renposerv, Ciasedocta, Inven, Kardex, Exist, Series,
         Cliente, Vendedor, Proveedor, Regimenes, Promotor, Usocfdi,
         Aval, Ventas, Cartaprom, Movclis, Conceptos, Facturas, Renfac,
-        Polizas, Renpol,
+        Polizas, Renpol, Nombres,
          join(__dirname, './**/**/*entity*{.ts,.js}')],
       synchronize: true,
     }),
