@@ -15,6 +15,9 @@ export class CreateVentasDto {
     idtienda: number;
 
     @IsString()
+    siono: string;
+
+    @IsString()
     qom: string;
 
     @IsString()

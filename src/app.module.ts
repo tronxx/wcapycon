@@ -57,7 +57,7 @@ import { Exist, Kardex, Series } from './kardex/entities';
 import { ImprikardexModule } from './imprikardex/imprikardex.module';
 import { SeriesinvenModule } from './seriesinven/seriesinven.module';
 import { ClientesModule } from './clientes/clientes.module';
-import { Cliente } from './clientes/entities';
+import { Clientes } from './clientes/entities';
 import { VendedoresModule } from './vendedores/vendedores.module';
 import { Vendedor } from './vendedores/entities';
 import { ProveedoresModule } from './proveedores/proveedores.module';
@@ -73,7 +73,7 @@ import { Aval } from './avales/entities';
 import { VentasModule } from './ventas/ventas.module';
 import { CartapromModule } from './cartaprom/cartaprom.module';
 import { Cartaprom } from './cartaprom/entities';
-import { Ventas } from './ventas/entities';
+import { Ventas, Ubivtas } from './ventas/entities';
 import { MovclisModule } from './movclis/movclis.module';
 import { Movclis } from './movclis/entities';
 import { ConceptosModule } from './conceptos/conceptos.module';
@@ -87,6 +87,7 @@ import { Polizas } from './polizas/entities';
 import { RenpolModule } from './renpol/renpol.module';
 import { Renpol } from './renpol/entities';
 import { Nombres } from './clientes/entities';
+import { UbivtasModule } from './ubivtas/ubivtas.module';
 
 config();
 // const   
@@ -147,9 +148,9 @@ const {
         Zonas, Combust, Precioscomb, Ciudades, Estados, Vehiculos,
         ServMantos, ServmantosxVehiculo, Usuarios, Poligas, Renpogas, 
         Poliserv, Renposerv, Ciasedocta, Inven, Kardex, Exist, Series,
-        Cliente, Vendedor, Proveedor, Regimenes, Promotor, Usocfdi,
+        Clientes, Vendedor, Proveedor, Regimenes, Promotor, Usocfdi,
         Aval, Ventas, Cartaprom, Movclis, Conceptos, Facturas, Renfac,
-        Polizas, Renpol, Nombres,
+        Polizas, Renpol, Nombres, Ubivtas,
          join(__dirname, './**/**/*entity*{.ts,.js}')],
       synchronize: true,
     }),
@@ -194,6 +195,7 @@ const {
     RenfacModule,
     PolizasModule,
     RenpolModule,
+    UbivtasModule,
     ],
   controllers: [AppController],
   providers: [AppService],

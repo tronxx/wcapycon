@@ -28,6 +28,9 @@ export class Ventas {
     idtienda: number;
 
     @Column({type: 'varchar', length:1})
+    siono: string;
+
+    @Column({type: 'varchar', length:1})
     qom: string;
 
     @Column({type: 'varchar', length:3})

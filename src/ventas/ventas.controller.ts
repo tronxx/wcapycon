@@ -11,13 +11,19 @@ export class VentasController {
 
     constructor (private readonly ventasService:VentasService) {}
 
+    @ApiBearerAuth()
     @Get(':cia')
     async getMany(
-        @Param('cia') cia: number
+        @Param('cia') cia: number,
+        @Param('fechainicial') fechainicial : string,
+        @Param('fechafinal') fechafinal : string,
+        @Param('ubica') ubica : string,
+
     ) {
-        return await this.ventasService.getMany(cia);
+        return await this.ventasService.getMany(cia, fechainicial, fechafinal, ubica);
     }
 
+    @ApiBearerAuth()
     @Get(':cia/:id')
     getOne(
         @Param('cia') cia: number,
@@ -26,6 +32,7 @@ export class VentasController {
         return this.ventasService.getOne(cia, id);
     }
 
+    @ApiBearerAuth()
     @Get(':cia/:id/:codigo')
     getOnebyCodigo(
         @Param('cia') cia: number,

@@ -2,20 +2,20 @@ import { Injectable,  NotAcceptableException, NotFoundException } from '@nestjs/
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { NombresDto, CreateClientesDto, EditClienteDto } from './dtos';
-import { Cliente, Nombres } from './entities';
+import { Clientes, Nombres } from './entities';
 
 @Injectable()
 export class ClientesService {
 
     constructor (
-        @InjectRepository(Cliente)
-        private readonly clientesRepository: Repository<Cliente>,
+        @InjectRepository(Clientes)
+        private readonly clientesRepository: Repository<Clientes>,
         @InjectRepository(Nombres)
         private readonly nombresRepository: Repository<Nombres>
     )
     {}
 
-    async getMany(cia: number) :Promise <Cliente[]>  {
+    async getMany(cia: number) :Promise <Clientes[]>  {
         return await this.clientesRepository.find(
             {
                 where: { cia : cia},
@@ -24,7 +24,7 @@ export class ClientesService {
         );
     }
 
-    async getOne(cia:number, id: number) : Promise<Cliente> {
+    async getOne(cia:number, id: number) : Promise<Clientes> {
         const Cliente = await this.clientesRepository.findOneBy({cia, id});
         if(!Cliente) throw new NotFoundException ('Cliente Inexistente');
        return Cliente;

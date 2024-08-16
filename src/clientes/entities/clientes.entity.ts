@@ -11,7 +11,7 @@ import {
 
 @Entity('clientes')
 @Unique(['codigo', 'cia'])
-export class Cliente {
+export class Clientes {
     @PrimaryGeneratedColumn()
     id: number;
 
