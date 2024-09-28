@@ -5,6 +5,7 @@ import { CreateVentasDto, EditVentaDto } from './dtos';
 import { Ventas, Ubivtas } from './entities';
 import { Clientes } from '../clientes/entities'
 import { Facturas } from '../facturas/entities'
+import { Renfac } from '../renfac/entities';
 
 @Injectable()
 export class VentasService {
@@ -16,6 +17,8 @@ export class VentasService {
         private readonly clientesRepository: Repository<Clientes>,
         @InjectRepository(Facturas)
         private readonly facturasRepository: Repository<Facturas>,
+        @InjectRepository(Renfac)
+        private readonly renfacRepository: Repository<Renfac>,
         @InjectRepository(Ubivtas)
         private readonly ubivtasRepository: Repository<Ubivtas>,
     )
@@ -74,9 +77,22 @@ export class VentasService {
             throw new NotAcceptableException ('Ya existe ese Venta');
             return;
         }
+        dto.fechasaldo=dto.fecha;
 
         const Ventas = this.ventasRepository.create(dto);
         return await this.ventasRepository.save(Ventas);
+
+    }
+
+    async createVenta(data: any) {
+        // data está compuesto por
+        // data {
+        // venta
+        // factura
+        // renfac
+        //}
+        const nvaventa = this.createOne(data.venta);
+
 
     }
 

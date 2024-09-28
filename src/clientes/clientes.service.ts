@@ -1,6 +1,6 @@
 import { Injectable,  NotAcceptableException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Like } from 'typeorm';
 import { NombresDto, CreateClientesDto, EditClienteDto } from './dtos';
 import { Clientes, Nombres } from './entities';
 
@@ -26,6 +26,12 @@ export class ClientesService {
 
     async getOne(cia:number, id: number) : Promise<Clientes> {
         const Cliente = await this.clientesRepository.findOneBy({cia, id});
+        if(!Cliente) throw new NotFoundException ('Cliente Inexistente');
+       return Cliente;
+    }
+
+    async getOnebyCodigo(cia:number, codigo: string) : Promise<Clientes> {
+        const Cliente = await this.clientesRepository.findOneBy({cia, codigo});
         if(!Cliente) throw new NotFoundException ('Cliente Inexistente');
        return Cliente;
     }
@@ -106,5 +112,16 @@ export class ClientesService {
         return nomcomp;
     }
     
+    async getManybyNombre(cia: number, nombre:string) :Promise <Clientes[]>  {
+        return await this.clientesRepository.find(
+            {
+                where: { 
+                    nombre: Like(`%${nombre}%`),
+                    cia : cia
+                },
+                order: { nombre: "ASC", codigo: "ASC"}
+            }
+        );
+    }
 
 }

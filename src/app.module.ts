@@ -64,7 +64,7 @@ import { ProveedoresModule } from './proveedores/proveedores.module';
 import { Proveedor } from './proveedores/entities';
 import { RegimenesModule } from './regimenes/regimenes.module';
 import { Regimenes } from './regimenes/entities';
-import { UsdocfdiModule } from './usdocfdi/usdocfdi.module';
+import { UsocfdiModule } from './usdocfdi/usocfdi.module';
 import { Usocfdi } from './usdocfdi/entities';
 import { PromotoresModule } from './promotores/promotores.module';
 import { Promotor } from './promotores/entities';
@@ -88,6 +88,8 @@ import { RenpolModule } from './renpol/renpol.module';
 import { Renpol } from './renpol/entities';
 import { Nombres } from './clientes/entities';
 import { UbivtasModule } from './ubivtas/ubivtas.module';
+import { MetodopagoModule } from './metodopago/metodopago.module';
+import { Metodopago } from './metodopago/entities';
 
 config();
 // const   
@@ -123,6 +125,8 @@ const modules = [
   InformeacumModule,
   InvenModule,
   KardexModule,
+  UsocfdiModule,
+  MetodopagoModule,
 
 ]
 
@@ -150,7 +154,7 @@ const {
         Poliserv, Renposerv, Ciasedocta, Inven, Kardex, Exist, Series,
         Clientes, Vendedor, Proveedor, Regimenes, Promotor, Usocfdi,
         Aval, Ventas, Cartaprom, Movclis, Conceptos, Facturas, Renfac,
-        Polizas, Renpol, Nombres, Ubivtas,
+        Polizas, Renpol, Nombres, Ubivtas, Metodopago,
          join(__dirname, './**/**/*entity*{.ts,.js}')],
       synchronize: true,
     }),
@@ -184,7 +188,7 @@ const {
     VendedoresModule,
     ProveedoresModule,
     RegimenesModule,
-    UsdocfdiModule,
+    UsocfdiModule,
     PromotoresModule,
     AvalesModule,
     VentasModule,
@@ -196,6 +200,7 @@ const {
     PolizasModule,
     RenpolModule,
     UbivtasModule,
+    MetodopagoModule,
     ],
   controllers: [AppController],
   providers: [AppService],

@@ -6,7 +6,7 @@ import {  CreateUsocfdiDto, EditUsocfdiDto } from './dtos';
 import { Usocfdi } from './entities';
 
 @Injectable()
-export class UsdocfdiService {
+export class UsocfdiService {
 
     constructor (
         @InjectRepository(Usocfdi)

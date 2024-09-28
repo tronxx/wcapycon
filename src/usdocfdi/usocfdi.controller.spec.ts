@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UsdocfdiController } from './usdocfdi.controller';
+import { UsocfdiController } from  '../usdocfdi/usocfdi.controller';
 
 describe('UsdocfdiController', () => {
-  let controller: UsdocfdiController;
+  let controller: UsocfdiController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [UsdocfdiController],
+      controllers: [UsocfdiController],
     }).compile();
 
-    controller = module.get<UsdocfdiController>(UsdocfdiController);
+    controller = module.get<UsocfdiController>(UsocfdiController);
   });
 
   it('should be defined', () => {

@@ -16,6 +16,12 @@ export class CreateFacturasDto {
     @IsInt()
     iduuid: number;
 
+    @IsInt()
+    idusocfdi: number;
+
+    @IsInt()
+    idmetodopago: number;
+
     @IsNumber()
     importe: number;
 
@@ -30,6 +36,5 @@ export class CreateFacturasDto {
 
     @IsInt()
     cia: number;
-
 
 }

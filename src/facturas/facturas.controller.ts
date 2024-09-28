@@ -11,6 +11,7 @@ export class FacturasController {
 
     constructor (private readonly facturasService: FacturasService) {}
 
+    @ApiBearerAuth()
     @Get(':cia')
     async getMany(
         @Param('cia') cia: number
@@ -18,12 +19,25 @@ export class FacturasController {
         return await this.facturasService.getMany(cia);
     }
 
+    @ApiBearerAuth()
     @Get(':cia/:id')
     getOne(
         @Param('cia') cia: number,
         @Param('id') id: number
     ) {
         return this.facturasService.getOne(cia, id);
+    }
+
+    @ApiBearerAuth()
+    @Get(':cia/:numero/:serie/:modo')
+    getLastNum(
+        @Param('cia') cia: number,
+        @Param('numero') numero: number,
+        @Param('serie') serie: string,
+        @Param('modo') modo: string,
+    ) {
+        if(modo == "ULTIMO_FOLIO") return this.facturasService.getLastNum (cia, numero, serie);
+        if(modo == "BUSQUEDA_SERIE_NUMERO") return this.facturasService.getOnebyCodigo (cia, numero, serie);
     }
 
     @ApiBearerAuth()

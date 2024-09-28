@@ -10,9 +10,9 @@ import {
     PrimaryColumn
   } from 'typeorm';
 
-@Entity('usocfdi')
+@Entity('metodopago')
 @Unique(['clave', 'cia'])
-export class Usocfdi {
+export class Metodopago {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -30,5 +30,8 @@ export class Usocfdi {
     
     @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
     createdAt: Date;
+  
+    @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
+    updatedAt: Date;
   
 }

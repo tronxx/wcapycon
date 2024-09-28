@@ -26,6 +26,26 @@ export class ClientesController {
         return this.clientesService.getOne(cia, id);
     }
 
+    @Get(':cia/:id/:codigo')
+    getOnebyCodigo(
+        @Param('cia') cia: number,
+        @Param('id') id: number,
+        @Param('codigo') codigo: string
+    ) {
+        return this.clientesService.getOnebyCodigo(cia, codigo);
+    }
+
+    @Get(':cia/:id/:codigo/:nombre')
+    getMayByNombre(
+        @Param('cia') cia: number,
+        @Param('id') id: number,
+        @Param('codigo') codigo: string,
+        @Param('nombre') nombre: string,
+    ) {
+        return this.clientesService.getManybyNombre(cia, nombre);
+    }
+
+
     @ApiBearerAuth()
     @Post()
     async createOne(

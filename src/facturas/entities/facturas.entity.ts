@@ -30,6 +30,12 @@ export class Facturas {
     @Column({type: 'integer'})
     iduuid: number;
 
+    @Column({type: 'integer'})
+    idusocfdi: number;
+
+    @Column({type: 'integer'})
+    idmetodopago: number;
+
     @Column({type: 'double precision'})
     importe: number;
 

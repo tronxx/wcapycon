@@ -63,6 +63,9 @@ export class Ventas {
     @Column({type: 'double precision'})
     comision: number;
 
+    @Column({type: 'double precision'})
+    prodfin: number;
+
     @Column({type: 'integer'})
     idcarta: number;
 

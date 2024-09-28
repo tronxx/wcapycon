@@ -1,12 +1,15 @@
 import { IsInt, IsNumber, IsString } from "class-validator";
 
 export class CreateVentasDto {
-    @IsString()
-    codigo: string;
-
 
     @IsInt()
     idventa: number;
+
+    @IsString()
+    codigo: string;
+
+    @IsInt()
+    idcliente: number;
 
     @IsString()
     fecha: string;
@@ -49,6 +52,9 @@ export class CreateVentasDto {
 
     @IsNumber()
     comision: number;
+    
+    @IsNumber()
+    prodfin: number;
 
     @IsInt()
     idcarta: number;
