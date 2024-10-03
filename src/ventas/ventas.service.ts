@@ -6,6 +6,8 @@ import { Ventas, Ubivtas } from './entities';
 import { Clientes } from '../clientes/entities'
 import { Facturas } from '../facturas/entities'
 import { Renfac } from '../renfac/entities';
+import { FacturasService } from '../facturas/facturas.service';
+import { RenfacService } from '../renfac/renfac.service';
 
 @Injectable()
 export class VentasService {
@@ -21,6 +23,8 @@ export class VentasService {
         private readonly renfacRepository: Repository<Renfac>,
         @InjectRepository(Ubivtas)
         private readonly ubivtasRepository: Repository<Ubivtas>,
+        private renfacService : RenfacService,
+        private facturasService: FacturasService
     )
     {}
 
@@ -28,15 +32,15 @@ export class VentasService {
         const misventas =  await this.ventasRepository
         .createQueryBuilder('a')
         .select('a.*')
-        .addSelect ('b.nombre, d.numero, d.serie, c.codigo')
+        .addSelect ('b.nombre, d.numero as numfac, d.serie as seriefac, c.codigo as ubica ')
         .leftJoin(Clientes, 'b', 'a.idcliente = b.id')
-        .leftJoin(Facturas, 'd', 'a.idfactura = d.id')
+        .leftJoin(Facturas, 'd', 'a.id = d.idventa')
         .leftJoin(Ubivtas, 'c', 'a.idubica = c.id')
         .where('a.fecha BETWEEN :startDate AND :endDate', {
           startDate: fechainicial,
           endDate: fechafinal,
         })
-        .andWhere('c.codigo =:ubica', {ubica})
+        .andWhere(`c.codigo ='${ubica}'`)
         .andWhere('a.cia =:cia', {cia})
         .getRawMany();
         return (misventas);
@@ -91,9 +95,53 @@ export class VentasService {
         // factura
         // renfac
         //}
-        const nvaventa = this.createOne(data.venta);
+        try {
+            let nvaventa = await this.createOne(data.venta);
+            const cia = data.venta.cia;
+            const idventa = nvaventa.id;
+            data.factura.idventa = idventa;
+            const factura = await this.facturasService.createOne(data.factura);
+            const idfactura = factura.id;
+            data.venta.idfactura = idfactura;
+            nvaventa.idfactura = idfactura;
+            console.log("Renglones de Factura", data.renfac);
 
+            for(let renglonfac of data.renfac) {
+                console.log("Voya a agregar renfac", renglonfac);
+                const  preciou = Math.round(renglonfac.preciou / (renglonfac.piva / 100 + 1) * 10000) / 10000;
+                const miimporte = Math.round(renglonfac.importe / (renglonfac.piva / 100 + 1) * 10000) / 10000;
+                const nvoiva = renglonfac.importe - miimporte;
 
+                const nvorenfac = {
+                    idfactura: idfactura,
+                    idventa: idventa,
+                    codigo: renglonfac.codigo,
+                    descri: renglonfac.descri,
+                    serie: renglonfac.serie,
+                    preciou: preciou,
+                    canti: renglonfac.canti,
+                    piva: renglonfac.piva,
+                    importe: miimporte,
+                    iva: nvoiva,
+                    folio: renglonfac.folio,
+                    status: 'A',
+                    conse: 0,
+                    cia: cia
+                            
+                }
+                const renfac = this.renfacService.createOne(nvorenfac);
+            }
+            const ventamod = {
+                idfactura: idfactura
+            }
+            const nvaventamodif  = await this.editOne(idventa, ventamod);
+            return (nvaventa);
+
+        } catch  (err) {
+            return ({status: 'ERROR', message:'Ha ocurrido un error', error: err});
+
+        }
+    
     }
 
 }

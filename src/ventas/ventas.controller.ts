@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import {VentasService } from './ventas.service'
 import { CreateVentasDto, EditVentaDto } from './dtos'
@@ -15,9 +15,10 @@ export class VentasController {
     @Get(':cia')
     async getMany(
         @Param('cia') cia: number,
-        @Param('fechainicial') fechainicial : string,
-        @Param('fechafinal') fechafinal : string,
-        @Param('ubica') ubica : string,
+        @Query('modo') modo: string,
+        @Query('fechainicial') fechainicial: string,
+        @Query('fechafinal') fechafinal: string,
+        @Query('ubica') ubica: string,
 
     ) {
         return await this.ventasService.getMany(cia, fechainicial, fechafinal, ubica);
@@ -48,6 +49,16 @@ export class VentasController {
     ) {
         return this.ventasService.createOne(dto);
     }
+
+    @ApiBearerAuth()
+    @Post('/ventacompleta')
+    async createNuevaVentacompleta(
+        @Body() venta: any
+    ) {
+        console.log("Creando venta nueva", venta);
+        return this.ventasService.createVenta(venta);
+    }
+
 
     @ApiBearerAuth()
     @Put(':id')

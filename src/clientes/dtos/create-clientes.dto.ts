@@ -41,4 +41,7 @@ export class CreateClientesDto {
     @IsString()
     status: string;
 
+    @IsString()
+    rfc: string;
+
 }

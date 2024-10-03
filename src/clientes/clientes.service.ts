@@ -84,6 +84,7 @@ export class ClientesService {
         dtocliente.cia = dto.cia;
         dtocliente.status = 'A';
         dtocliente.idnombre = idnombre;
+        dtocliente.rfc = dto.rfc;
         const Cliente = this.clientesRepository.create(dtocliente);
         return await this.clientesRepository.save(Cliente);
 
