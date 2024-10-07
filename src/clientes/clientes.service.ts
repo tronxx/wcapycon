@@ -36,10 +36,37 @@ export class ClientesService {
        return Cliente;
     }
 
-    async editOne(id: number, dto: EditClienteDto) {
+    async editOne(id: number, dto: any) {
         const Cliente = await this.clientesRepository.findOneBy({id});
         if(!Cliente) throw new NotFoundException ('Cliente Inexistente');
-        const editedCliente = Object.assign(Cliente, dto);
+        let codigo = dto.codigo;
+        let cia = dto.cia;
+
+        let nombres = new NombresDto;
+        nombres.appat = dto.appat;
+        nombres.apmat = dto.apmat;
+        nombres.nombre1 = dto.nombre1;
+        nombres.nombre2 = dto.nombre2
+        
+        const nvonombre = await this.createNombres(nombres);
+        //console.log("Nvonombre", JSON.stringify(nvonombre) );
+        const idnombre = nvonombre[0][0].id;
+        const nombrecompleto = await this.nombrecompleto(nombres);
+
+        let dtocliente = new EditClienteDto;
+        dtocliente.nombre = nombrecompleto;
+        dtocliente.calle = dto.calle;
+        dtocliente.numpredio = dto.numpredio;
+        dtocliente.colonia = dto.colonia;
+        dtocliente.telefono = dto.telefono;
+        dtocliente.email = dto.email;
+        dtocliente.codpostal = dto.codpostal;
+        dtocliente.idciudad = dto.idciudad;
+        dtocliente.idregimen = dto.idregimen;
+        dtocliente.cia = dto.cia;
+        dtocliente.idnombre = idnombre;
+        dtocliente.rfc = dto.rfc;
+        const editedCliente = Object.assign(Cliente, dtocliente);
         return await this.clientesRepository.update(id, editedCliente);
 
     }
@@ -111,6 +138,10 @@ export class ClientesService {
         const nombres = (nomcompleto.nombre1 + " " + nomcompleto.nombre2 ).trim();
         const nomcomp = ( apellidos + " "+ nombres ).trim();
         return nomcomp;
+    }
+    
+    async getNombre(id: number) {
+        return await this.nombresRepository.findBy({id});
     }
     
     async getManybyNombre(cia: number, nombre:string) :Promise <Clientes[]>  {

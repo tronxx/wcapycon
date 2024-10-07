@@ -17,13 +17,13 @@ export class Nombres {
     @Column({type: 'varchar', length:100})
     appat: string;
 
-    @Column({type: 'varchar', length:100})
+    @Column({type: 'varchar', length:100, nullable: true})
     apmat: string;
 
-    @Column({type: 'varchar', length:100})
+    @Column({type: 'varchar', length:100, nullable: true})
     nompil1: string;
 
-    @Column({type: 'varchar', length:100})
+    @Column({type: 'varchar', length:100, nullable: true})
     nompil2: string;
 
     @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })

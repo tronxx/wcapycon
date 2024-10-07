@@ -35,14 +35,24 @@ export class ClientesController {
         return this.clientesService.getOnebyCodigo(cia, codigo);
     }
 
+    @ApiBearerAuth()
     @Get(':cia/:id/:codigo/:nombre')
-    getMayByNombre(
+    getManyByNombre(
         @Param('cia') cia: number,
         @Param('id') id: number,
         @Param('codigo') codigo: string,
         @Param('nombre') nombre: string,
     ) {
         return this.clientesService.getManybyNombre(cia, nombre);
+    }
+
+    @ApiBearerAuth()
+    @Get(':cia/id/nombre/codigo/:id')
+    getNombre(
+        @Param('cia') cia: number,
+        @Param('id') id: number,
+    ) {
+        return this.clientesService.getNombre(id);
     }
 
 
@@ -67,7 +77,7 @@ export class ClientesController {
     @Put(':id')
     editOne(
         @Param('id') id: number,
-        @Body() dto: EditClienteDto
+        @Body() dto: any
     ) {
         return this.clientesService.editOne(id, dto);
     }
