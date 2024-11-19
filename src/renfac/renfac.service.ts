@@ -51,7 +51,7 @@ export class RenfacService {
 
     async createOne(dto: CreateRenfacDto) {
         const signosparam = '?,'.repeat(12) + '?';
-        console.log("Voy a agregar renfac", dto, "Signos param:", signosparam);
+        // console.log("Voy a agregar renfac", dto, "Signos param:", signosparam);
         const agregarenfac = await this.renfacRepository
         .query( `CALL add_renfac(${signosparam})`,
           [ 

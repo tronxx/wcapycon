@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateMovclisDto, EditMovcliDto } from './dtos';
 import { Movclis } from './entities';
+import { Conceptos } from 'src/conceptos/entities';
 
 @Injectable()
 export class MovclisService {
@@ -13,13 +14,21 @@ export class MovclisService {
     )
     {}
 
-    async getMany(idventa: number) :Promise <Movclis[]>  {
-        return await this.movclisRepository.find(
-            {
-                where: { idventa},
-                order: { fecha: 'ASC', consecutivo: 'ASC'}
-            }
-        );
+    async getMany(idventa: number, cia: number) :Promise <any[]>  {
+        const mismovtos =  await this.movclisRepository
+        .createQueryBuilder('a')
+        .select('a.*')
+        .addSelect ('b.concepto ')
+        .addSelect(`(case coa when 'C' then importe else null end) as cargos`)
+        .addSelect(`(case coa when 'A' then importe else null end) as abonos`)
+        .addSelect(`(case tipopago when 'AB' then recobon else null end) as bonifica`)
+        .addSelect(`(case tipopago when 'AR' then recobon else null end) as recargo`)
+        .leftJoin(Conceptos, 'b', 'a.idconcepto = b.id')
+        .where('a.idventa =:idventa',  {idventa})
+        .andWhere('a.cia =:cia', {cia})
+        .orderBy( {fecha: 'ASC', consecutivo:'ASC'})
+        .getRawMany();
+        return (mismovtos);
     }
 
     async getOne(cia:number, id: number) : Promise<Movclis> {

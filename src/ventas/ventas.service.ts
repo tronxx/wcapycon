@@ -42,6 +42,7 @@ export class VentasService {
         })
         .andWhere(`c.codigo ='${ubica}'`)
         .andWhere('a.cia =:cia', {cia})
+        .orderBy( {codigo: 'ASC'})
         .getRawMany();
         return (misventas);
     }
@@ -53,9 +54,19 @@ export class VentasService {
     }
 
     async getOne(cia:number, id: number) : Promise<Ventas> {
-        const Ventas = await this.ventasRepository.findOneBy({cia, id});
-        if(!Ventas) throw new NotFoundException ('Venta Inexistente');
-       return Ventas;
+        const miventa =  await this.ventasRepository
+        .createQueryBuilder('a')
+        .select('a.*')
+        .addSelect ('b.nombre, d.numero as numfac, d.serie as seriefac, c.codigo as ubica ')
+        .leftJoin(Clientes, 'b', 'a.idcliente = b.id')
+        .leftJoin(Facturas, 'd', 'a.id = d.idventa')
+        .leftJoin(Ubivtas, 'c', 'a.idubica = c.id')
+        .where('a.id = :id',  {id})
+        .andWhere('a.cia =:cia', {cia})
+        .getRawOne();
+        return (miventa);
+        if(!miventa) throw new NotFoundException ('Venta Inexistente');
+       return miventa;
     }
 
     async editOne(id: number, dto: EditVentaDto) {
@@ -104,10 +115,10 @@ export class VentasService {
             const idfactura = factura.id;
             data.venta.idfactura = idfactura;
             nvaventa.idfactura = idfactura;
-            console.log("Renglones de Factura", data.renfac);
+            // console.log("Renglones de Factura", data.renfac);
 
             for(let renglonfac of data.renfac) {
-                console.log("Voya a agregar renfac", renglonfac);
+                console.log("1.- Voy a a agregar renfac", renglonfac);
                 const  preciou = Math.round(renglonfac.preciou / (renglonfac.piva / 100 + 1) * 10000) / 10000;
                 const miimporte = Math.round(renglonfac.importe / (renglonfac.piva / 100 + 1) * 10000) / 10000;
                 const nvoiva = renglonfac.importe - miimporte;
@@ -130,6 +141,34 @@ export class VentasService {
                             
                 }
                 const renfac = this.renfacService.createOne(nvorenfac);
+                if(renglonfac.esmoto) {
+                    const datos = [
+                        { titulo: "MOTOR S/", dato: renglonfac.seriemotor},
+                        { titulo: "MARCA:", dato: renglonfac.marca},
+                        { titulo: "ADUANA:", dato: renglonfac.aduana},
+                        { titulo: "PEDIMIENTO:", dato: renglonfac.pedimento},
+                    ]
+                    for(let mirenglon of datos) {
+                        const nvorenfac = {
+                            idfactura: idfactura,
+                            idventa: idventa,
+                            codigo: "AUXILIAR",
+                            descri: mirenglon.titulo + mirenglon.dato,
+                            serie: "",
+                            preciou: 0,
+                            canti: 1,
+                            piva: renglonfac.piva,
+                            importe: 0,
+                            iva: 0,
+                            folio: 0,
+                            status: 'A',
+                            conse: 0,
+                            cia: cia
+                                    
+                        }
+                        const renfac = this.renfacService.createOne(nvorenfac);
+                    }
+                }
             }
             const ventamod = {
                 idfactura: idfactura

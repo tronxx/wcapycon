@@ -90,6 +90,8 @@ import { Nombres } from './clientes/entities';
 import { UbivtasModule } from './ubivtas/ubivtas.module';
 import { MetodopagoModule } from './metodopago/metodopago.module';
 import { Metodopago } from './metodopago/entities';
+import { SolicitudesModule } from './solicitudes/solicitudes.module';
+import { Datosolicitud, Solicitudes } from './solicitudes/entities';
 
 config();
 // const   
@@ -154,7 +156,8 @@ const {
         Poliserv, Renposerv, Ciasedocta, Inven, Kardex, Exist, Series,
         Clientes, Vendedor, Proveedor, Regimenes, Promotor, Usocfdi,
         Aval, Ventas, Cartaprom, Movclis, Conceptos, Facturas, Renfac,
-        Polizas, Renpol, Nombres, Ubivtas, Metodopago,
+        Polizas, Renpol, Nombres, Ubivtas, Metodopago, 
+        Solicitudes, Datosolicitud,
          join(__dirname, './**/**/*entity*{.ts,.js}')],
       synchronize: true,
     }),
@@ -201,6 +204,7 @@ const {
     RenpolModule,
     UbivtasModule,
     MetodopagoModule,
+    SolicitudesModule,
     ],
   controllers: [AppController],
   providers: [AppService],

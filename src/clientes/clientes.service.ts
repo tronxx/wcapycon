@@ -148,7 +148,7 @@ export class ClientesService {
         return await this.clientesRepository.find(
             {
                 where: { 
-                    nombre: Like(`%${nombre}%`),
+                    nombre: Like(`${nombre}`),
                     cia : cia
                 },
                 order: { nombre: "ASC", codigo: "ASC"}

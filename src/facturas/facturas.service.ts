@@ -43,7 +43,7 @@ export class FacturasService {
     async getOnebyCodigo(cia:number, numero:number, serie: string) : Promise<Facturas> {
         const query =  this.facturasrepository.createQueryBuilder('a')
         .select(['a.*','b.clave as codigousocfdi',
-        'b.nombre as conceptousofdi',
+        'b.nombre as conceptousocfdi',
         'c.clave as codigometodopago',
         'c.nombre as conceptometodopago'
         ])
@@ -61,7 +61,7 @@ export class FacturasService {
     async getOne(cia:number, id: number) : Promise<Facturas> {
         const query =  this.facturasrepository.createQueryBuilder('a')
         .select(['a.*','b.clave as codigousocfdi',
-        'b.nombre as conceptousofdi',
+        'b.nombre as conceptousocfdi',
         'c.clave as codigometodopago',
         'c.nombre as conceptometodopago'
         ])

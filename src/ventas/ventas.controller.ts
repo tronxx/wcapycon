@@ -55,7 +55,7 @@ export class VentasController {
     async createNuevaVentacompleta(
         @Body() venta: any
     ) {
-        console.log("Creando venta nueva", venta);
+        //console.log("Creando venta nueva", venta);
         return this.ventasService.createVenta(venta);
     }
 

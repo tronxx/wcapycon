@@ -11,11 +11,13 @@ export class MovclisController {
 
     constructor (private readonly movclisService: MovclisService) {}
 
-    @Get(':cia')
+    @Get(':cia/:id/:idventa')
     async getMany(
-        @Param('cia') cia: number
+        @Param('cia') cia: number,
+        @Param('id') id: number,
+        @Param('idventa') idventa: number
     ) {
-        return await this.movclisService.getMany(cia);
+        return await this.movclisService.getMany(idventa, cia);
     }
 
     @Get(':cia/:id')
