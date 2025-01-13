@@ -12,16 +12,20 @@ export class RenpolController {
 
     constructor (private readonly renpolService: RenpolService) {}
 
-    @Get(':idpoliza')
+    @ApiBearerAuth()
+    @Get(':cia/:idpoliza')
     async getMany(
+        @Param('cia') cia: number,
         @Param('idpoliza') idpoliza: number
     ) {
-        return await this.renpolService.getMany(idpoliza);
+        return await this.renpolService.getMany(idpoliza, cia);
     }
 
-    @Get(':cia/:id')
+    @ApiBearerAuth()
+    @Get(':cia/:idpoliza/:id')
     getOne(
         @Param('cia') cia: number,
+        @Param('idpoliza') idpoliza: number,
         @Param('id') id: number
     ) {
         return this.renpolService.getOne(cia, id);

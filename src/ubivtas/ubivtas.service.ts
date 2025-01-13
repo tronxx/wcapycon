@@ -29,6 +29,12 @@ export class UbivtasService {
        return ubivta;
     }
 
+    async getOnebyCodigo(cia:number, codigo: string) : Promise<Ubivtas> {
+        const ubivta = await this.ubivtasRepository.findOneBy({cia, codigo});
+        if(!ubivta) throw new NotFoundException ('ubicación Inexistente');
+       return ubivta;
+    }
+
     async editOne(id: number, dto: EditUbivtaDto) {
         const ubivta = await this.ubivtasRepository.findOneBy({id});
         if(!ubivta) throw new NotFoundException ('ubicación Inexistente');

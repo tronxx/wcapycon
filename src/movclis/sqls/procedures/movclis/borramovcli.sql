@@ -24,7 +24,7 @@ BEGIN
     -- Verificar si el cliente existe
     SELECT COUNT(*) INTO v_cliente_exists
     FROM ventas
-    WHERE id = v_idventa;
+    WHERE idventa = v_idventa;
 
     IF v_cliente_exists = 0 THEN
         -- Si el cliente no existe, lanzar un error
@@ -34,9 +34,9 @@ BEGIN
     -- Actualizar los valores en la tabla ventas
     IF v_importe != 0 THEN
         IF V_COA = 'A' THEN
-          UPDATE ventas set abonos = abonos - v_importe WHERE id = v_idventa;
+          UPDATE ventas set abonos = abonos - v_importe WHERE idventa = v_idventa;
         ELSE
-          UPDATE ventas set cargos = cargos - v_importe WHERE id = v_idventa;
+          UPDATE ventas set cargos = cargos - v_importe WHERE idventa = v_idventa;
         END IF;
     END IF;
 

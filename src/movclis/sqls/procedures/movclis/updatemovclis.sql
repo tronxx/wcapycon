@@ -29,9 +29,9 @@ FOR EACH ROW
 BEGIN
     -- Ajustar el campo correspondiente en la tabla clientes según el valor de coa nuevo
     IF NEW.coa = 'A' THEN
-        UPDATE ventas SET abonos = abonos + NEW.importe WHERE id = NEW.idventa;
+        UPDATE ventas SET abonos = abonos + NEW.importe WHERE idventa = NEW.idventa;
     ELSEIF NEW.coa = 'C' THEN
-        UPDATE ventas SET cargos = cargos + NEW.importe WHERE id = NEW.idventa;
+        UPDATE ventas SET cargos = cargos + NEW.importe WHERE idventa = NEW.idventa;
     END IF;
 END$$
 

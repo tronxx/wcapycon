@@ -59,6 +59,14 @@ export class VentasController {
         return this.ventasService.createVenta(venta);
     }
 
+    @ApiBearerAuth()
+    @Post('/importar')
+    async importar(
+        @Body() dto: any[]
+    ) {
+        return this.ventasService.importarManyVenytas(dto);
+    }
+
 
     @ApiBearerAuth()
     @Put(':id')

@@ -92,6 +92,8 @@ import { MetodopagoModule } from './metodopago/metodopago.module';
 import { Metodopago } from './metodopago/entities';
 import { SolicitudesModule } from './solicitudes/solicitudes.module';
 import { Datosolicitud, Solicitudes } from './solicitudes/entities';
+import { CodigoscajaModule } from './codigoscaja/codigoscaja.module';
+import { Codigoscaja } from './codigoscaja/entities';
 
 config();
 // const   
@@ -129,6 +131,7 @@ const modules = [
   KardexModule,
   UsocfdiModule,
   MetodopagoModule,
+  CodigoscajaModule,
 
 ]
 
@@ -157,7 +160,7 @@ const {
         Clientes, Vendedor, Proveedor, Regimenes, Promotor, Usocfdi,
         Aval, Ventas, Cartaprom, Movclis, Conceptos, Facturas, Renfac,
         Polizas, Renpol, Nombres, Ubivtas, Metodopago, 
-        Solicitudes, Datosolicitud,
+        Solicitudes, Datosolicitud, Codigoscaja,
          join(__dirname, './**/**/*entity*{.ts,.js}')],
       synchronize: true,
     }),
@@ -205,6 +208,7 @@ const {
     UbivtasModule,
     MetodopagoModule,
     SolicitudesModule,
+    CodigoscajaModule,
     ],
   controllers: [AppController],
   providers: [AppService],

@@ -3,11 +3,17 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateVentasDto, EditVentaDto } from './dtos';
 import { Ventas, Ubivtas } from './entities';
-import { Clientes } from '../clientes/entities'
+import { Clientes, Nombres } from '../clientes/entities'
 import { Facturas } from '../facturas/entities'
 import { Renfac } from '../renfac/entities';
+import { Promotor } from '../promotores/entities'
+import { PromotoresService } from '../promotores/promotores.service';
 import { FacturasService } from '../facturas/facturas.service';
 import { RenfacService } from '../renfac/renfac.service';
+import { ClientesService } from '../clientes/clientes.service';
+import { UbivtasService } from '../ubivtas/ubivtas.service';
+import { VendedoresService } from '../vendedores/vendedores.service';
+import { Vendedor } from 'src/vendedores/entities';
 
 @Injectable()
 export class VentasService {
@@ -23,8 +29,17 @@ export class VentasService {
         private readonly renfacRepository: Repository<Renfac>,
         @InjectRepository(Ubivtas)
         private readonly ubivtasRepository: Repository<Ubivtas>,
+        @InjectRepository(Promotor)
+        private readonly promotoresRepository: Repository<Promotor>,
+        @InjectRepository(Vendedor)
+        private readonly vendedoresReposiroty: Repository<Vendedor>,
+        
         private renfacService : RenfacService,
-        private facturasService: FacturasService
+        private facturasService: FacturasService,
+        private clientesService: ClientesService,
+        private promotoresService: PromotoresService,
+        private ubivtasService: UbivtasService,
+        private vendedoresService : VendedoresService,
     )
     {}
 
@@ -34,7 +49,7 @@ export class VentasService {
         .select('a.*')
         .addSelect ('b.nombre, d.numero as numfac, d.serie as seriefac, c.codigo as ubica ')
         .leftJoin(Clientes, 'b', 'a.idcliente = b.id')
-        .leftJoin(Facturas, 'd', 'a.id = d.idventa')
+        .leftJoin(Facturas, 'd', 'a.idventa = d.idventa')
         .leftJoin(Ubivtas, 'c', 'a.idubica = c.id')
         .where('a.fecha BETWEEN :startDate AND :endDate', {
           startDate: fechainicial,
@@ -48,9 +63,18 @@ export class VentasService {
     }
 
     async getOnebyCodigo(cia:number, codigo: string) : Promise<Ventas> {
-        const Ventas = await this.ventasRepository.findOneBy({cia, codigo});
-        if(!Ventas) throw new NotFoundException ('Venta Inexistente');
-       return Ventas;
+        const misventas =  await this.ventasRepository
+        .createQueryBuilder('a')
+        .select('a.*')
+        .addSelect ('b.nombre, d.numero as numfac, d.serie as seriefac, c.codigo as ubica ')
+        .leftJoin(Clientes, 'b', 'a.idcliente = b.id')
+        .leftJoin(Facturas, 'd', 'a.idfactura = d.id')
+        .leftJoin(Ubivtas, 'c', 'a.idubica = c.id')
+        .where('a.codigo = :codigo', { codigo } )
+        .andWhere('a.cia =:cia', {cia})
+        .getRawOne();
+        //if(!misventas) throw new NotFoundException ('Venta Inexistente');
+        return (misventas);
     }
 
     async getOne(cia:number, id: number) : Promise<Ventas> {
@@ -59,9 +83,9 @@ export class VentasService {
         .select('a.*')
         .addSelect ('b.nombre, d.numero as numfac, d.serie as seriefac, c.codigo as ubica ')
         .leftJoin(Clientes, 'b', 'a.idcliente = b.id')
-        .leftJoin(Facturas, 'd', 'a.id = d.idventa')
+        .leftJoin(Facturas, 'd', 'a.idventa = d.idventa')
         .leftJoin(Ubivtas, 'c', 'a.idubica = c.id')
-        .where('a.id = :id',  {id})
+        .where('a.idventa = :id',  {id})
         .andWhere('a.cia =:cia', {cia})
         .getRawOne();
         return (miventa);
@@ -69,18 +93,18 @@ export class VentasService {
        return miventa;
     }
 
-    async editOne(id: number, dto: EditVentaDto) {
-        const Ventas = await this.ventasRepository.findOneBy({id});
+    async editOne(idventa: number, dto: EditVentaDto) {
+        const Ventas = await this.ventasRepository.findOneBy({idventa});
         if(!Ventas) throw new NotFoundException ('Venta Inexistente');
         const editedVentas = Object.assign(Ventas, dto);
-        return await this.ventasRepository.update(id, editedVentas);
+        return await this.ventasRepository.update(idventa, editedVentas);
 
     }
 
-    async deleteOne(id: number) {
-        const Ventas = await this.ventasRepository.findOneBy({id});
+    async deleteOne(idventa: number) {
+        const Ventas = await this.ventasRepository.findOneBy({idventa});
         if(!Ventas) throw new NotFoundException ('Venta Inexistente');
-        return await this.ventasRepository.delete(id);
+        return await this.ventasRepository.delete(idventa);
 
     }
 
@@ -109,7 +133,7 @@ export class VentasService {
         try {
             let nvaventa = await this.createOne(data.venta);
             const cia = data.venta.cia;
-            const idventa = nvaventa.id;
+            const idventa = nvaventa.idventa;
             data.factura.idventa = idventa;
             const factura = await this.facturasService.createOne(data.factura);
             const idfactura = factura.id;
@@ -182,5 +206,119 @@ export class VentasService {
         }
     
     }
+
+    async importarManyVenytas (data: any) {
+        let ventasagregadas = [];
+        for(let miventa of data) { 
+            const cia = 1;
+            const codigo = miventa.numcli;
+            const yatengoventa = await this. getOnebyCodigo(cia, codigo);
+            if(yatengoventa) {
+                // console.log("Ya Existe esta venta", codigo);
+            } else {
+                const ventaagregada = await this.importarVentas(miventa);
+                ventasagregadas.push(ventaagregada);
+            }
+
+        }
+        return(ventasagregadas);
+
+    }
+
+    async importarVentas(data: any) {
+        // data está compuesto por
+        // data {
+        // cliente
+        // aval
+        // venta
+        // factura
+        // renfac
+        // Movimientos
+        //}
+        try {
+            const cliente = {
+                id: data.idcli,
+                appat: data.appat,
+                apmat: data.apmat,
+                nombre1: data.nompil1,
+                nombre2: data.nompil2,
+                nombre: data.nombre,
+                codigo: data.numcli,
+                calle: data.calle,
+                numpredio: data.numpred,
+                codpostal: data.codpost,
+                colonia: data.colonia,
+                telefono: data.telefono,
+                email:data.email,
+                idciudad:data.poblac,
+                idregimen:data.idregimen,
+                cia:data.cia,
+                status:'A',
+                idnombre: -1,
+                rfc:data.rfc,
+            }
+            const cia = 1;
+            let idcliente = data.idcli;
+            const clienteold = await this.clientesService.getOnebyCodigo(cia, data.numcli)
+            if(clienteold) {
+                // console.log("Cliente Existente", clienteold);
+                idcliente = clienteold.id;
+            } else {
+                const nvocliente =  await this.clientesService.createOne(cliente);
+                // console.log("Cliente", nvocliente);
+                idcliente = nvocliente.id;
+            }
+            const ubivta = await this.ubivtasService.getOnebyCodigo(cia, data.ubica);
+            const idubica = ubivta.id;
+            
+            const promotor = await this.promotoresService.getOnebyCodigo(cia, data.promotor);
+            const idpromotor = promotor.id;
+            const idtienda = 1;
+            const idcarta = 1;
+            const idvendedor = 1;
+            const idfactura = -1;
+            
+            const venta = {
+                idventa: data.idcli,
+                codigo: data.numcli,
+                idcliente: idcliente,
+                fecha:data.fechavta,
+                idtienda: idtienda,
+                siono: data.status,
+                qom: data.qom,
+                ticte: data.ticte,
+                letra1: data.letra1,
+                enganc: data.enganche,
+                nulets: data.nulet,
+                canle: data.canle,
+                bonifi:data.bonificacion,
+                servicio: data.servicio,
+                precon: data.preciolista,
+                idvendedor: idvendedor,
+                comision: 0,
+                prodfin: 0,
+                idcarta: idcarta,
+                idfactura:  idfactura,
+                idpromotor: idpromotor,
+                comisionpromotor: 0,
+                cargos: data.cargos,
+                abonos: data.abonos,
+                idubica: idubica,
+                status: 'C',
+                cia: 1,
+                fechasaldo: data.fechavta
+
+            }
+            let nvaventa = await this.createOne(venta);
+            const idventa = nvaventa.idventa;
+            return ({cliente, nvaventa});
+
+        } catch  (err) {
+            return ({status: 'ERROR', message:'Ha ocurrido un error', error: err});
+
+        }
+    
+    }
+
 
 }

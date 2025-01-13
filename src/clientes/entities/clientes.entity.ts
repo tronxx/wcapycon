@@ -6,13 +6,14 @@ import {
     ManyToOne,
     JoinColumn,
     Unique,
-    UpdateDateColumn
+    UpdateDateColumn,
+    PrimaryColumn
   } from 'typeorm';
 
 @Entity('clientes')
 @Unique(['codigo', 'cia'])
 export class Clientes {
-    @PrimaryGeneratedColumn()
+    @PrimaryColumn({ type: 'int', name: 'id' })  
     id: number;
 
     @Column({type: 'varchar', length:20, nullable:false})

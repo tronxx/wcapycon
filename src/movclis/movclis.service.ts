@@ -57,6 +57,37 @@ export class MovclisService {
         return await this.movclisRepository.save(nvomovcli);
     }
 
+    async importarManyMovclis(movclis: any[]) {
+        let  movsagregados = [];
+        let cia = 1;
+        for(let mimov of movclis) { 
+            let recobon = mimov.bonificacion;
+            if(mimov.tipag == "AR") recobon = mimov.recargo;
+            const dtomov = {
+                idventa: mimov.idcli,
+                fecha: mimov.fechamov,
+                coa: mimov.coa,
+                idconcepto: -1,
+                idpoliza: -1,
+                consecutivo: -1,
+                tipopago: mimov.tipag,
+                recobon: recobon,
+                importe: mimov.importe,
+                cobratario: mimov.oper,
+                usuario:mimov.usuario,
+                status: "A",
+                idcobratario: mimov.idcobra,
+                idusuario : mimov.idusuario,
+                cia: cia,
+                concepto: mimov.concep
+            }
+            // console.log("Importando ", dtomov);
+            const nvomov = await this.createOne(dtomov);
+            movsagregados.push(nvomov);
+        }
+        return (movsagregados);
+    }
+
     async createOne(dto: CreateMovclisDto) {
         const signosparam = '?,'.repeat(15) + '?';
         

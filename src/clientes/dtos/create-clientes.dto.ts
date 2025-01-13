@@ -2,6 +2,9 @@ import { IsInt, IsNumber, IsString } from "class-validator";
 
 export class CreateClientesDto {
 
+    @IsInt()
+    id: number;
+
     @IsString()
     codigo: string;
 

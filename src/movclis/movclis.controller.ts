@@ -10,7 +10,8 @@ import { JwtAuthGuard } from  '../usuarios/jwt-auth.guard';
 export class MovclisController {
 
     constructor (private readonly movclisService: MovclisService) {}
-
+    
+    @ApiBearerAuth()
     @Get(':cia/:id/:idventa')
     async getMany(
         @Param('cia') cia: number,
@@ -35,6 +36,15 @@ export class MovclisController {
     ) {
         return this.movclisService.createOne(dto);
     }
+
+    @ApiBearerAuth()
+    @Post('/importar')
+    async importar(
+        @Body() dto: any[]
+    ) {
+        return this.movclisService.importarManyMovclis(dto);
+    }
+
 
     @ApiBearerAuth()
     @Put(':id')

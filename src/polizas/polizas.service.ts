@@ -4,13 +4,17 @@ import { Repository } from 'typeorm';
 import {  CreatePolizasDto, EditPolizaDto } from './dtos';
 
 import { Polizas } from './entities';
+import { Codigoscaja } from '../codigoscaja/entities';
 
 @Injectable()
 export class PolizasService {
 
     constructor (
         @InjectRepository(Polizas)
-        private readonly polizasRepository: Repository<Polizas>
+        private readonly polizasRepository: Repository<Polizas>,
+        @InjectRepository(Codigoscaja)
+        private readonly almacenesRepository: Repository<Codigoscaja>
+
     )
     {}
 
@@ -23,10 +27,34 @@ export class PolizasService {
         );
     }
 
-    async getOne(cia:number, id: number) : Promise<Polizas> {
-        const Polizas = await this.polizasRepository.findOneBy({cia, id});
-        if(!Polizas) throw new NotFoundException ('Poliza Inexistente');
-       return Polizas;
+    async getManyByFecha(cia: number, idtienda: number, fechaini: string, fechafin: string ) :Promise <any[]>  {
+        const mispolizas =  await this.polizasRepository
+        .createQueryBuilder('a')
+        .select('a.*')
+        .addSelect ('b.nombre as nombretda')
+        .leftJoin(Codigoscaja, 'b', 'a.idtienda = b.id')
+        .where('a.fecha BETWEEN :startDate AND :endDate', {
+          startDate: fechaini,
+          endDate: fechafin,
+        })
+        .andWhere('a.idtienda =:idtienda', {idtienda})
+        .andWhere('a.cia =:cia', {cia})
+        .orderBy( {fecha: 'ASC'})
+        .getRawMany();
+        return (mispolizas);
+    }
+
+    async getOne(cia:number, id: number) : Promise<any> {
+            const mispolizas =  await this.polizasRepository
+            .createQueryBuilder('a')
+            .select('a.*')
+            .addSelect ('b.nombre as nombretda')
+            .leftJoin(Codigoscaja, 'b', 'a.idtienda = b.id')
+            .where('a.id = :id', {id})
+            .andWhere('a.cia =:cia', {cia})
+            .getRawOne();
+            return (mispolizas);
+   
     }
 
     async editOne(id: number, dto: EditPolizaDto) {
@@ -45,8 +73,12 @@ export class PolizasService {
     }
 
     async createOne(dto: CreatePolizasDto) {
-        const nvomovcli = this.polizasRepository.create(dto);
-        return await this.polizasRepository.save(nvomovcli);
+        const fecha = dto.fecha;
+        const tda = dto.tda
+        const poliza = await this.polizasRepository.findOneBy({fecha, tda});
+        if(poliza) return poliza;
+        const nvapoliza = this.polizasRepository.create(dto);
+        return await this.polizasRepository.save(nvapoliza);
     }
 
 }

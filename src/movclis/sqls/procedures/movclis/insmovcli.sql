@@ -47,9 +47,9 @@ BEGIN
 
     -- Actualizar el cliente según el campo coa
     IF p_coa = 'A' THEN
-        UPDATE ventas SET abonos = abonos + p_importe, fechasaldo = p_fecha WHERE id = p_idventa;
+        UPDATE ventas SET abonos = abonos + p_importe, fechasaldo = p_fecha WHERE idventa = p_idventa;
     ELSEIF p_coa = 'C' THEN
-        UPDATE ventas SET cargos = cargos + p_importe WHERE id = p_idventa;
+        UPDATE ventas SET cargos = cargos + p_importe WHERE idventa = p_idventa;
     END IF;
 
     -- Si todo es exitoso, hacemos commit

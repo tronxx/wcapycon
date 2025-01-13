@@ -63,4 +63,14 @@ export class FacturasController {
         return this.facturasService.deleteOne(id);
     }
 
+    @ApiBearerAuth()
+    @Post('/importar')
+    async importar(
+        @Body() dto: any[]
+    ) {
+        return this.facturasService.importarManyFacturas(dto);
+    }
+
+
+
 }

@@ -28,6 +28,12 @@ export class PromotoresService {
        return Promotor;
     }
 
+    async getOnebyCodigo(cia:number, codigo: string) : Promise<Promotor> {
+        const Promotor = await this.promotoresRepository.findOneBy({cia, codigo});
+        if(!Promotor) throw new NotFoundException ('Promotor Inexistente');
+       return Promotor;
+    }
+
     async editOne(id: number, dto: EditPromotorDto) {
         const Promotor = await this.promotoresRepository.findOneBy({id});
         if(!Promotor) throw new NotFoundException ('Promotor Inexistente');

@@ -2,7 +2,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { PolizasService } from './polizas.service';
-import { CreatePolizasDto, EditPolizaDto } from './dtos'
+import { CreatePolizasDto, EditPolizaDto } from './dtos';
 import { JwtAuthGuard } from  '../usuarios/jwt-auth.guard';
 
 @UseGuards(JwtAuthGuard)
@@ -12,6 +12,7 @@ export class PolizasController {
 
     constructor (private readonly polizasService: PolizasService) {}
 
+    @ApiBearerAuth()
     @Get(':idtienda')
     async getMany(
         @Param('idtienda') idtienda: number
@@ -19,6 +20,7 @@ export class PolizasController {
         return await this.polizasService.getMany(idtienda);
     }
 
+    @ApiBearerAuth()
     @Get(':cia/:id')
     getOne(
         @Param('cia') cia: number,
@@ -26,6 +28,20 @@ export class PolizasController {
     ) {
         return this.polizasService.getOne(cia, id);
     }
+
+    @ApiBearerAuth()
+    @Get(':cia/:id/:fechaini/:fechafin/:idtienda')
+    getManyByFecha(
+        @Param('cia') cia: number,
+        @Param('id') id: number,
+        @Param('fechaini') fechaini: string,
+        @Param('fechafin') fechafin: string,
+        @Param('idtienda') idtienda: number,
+    ) {
+        return this.polizasService.getManyByFecha(cia, idtienda, fechaini, fechafin);
+    }
+
+
 
     @ApiBearerAuth()
     @Post()

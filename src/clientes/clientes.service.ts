@@ -32,7 +32,8 @@ export class ClientesService {
 
     async getOnebyCodigo(cia:number, codigo: string) : Promise<Clientes> {
         const Cliente = await this.clientesRepository.findOneBy({cia, codigo});
-        if(!Cliente) throw new NotFoundException ('Cliente Inexistente');
+        console.log("Buscando al cliente", codigo, Cliente);
+        //if(!Cliente) throw new NotFoundException ('Cliente Inexistente');
        return Cliente;
     }
 
@@ -99,6 +100,7 @@ export class ClientesService {
 
         let dtocliente = new CreateClientesDto;
         dtocliente.nombre = nombrecompleto;
+        dtocliente.id = dto.id;
         dtocliente.codigo = dto.codigo;
         dtocliente.calle = dto.calle;
         dtocliente.numpredio = dto.numpredio;

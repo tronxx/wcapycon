@@ -5,29 +5,49 @@ import { Repository } from 'typeorm';
 import { CreateRenpolDto, EditRenpolDto } from './dtos';
 
 import { Renpol } from './entities';
+import { Ventas } from '../ventas/entities';
+import { Clientes } from '../clientes/entities';
 
 @Injectable()
 export class RenpolService {
 
     constructor (
         @InjectRepository(Renpol)
-        private readonly renpolRepository: Repository<Renpol>
+        private readonly renpolRepository: Repository<Renpol>,
+        @InjectRepository(Ventas)
+        private readonly ventasRepository: Repository<Ventas>,
+        @InjectRepository(Clientes)
+        private readonly clientesRepository: Repository<Clientes>
     )
     {}
 
-    async getMany(idpoliza: number) :Promise <Renpol[]>  {
-        return await this.renpolRepository.find(
-            {
-                where: { idpoliza },
-                order: { conse: 'ASC'}
-            }
-        );
+    async getMany(idpoliza: number, cia: number) :Promise <any>  {
+        const misrenpol =  await this.renpolRepository
+        .createQueryBuilder('a')
+        .select('a.*')
+        .addSelect ('b.codigo, b.id as idventa')
+        .addSelect ('c.codigo as codcli, c.nombre')
+        .leftJoin(Ventas, 'b', 'a.idventa = b.id')
+        .leftJoin(Clientes, 'c', 'b.idcliente = c.id')
+        .where('a.idpoliza = :idpoliza', { idpoliza})
+        .andWhere('a.cia =:cia', {cia})
+        .orderBy( {conse: 'ASC'})
+        .getRawMany();
+        return (misrenpol);
     }
 
-    async getOne(cia:number, id: number) : Promise<Renpol> {
-        const Polizas = await this.renpolRepository.findOneBy({cia, id});
-        if(!Polizas) throw new NotFoundException ('Rengloón de Poliza Inexistente');
-       return Polizas;
+    async getOne(cia:number, id: number) : Promise<any> {
+        const misrenpol =  await this.renpolRepository
+        .createQueryBuilder('a')
+        .select('a.*')
+        .addSelect ('b.codigo, b.id as idventa')
+        .addSelect ('c.codigo as codcli, c.nombre')
+        .leftJoin(Ventas, 'b', 'a.idventa = b.id')
+        .leftJoin(Clientes, 'c', 'b.idcliente = c.id')
+        .where('a.id = :id', { id})
+        .orderBy( {conse: 'ASC'})
+        .getRawOne();
+        return (misrenpol);
     }
 
     async editOne(id: number, dto: EditRenpolDto) {

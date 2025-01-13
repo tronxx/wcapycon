@@ -3,8 +3,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateFacturasDto, EditFacturaDto } from './dtos';
 import { Facturas } from './entities';
+import { Renfac } from '../renfac/entities';
 import { Usocfdi } from '../usdocfdi/entities';
 import { Metodopago } from '../metodopago/entities';
+import { RenfacService } from '../renfac/renfac.service';
 
 @Injectable()
 export class FacturasService {
@@ -16,6 +18,9 @@ export class FacturasService {
         private readonly usocfdiRepository: Repository<Usocfdi>,
         @InjectRepository(Metodopago)
         private readonly metodopagoRepository: Repository<Metodopago>,
+        @InjectRepository(Renfac)
+        private readonly renfacRepository: Repository<Renfac>,
+        private renfacService : RenfacService,
 
     )
     {}
@@ -114,6 +119,56 @@ export class FacturasService {
         const factura = this.facturasrepository.create(dto);
         return await this.facturasrepository.save(factura);
 
+    }
+
+    async importarManyFacturas(misfac: any) {
+        let resultado = [];
+        const cia=1;
+        for(let mifac of misfac) { 
+            const nvafacdto = {
+                serie: mifac.serie,
+                numero: mifac.numero,
+                idventa: mifac.idcli,
+                fecha: mifac.fecha,
+                iduuid: -1,
+                idusocfdi: -1,
+                idmetodopago: -1,
+                importe: 0,
+                iva: 0,
+                total: 0,
+                status: 'C',
+                cia: cia
+            }
+            let nvafac = await this.createOne(nvafacdto);
+            const idfactura = nvafac.id;
+            for(let renglonfac of mifac.renglones) {
+                //console.log("1.- Voy a a agregar renfac", renglonfac);
+                const  preciou = Math.round(renglonfac.preciou / (renglonfac.piva / 100 + 1) * 10000) / 10000;
+                const miimporte = Math.round(renglonfac.importe / (renglonfac.piva / 100 + 1) * 10000) / 10000;
+                const nvoiva = renglonfac.importe - miimporte;
+
+                const nvorenfac = {
+                    idfactura: idfactura,
+                    idventa: mifac.idcli,
+                    codigo: renglonfac.codigo,
+                    descri: renglonfac.concepto,
+                    serie: renglonfac.serie,
+                    preciou: preciou,
+                    canti: renglonfac.canti,
+                    piva: renglonfac.piva,
+                    importe: miimporte,
+                    iva: nvoiva,
+                    folio: renglonfac.folio,
+                    status: 'A',
+                    conse: 0,
+                    cia: cia
+                            
+                }
+                const renfac = this.renfacService.createOne(nvorenfac);
+            }
+            resultado.push(nvafac);
+        }
+        return(resultado);
     }
 
 }
