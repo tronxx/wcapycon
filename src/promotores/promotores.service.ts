@@ -30,7 +30,7 @@ export class PromotoresService {
 
     async getOnebyCodigo(cia:number, codigo: string) : Promise<Promotor> {
         const Promotor = await this.promotoresRepository.findOneBy({cia, codigo});
-        if(!Promotor) throw new NotFoundException ('Promotor Inexistente');
+        //if(!Promotor) throw new NotFoundException ('Promotor Inexistente');
        return Promotor;
     }
 

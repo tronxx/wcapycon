@@ -9,9 +9,9 @@ import {
     UpdateDateColumn
   } from 'typeorm';
 
-@Entity('promotores')
+@Entity('codigoscartera')
 @Unique(['codigo', 'cia'])
-export class Promotor {
+export class Codigoscartera {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -28,25 +28,21 @@ export class Promotor {
     ciudad: string;
 
     @Column({type: 'varchar', length:100})
-    telefono: string;
+    estado: string;
 
+    @Column({type: 'varchar', length:3})
+    zona: string;
+ 
     @Column({type: 'varchar', length:1})
     status: string;
-
-    @Column({type: 'double precision'})
-    comrec: number;
-
-    @Column({type: 'double precision'})
-    comlet: number;
 
     @Column({type: 'integer'})
     cia: number;
 
-
     @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
     createdAt: Date;
-  
-    @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
-    updatedAt: Date;
+
+    @UpdateDateColumn({name: "updated_at", type: 'timestamp'})
+    updatedAt: Date
   
 }

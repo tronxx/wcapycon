@@ -29,6 +29,11 @@ export class UsocfdiService {
        return Usocfdi;
     }
 
+    async getOnebyCodigo(cia:number, clave: string) : Promise<Usocfdi> {
+        const Usocfdi = await this.UsocfdiRepository.findOneBy({cia, clave});
+       return Usocfdi;
+    }
+
     async editOne(id: number, dto: EditUsocfdiDto) {
         const Usocfdi = await this.UsocfdiRepository.findOneBy({id});
         if(!Usocfdi) throw new NotFoundException ('Uso Cfdi Inexistente');

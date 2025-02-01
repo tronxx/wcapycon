@@ -1,7 +1,6 @@
 import { IsInt, IsNumber, IsString } from "class-validator";
 
-export class CreatePromotorDto {
-
+export class CreateCodigoscarteraDto {
     @IsString()
     codigo: string;
 
@@ -12,21 +11,18 @@ export class CreatePromotorDto {
     direc: string;
 
     @IsString()
-    telefono: string;
-
-    @IsString()
     ciudad: string;
 
-    @IsNumber ()
-    comrec: number;
+    @IsString()
+    estado: string;
 
-    @IsNumber ()
-    comlet: number;
-
-    @IsInt()
-    cia: number;
+    @IsString()
+    zona: string;
 
     @IsString()
     status: string;
 
+
+   @IsInt()
+    cia: number;
 }

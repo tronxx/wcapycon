@@ -36,6 +36,14 @@ export class VendedoresService {
 
     }
 
+    async getOnebyCodigo(cia:number, codigo: string) : Promise<Vendedor> {
+        let vendedor = await this.VendedoresRepository.findOneBy({cia, codigo});
+        //if(!Promotor) throw new NotFoundException ('Vendedor Inexistente');
+        //console.log("Estoy en vendedores service, ya hice busqueda de ", codigo, vendedor);
+       return vendedor;
+    }
+
+
     async deleteOne(id: number) {
         const Vendedor = await this.VendedoresRepository.findOneBy({id});
         if(!Vendedor) throw new NotFoundException ('Vendedor Inexistente');

@@ -1,7 +1,7 @@
 import { Injectable,  NotAcceptableException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateDatosolicitudDto, EditDatosolicitudDto } from './dtos';
+import { CLAVES_SOLICIT, CreateDatosolicitudDto, EditDatosolicitudDto } from './dtos';
 import { Solicitudes, Datosolicitud } from './entities';
 
 @Injectable()
@@ -86,6 +86,190 @@ export class SolicitudesService {
         return solicit;
 
     }
+
+    async importarSolicitudCompleta(dto: any) {
+        let solicit = [];
+        //console.log("Solicitud", dto);
+        const cia = dto.cia;
+        const idcliente = dto.idcli;
+        let iddatosol = 0;
+        let datosol = 0;
+        let concepto = "";
+        let midatosol = {
+            idcli: idcliente, 
+            datosol:CLAVES_SOLICIT.CLIENTE_SEXO, 
+            concepto:dto.sexo 
+        }
+        iddatosol = await this.crearDatoSolicitud(midatosol);
+        solicit.push(iddatosol);
+        midatosol.datosol = CLAVES_SOLICIT.CLIENTE_EDAD;
+        midatosol.concepto = dto.edad;
+        iddatosol = await this.crearDatoSolicitud(midatosol);
+        solicit.push(iddatosol);
+        midatosol.datosol = CLAVES_SOLICIT.CLIENTE_EDOCIVIL;
+        midatosol.concepto = dto.estadocivil;
+        iddatosol = await this.crearDatoSolicitud(midatosol);
+        solicit.push(iddatosol);
+        midatosol.datosol = CLAVES_SOLICIT.CLIENTE_DEPENDIENTES;
+        midatosol.concepto = dto.dependientes;
+        iddatosol = await this.crearDatoSolicitud(midatosol);
+        solicit.push(iddatosol);
+        midatosol.datosol = CLAVES_SOLICIT.OCUPACION;
+        midatosol.concepto = dto.ocupacion;
+        iddatosol = await this.crearDatoSolicitud(midatosol);
+        solicit.push(iddatosol);
+        midatosol.datosol = CLAVES_SOLICIT.CLIENTE_INGRESOS;
+        midatosol.concepto = dto.ingresos;
+        iddatosol = await this.crearDatoSolicitud(midatosol);
+        solicit.push(iddatosol);
+        midatosol.datosol = CLAVES_SOLICIT.CLIENTE_LGAR_TRABAJO;
+        midatosol.concepto = dto.trabajo;
+        iddatosol = await this.crearDatoSolicitud(midatosol);
+        solicit.push(iddatosol);
+        midatosol.datosol = CLAVES_SOLICIT.CLIENTE_TEL_TRABAJO;
+        midatosol.concepto = dto.telefono;
+        iddatosol = await this.crearDatoSolicitud(midatosol);
+        solicit.push(iddatosol);
+        midatosol.datosol = CLAVES_SOLICIT.CLIENTE_DIREC_TRABAJO;
+        midatosol.concepto = dto.direcciontrabajo;
+        iddatosol = await this.crearDatoSolicitud(midatosol);
+        solicit.push(iddatosol);
+        midatosol.datosol = CLAVES_SOLICIT.CLIENTE_ANTIGUEDAD_TRABAJO;
+        midatosol.concepto = dto.antiguedad;
+        iddatosol = await this.crearDatoSolicitud(midatosol);
+        solicit.push(iddatosol);
+        midatosol.datosol = CLAVES_SOLICIT.CLIENTE_CONYUGE_NOMBRE;
+        midatosol.concepto = dto.conyuge;
+        iddatosol = await this.crearDatoSolicitud(midatosol);
+        solicit.push(iddatosol);
+        midatosol.datosol = CLAVES_SOLICIT.CLIENTE_CONYUGE_OCUPACION;
+        midatosol.concepto = dto.ocupacionconyuge;
+        iddatosol = await this.crearDatoSolicitud(midatosol);
+        solicit.push(iddatosol);
+        midatosol.datosol = CLAVES_SOLICIT.CLIENTE_CONYUGE_TRABAJO;
+        midatosol.concepto = dto.trabajoconyuge;
+        iddatosol = await this.crearDatoSolicitud(midatosol);
+        solicit.push(iddatosol);
+        midatosol.datosol = CLAVES_SOLICIT.CLIENTE_CONYUGE_TEL_TRABAJO;
+        midatosol.concepto = dto.telefonoconyuge;
+        iddatosol = await this.crearDatoSolicitud(midatosol);
+        solicit.push(iddatosol);
+        midatosol.datosol = CLAVES_SOLICIT.CLIENTE_CONYUGE_DIREC_TRABAJO;
+        midatosol.concepto = dto.direcciontrabconyuge;
+        iddatosol = await this.crearDatoSolicitud(midatosol);
+        solicit.push(iddatosol);
+        midatosol.datosol = CLAVES_SOLICIT.CLIENTE_CONYUGE_INGRESOS;
+        midatosol.concepto = dto.ingresosconyuge;
+        iddatosol = await this.crearDatoSolicitud(midatosol);
+        solicit.push(iddatosol);
+        midatosol.datosol = CLAVES_SOLICIT.CLIENTE_CONYUGE_ANTIGUEDAD;
+        midatosol.concepto = dto.antiguedadconyuge;
+        iddatosol = await this.crearDatoSolicitud(midatosol);
+        solicit.push(iddatosol);
+        midatosol.datosol = CLAVES_SOLICIT.AVAL_GENERALES;
+        midatosol.concepto = dto.aval;
+        iddatosol = await this.crearDatoSolicitud(midatosol);
+        solicit.push(iddatosol);
+        midatosol.datosol = CLAVES_SOLICIT.AVAL_OCUPACION;
+        midatosol.concepto = dto.ocupacionaval;
+        iddatosol = await this.crearDatoSolicitud(midatosol);
+        solicit.push(iddatosol);
+        midatosol.datosol = CLAVES_SOLICIT.AVAL_TRABAJO;
+        midatosol.concepto = dto.trabajoaval;
+        iddatosol = await this.crearDatoSolicitud(midatosol);
+        solicit.push(iddatosol);
+        midatosol.datosol = CLAVES_SOLICIT.AVAL_TELFONO;
+        midatosol.concepto = dto.telefonoaval;
+        iddatosol = await this.crearDatoSolicitud(midatosol);
+        solicit.push(iddatosol);
+        midatosol.datosol = CLAVES_SOLICIT.AVAL_TRABAJO;
+        midatosol.concepto = dto.directrabaval;
+        iddatosol = await this.crearDatoSolicitud(midatosol);
+        solicit.push(iddatosol);
+        midatosol.datosol = CLAVES_SOLICIT.AVAL_INGRESOS;
+        midatosol.concepto = dto.ingresosaval;
+        iddatosol = await this.crearDatoSolicitud(midatosol);
+        solicit.push(iddatosol);
+        midatosol.datosol = CLAVES_SOLICIT.AVAL_ANTIGUEDAD_TRABAJO;
+        midatosol.concepto = dto.antiguedadaval;
+        iddatosol = await this.crearDatoSolicitud(midatosol);
+        solicit.push(iddatosol);
+        midatosol.datosol = CLAVES_SOLICIT.AVAL_CONYUGE_NOMBRE;
+        midatosol.concepto = dto.conyugeaval;
+        iddatosol = await this.crearDatoSolicitud(midatosol);
+        solicit.push(iddatosol);
+        midatosol.datosol = CLAVES_SOLICIT.AVAL_CONYUGE_OCUPACION;
+        midatosol.concepto = dto.ocupacionconyugeaval;
+        iddatosol = await this.crearDatoSolicitud(midatosol);
+        solicit.push(iddatosol);
+        midatosol.datosol = CLAVES_SOLICIT.AVAL_CONYUGE_TRABAJO;
+        midatosol.concepto = dto.trabajoconyugeaval;
+        iddatosol = await this.crearDatoSolicitud(midatosol);
+        solicit.push(iddatosol);
+        midatosol.datosol = CLAVES_SOLICIT.AVAL_CONYUGE_TELEFONO;
+        midatosol.concepto = dto.telconyugeaval;
+        iddatosol = await this.crearDatoSolicitud(midatosol);
+        solicit.push(iddatosol);
+        midatosol.datosol = CLAVES_SOLICIT.AVAL_CONYUGE_DIREC_TRABAJO;
+        midatosol.concepto = dto.direcciontrabajoconyugeaval;
+        iddatosol = await this.crearDatoSolicitud(midatosol);
+        solicit.push(iddatosol);
+        midatosol.datosol = CLAVES_SOLICIT.AVAL_CONYUGE_INGRESOS;
+        midatosol.concepto = dto.ingresosconyugeaval;
+        iddatosol = await this.crearDatoSolicitud(midatosol);
+        solicit.push(iddatosol);
+        midatosol.datosol = CLAVES_SOLICIT.AVAL_CONYUGE_ANTIGUEDAD;
+        midatosol.concepto = dto.antiguedadconyugeaval;
+        iddatosol = await this.crearDatoSolicitud(midatosol);
+        solicit.push(iddatosol);
+        midatosol.datosol = CLAVES_SOLICIT.FAMILIAR_NOMBRE;
+        midatosol.concepto = dto.familiar;
+        iddatosol = await this.crearDatoSolicitud(midatosol);
+        solicit.push(iddatosol);
+        midatosol.datosol = CLAVES_SOLICIT.FAMILIAR_DIREC;
+        midatosol.concepto = dto.direccionfamiliar;
+        iddatosol = await this.crearDatoSolicitud(midatosol);
+        solicit.push(iddatosol);
+        midatosol.datosol = CLAVES_SOLICIT.CONOCIDO_NOMBRE;
+        midatosol.concepto = dto.conocido;
+        iddatosol = await this.crearDatoSolicitud(midatosol);
+        solicit.push(iddatosol);
+        midatosol.datosol = CLAVES_SOLICIT.CONOCIDO_DIREC;
+        midatosol.concepto = dto.direccionconocido;
+        iddatosol = await this.crearDatoSolicitud(midatosol);
+        solicit.push(iddatosol);
+        midatosol.datosol = CLAVES_SOLICIT.REFERENCIA1;
+        midatosol.concepto = dto.referencia1;
+        iddatosol = await this.crearDatoSolicitud(midatosol);
+        solicit.push(iddatosol);
+        midatosol.datosol = CLAVES_SOLICIT.REFERENCIA2;
+        midatosol.concepto = dto.referencia2;
+        iddatosol = await this.crearDatoSolicitud(midatosol);
+        solicit.push(iddatosol);
+        midatosol.datosol = CLAVES_SOLICIT.OBSERVACIONES;
+        midatosol.concepto = dto.observaciones;
+        iddatosol = await this.crearDatoSolicitud(midatosol);
+        solicit.push(iddatosol);
+        return solicit;
+
+    }
+
+    async crearDatoSolicitud(dto: any) {
+        const signosparam = '?,'.repeat(2) + '?';
+        
+        const agregadatosol = await this.datossolicitudRepository
+        .query( `CALL importa_solicitud(${signosparam})`,
+          [ 
+            dto.idcli,
+            dto.datosol,
+            dto.concepto.trim()
+          ]
+        );
+        return (agregadatosol)
+
+    }
+
+
 
     async buscaconcepto(midatosolicit: any) {
         const cia = midatosolicit.cia;

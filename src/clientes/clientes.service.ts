@@ -32,7 +32,7 @@ export class ClientesService {
 
     async getOnebyCodigo(cia:number, codigo: string) : Promise<Clientes> {
         const Cliente = await this.clientesRepository.findOneBy({cia, codigo});
-        console.log("Buscando al cliente", codigo, Cliente);
+        //console.log("Buscando al cliente", codigo, Cliente);
         //if(!Cliente) throw new NotFoundException ('Cliente Inexistente');
        return Cliente;
     }

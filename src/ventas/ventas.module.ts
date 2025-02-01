@@ -14,20 +14,28 @@ import { Facturas } from '../facturas/entities';
 import { Renfac } from '../renfac/entities';
 import { Vendedor } from '../vendedores/entities/index';
 import { Promotor } from '../promotores/entities/promotores.entity';
+import { Datosolicitud, Solicitudes } from '../solicitudes/entities';
 import { UbivtasService } from '../ubivtas/ubivtas.service';
-import { VendedoresService } from 'src/vendedores/vendedores.service';
+import { VendedoresService } from '../vendedores/vendedores.service';
+import { SolicitudesService } from '../solicitudes/solicitudes.service';
+import { UsocfdiService } from '../usdocfdi/usocfdi.service';
+import { MetodopagoService } from '../metodopago/metodopago.service';
+import { Cartaprom } from '../cartaprom/entities';
+import { CartapromService } from '../cartaprom/cartaprom.service';
 
 @Module({
   imports:[
     TypeOrmModule.forFeature([
       Ventas, Clientes, Ubivtas, Facturas, Renfac, Usocfdi, 
-      Metodopago, Nombres, Promotor, Vendedor,
+      Metodopago, Nombres, Promotor, Vendedor, Datosolicitud,
+      Cartaprom, Solicitudes,
     ])
   ],
 
   providers: [VentasService, FacturasService, UbivtasService,
-    VendedoresService,
-    RenfacService, PromotoresService, ClientesService],
+    VendedoresService, SolicitudesService, UsocfdiService,
+    CartapromService,
+    RenfacService, PromotoresService, ClientesService, MetodopagoService],
   controllers: [VentasController]
 })
 export class VentasModule {}

@@ -82,7 +82,7 @@ export class MovclisService {
                 concepto: mimov.concep
             }
             // console.log("Importando ", dtomov);
-            const nvomov = await this.createOne(dtomov);
+            const nvomov = await this.importaOne(dtomov);
             movsagregados.push(nvomov);
         }
         return (movsagregados);
@@ -93,6 +93,33 @@ export class MovclisService {
         
         const agregamov = await this.movclisRepository
         .query( `CALL add_movcli(${signosparam})`,
+          [ 
+            dto.idventa,
+            dto.fecha,
+            dto.coa,
+            dto.idconcepto,
+            dto.idpoliza,
+            dto.consecutivo,
+            dto.tipopago,
+            dto.recobon,
+            dto.importe,
+            dto.cobratario,
+            dto.usuario,
+            dto.status,
+            dto.idcobratario,
+            dto.idusuario,
+            dto.cia,
+            dto.concepto
+          ]
+        );
+        return (agregamov)
+    }
+
+    async importaOne(dto: CreateMovclisDto) {
+        const signosparam = '?,'.repeat(15) + '?';
+        
+        const agregamov = await this.movclisRepository
+        .query( `CALL importa_movcli(${signosparam})`,
           [ 
             dto.idventa,
             dto.fecha,

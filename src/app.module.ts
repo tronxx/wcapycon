@@ -94,6 +94,8 @@ import { SolicitudesModule } from './solicitudes/solicitudes.module';
 import { Datosolicitud, Solicitudes } from './solicitudes/entities';
 import { CodigoscajaModule } from './codigoscaja/codigoscaja.module';
 import { Codigoscaja } from './codigoscaja/entities';
+import { CodigoscarteraModule } from './codigoscartera/codigoscartera.module';
+import { Codigoscartera } from './codigoscartera/entities';
 
 config();
 // const   
@@ -160,7 +162,7 @@ const {
         Clientes, Vendedor, Proveedor, Regimenes, Promotor, Usocfdi,
         Aval, Ventas, Cartaprom, Movclis, Conceptos, Facturas, Renfac,
         Polizas, Renpol, Nombres, Ubivtas, Metodopago, 
-        Solicitudes, Datosolicitud, Codigoscaja,
+        Solicitudes, Datosolicitud, Codigoscaja, Codigoscartera,
          join(__dirname, './**/**/*entity*{.ts,.js}')],
       synchronize: true,
     }),
@@ -209,6 +211,7 @@ const {
     MetodopagoModule,
     SolicitudesModule,
     CodigoscajaModule,
+    CodigoscarteraModule,
     ],
   controllers: [AppController],
   providers: [AppService],

@@ -28,6 +28,11 @@ export class MetodopagoService {
        return metodopago;
     }
 
+    async getOnebyCodigo(cia:number, clave: string) : Promise<Metodopago> {
+        const metodopago = await this.MetodopagoRepository.findOneBy({cia, clave});
+       return metodopago;
+    }
+
     async editOne(id: number, dto: EditMetodopagoDto) {
         const metodopago = await this.MetodopagoRepository.findOneBy({id});
         if(!metodopago) throw new NotFoundException ('Método de Pago Inexistente');

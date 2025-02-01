@@ -13,7 +13,9 @@ import { RenfacService } from '../renfac/renfac.service';
 import { ClientesService } from '../clientes/clientes.service';
 import { UbivtasService } from '../ubivtas/ubivtas.service';
 import { VendedoresService } from '../vendedores/vendedores.service';
-import { Vendedor } from 'src/vendedores/entities';
+import { Vendedor } from '../vendedores/entities';
+import { Solicitudes } from '../solicitudes/entities';
+import { CartapromService } from '../cartaprom/cartaprom.service';
 
 @Injectable()
 export class VentasService {
@@ -33,6 +35,8 @@ export class VentasService {
         private readonly promotoresRepository: Repository<Promotor>,
         @InjectRepository(Vendedor)
         private readonly vendedoresReposiroty: Repository<Vendedor>,
+        @InjectRepository(Solicitudes)
+        private readonly solicitudesReposiroty: Repository<Solicitudes>,
         
         private renfacService : RenfacService,
         private facturasService: FacturasService,
@@ -40,6 +44,7 @@ export class VentasService {
         private promotoresService: PromotoresService,
         private ubivtasService: UbivtasService,
         private vendedoresService : VendedoresService,
+        private cartapromService: CartapromService,
     )
     {}
 
@@ -142,7 +147,7 @@ export class VentasService {
             // console.log("Renglones de Factura", data.renfac);
 
             for(let renglonfac of data.renfac) {
-                console.log("1.- Voy a a agregar renfac", renglonfac);
+                // console.log("1.- Voy a a agregar renfac", renglonfac);
                 const  preciou = Math.round(renglonfac.preciou / (renglonfac.piva / 100 + 1) * 10000) / 10000;
                 const miimporte = Math.round(renglonfac.importe / (renglonfac.piva / 100 + 1) * 10000) / 10000;
                 const nvoiva = renglonfac.importe - miimporte;
@@ -245,8 +250,8 @@ export class VentasService {
                 nombre: data.nombre,
                 codigo: data.numcli,
                 calle: data.calle,
-                numpredio: data.numpred,
-                codpostal: data.codpost,
+                numpredio: data.numpredio,
+                codpostal: data.codpostal,
                 colonia: data.colonia,
                 telefono: data.telefono,
                 email:data.email,
@@ -268,14 +273,20 @@ export class VentasService {
                 // console.log("Cliente", nvocliente);
                 idcliente = nvocliente.id;
             }
-            const ubivta = await this.ubivtasService.getOnebyCodigo(cia, data.ubica);
+            let ubivta = await this.ubivtasService.getOnebyCodigo(cia, data.ubica);
             const idubica = ubivta.id;
             
             const promotor = await this.promotoresService.getOnebyCodigo(cia, data.promotor);
             const idpromotor = promotor.id;
-            const idtienda = 1;
-            const idcarta = 1;
-            const idvendedor = 1;
+            let vendedor = await this.vendedoresService.getOnebyCodigo(cia, data.vendedor);
+            if(!vendedor) {
+                vendedor = await this.vendedoresService.getOnebyCodigo(cia, 'XXX');
+            }
+            const idvendedor = vendedor.id;
+            let cartaprom = await this.cartapromService.getOnebyCodigo(cia, data.opcion);
+            let idcarta = 1;
+            if(cartaprom) idcarta = cartaprom.id;
+            const idtienda = Number(data.numcli.substring(0,2));
             const idfactura = -1;
             
             const venta = {
@@ -295,12 +306,12 @@ export class VentasService {
                 servicio: data.servicio,
                 precon: data.preciolista,
                 idvendedor: idvendedor,
-                comision: 0,
+                comision: data.comisionvnd,
                 prodfin: 0,
                 idcarta: idcarta,
                 idfactura:  idfactura,
                 idpromotor: idpromotor,
-                comisionpromotor: 0,
+                comisionpromotor: data.comisionprom,
                 cargos: data.cargos,
                 abonos: data.abonos,
                 idubica: idubica,

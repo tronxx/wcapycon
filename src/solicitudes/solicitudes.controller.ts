@@ -38,6 +38,15 @@ export class SolicitudesController {
     }
 
     @ApiBearerAuth()
+    @Post('/importar')
+    async importarSolicitdCompleta(
+        @Body() dto: any
+    ) {
+        console.log("Edtoy en post solicitudes", dto);
+        return this.solicitudesService.importarSolicitudCompleta(dto);
+    }
+
+    @ApiBearerAuth()
     @Put(':id')
     editOne(
         @Param('id') id: number,

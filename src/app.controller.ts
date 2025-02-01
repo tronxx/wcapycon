@@ -3,7 +3,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { AppService } from './app.service';
 import { join } from 'path';
 
-@ApiTags('Mantove')
+@ApiTags('Capycon')
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}

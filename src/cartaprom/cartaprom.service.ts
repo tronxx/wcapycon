@@ -23,22 +23,27 @@ export class CartapromService {
     }
 
     async getOne(cia:number, id: number) : Promise<Cartaprom> {
-        const ciudad = await this.cartapromRepository.findOneBy({cia, id});
-        if(!ciudad) throw new NotFoundException ('Carta Promoción Inexistente');
-       return ciudad;
+        const cartaprom = await this.cartapromRepository.findOneBy({cia, id});
+        if(!cartaprom) throw new NotFoundException ('Carta Promoción Inexistente');
+       return cartaprom;
+    }
+
+    async getOnebyCodigo(cia:number, codigo: string) : Promise<Cartaprom> {
+        const cartaprom = await this.cartapromRepository.findOneBy({cia, codigo});
+       return cartaprom;
     }
 
     async editOne(id: number, dto: EditCartapromDto) {
-        const ciudad = await this.cartapromRepository.findOneBy({id});
-        if(!ciudad) throw new NotFoundException ('Carta Promoción Inexistente');
-        const editedCartaprom = Object.assign(ciudad, dto);
+        const cartaprom = await this.cartapromRepository.findOneBy({id});
+        if(!cartaprom) throw new NotFoundException ('Carta Promoción Inexistente');
+        const editedCartaprom = Object.assign(cartaprom, dto);
         return await this.cartapromRepository.update(id, editedCartaprom);
 
     }
 
     async deleteOne(id: number) {
-        const ciudad = await this.cartapromRepository.findOneBy({id});
-        if(!ciudad) throw new NotFoundException ('Carta Promoción Inexistente');
+        const cartaprom = await this.cartapromRepository.findOneBy({id});
+        if(!cartaprom) throw new NotFoundException ('Carta Promoción Inexistente');
         return await this.cartapromRepository.delete(id);
 
     }
