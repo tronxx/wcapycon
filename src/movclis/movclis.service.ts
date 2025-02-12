@@ -31,6 +31,21 @@ export class MovclisService {
         return (mismovtos);
     }
 
+    async getRecargosCobrados(idventa: number, letra:number, cia: number) :Promise <any[]>  {
+        const concepto = '\'%' +  (letra.toString().padStart(2, '0')) + '/%\'';
+        //console.log("Concepto:", concepto);
+        const mirecargo =  await this.movclisRepository
+        .createQueryBuilder('a')
+        .select('sum(recobon) as recargos')
+        .leftJoin(Conceptos, 'b', 'a.idconcepto = b.id')
+        .where('a.idventa =:idventa and b.concepto like ' + concepto,  {idventa, concepto})
+        .andWhere("a.tipopago='AR'")
+        .andWhere('a.cia =:cia', {cia})
+        .getRawOne();
+        return (mirecargo);
+    }
+
+
     async getOne(cia:number, id: number) : Promise<Movclis> {
         const Movclis = await this.movclisRepository.findOneBy({cia, id});
         if(!Movclis) throw new NotFoundException ('Movimiento Inexistente');

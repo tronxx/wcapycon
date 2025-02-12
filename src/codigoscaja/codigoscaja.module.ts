@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { CodigoscajaService } from './codigoscaja.service';
 import { CodigoscajaController } from './codigoscaja.controller';
-import { Codigoscaja } from './entities';
+import { Codigoscaja, Codigosusuario } from './entities';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports:[
      TypeOrmModule.forFeature([
-      Codigoscaja
+      Codigoscaja, Codigosusuario
     ])
   ],
 

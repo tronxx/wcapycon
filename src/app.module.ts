@@ -93,7 +93,7 @@ import { Metodopago } from './metodopago/entities';
 import { SolicitudesModule } from './solicitudes/solicitudes.module';
 import { Datosolicitud, Solicitudes } from './solicitudes/entities';
 import { CodigoscajaModule } from './codigoscaja/codigoscaja.module';
-import { Codigoscaja } from './codigoscaja/entities';
+import { Codigoscaja, Codigosusuario } from './codigoscaja/entities';
 import { CodigoscarteraModule } from './codigoscartera/codigoscartera.module';
 import { Codigoscartera } from './codigoscartera/entities';
 
@@ -163,6 +163,7 @@ const {
         Aval, Ventas, Cartaprom, Movclis, Conceptos, Facturas, Renfac,
         Polizas, Renpol, Nombres, Ubivtas, Metodopago, 
         Solicitudes, Datosolicitud, Codigoscaja, Codigoscartera,
+        Codigosusuario,
          join(__dirname, './**/**/*entity*{.ts,.js}')],
       synchronize: true,
     }),

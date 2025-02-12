@@ -37,6 +37,15 @@ export class ClientesService {
        return Cliente;
     }
 
+    async editOneRfc(id: number, dto: EditClienteDto) {
+        const Cliente = await this.clientesRepository.findOneBy({id});
+        if(!Cliente) throw new NotFoundException ('Cliente Inexistente');
+        const editedCliente = Object.assign(Cliente, dto);
+        return await this.clientesRepository.update(id, editedCliente);
+
+    }
+
+
     async editOne(id: number, dto: any) {
         const Cliente = await this.clientesRepository.findOneBy({id});
         if(!Cliente) throw new NotFoundException ('Cliente Inexistente');
@@ -138,12 +147,12 @@ export class ClientesService {
     async nombrecompleto(nomcompleto: NombresDto) {
         const apellidos = (nomcompleto.appat + " "+ nomcompleto.apmat).trim();
         const nombres = (nomcompleto.nombre1 + " " + nomcompleto.nombre2 ).trim();
-        const nomcomp = ( apellidos + " "+ nombres ).trim();
+        const nomcomp = ( apellidos + " " + nombres ).trim();
         return nomcomp;
     }
     
     async getNombre(id: number) {
-        return await this.nombresRepository.findBy({id});
+        return await this.nombresRepository.findOneBy({id});
     }
     
     async getManybyNombre(cia: number, nombre:string) :Promise <Clientes[]>  {

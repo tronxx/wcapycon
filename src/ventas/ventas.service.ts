@@ -4,9 +4,10 @@ import { Repository } from 'typeorm';
 import { CreateVentasDto, EditVentaDto } from './dtos';
 import { Ventas, Ubivtas } from './entities';
 import { Clientes, Nombres } from '../clientes/entities'
-import { Facturas } from '../facturas/entities'
+import { Facturas } from '../facturas/entities';
 import { Renfac } from '../renfac/entities';
-import { Promotor } from '../promotores/entities'
+import { Promotor } from '../promotores/entities';
+import { Ciudades } from '../ciudades/entities';
 import { PromotoresService } from '../promotores/promotores.service';
 import { FacturasService } from '../facturas/facturas.service';
 import { RenfacService } from '../renfac/renfac.service';
@@ -16,6 +17,7 @@ import { VendedoresService } from '../vendedores/vendedores.service';
 import { Vendedor } from '../vendedores/entities';
 import { Solicitudes } from '../solicitudes/entities';
 import { CartapromService } from '../cartaprom/cartaprom.service';
+import { CiudadesService } from '../ciudades/ciudades.service';
 
 @Injectable()
 export class VentasService {
@@ -34,9 +36,11 @@ export class VentasService {
         @InjectRepository(Promotor)
         private readonly promotoresRepository: Repository<Promotor>,
         @InjectRepository(Vendedor)
-        private readonly vendedoresReposiroty: Repository<Vendedor>,
+        private readonly vendedoresRepository: Repository<Vendedor>,
         @InjectRepository(Solicitudes)
-        private readonly solicitudesReposiroty: Repository<Solicitudes>,
+        private readonly solicitudesRepository: Repository<Solicitudes>,
+        @InjectRepository(Ciudades)
+        private readonly ciudadesRepository: Repository<Ciudades>,
         
         private renfacService : RenfacService,
         private facturasService: FacturasService,
@@ -45,6 +49,7 @@ export class VentasService {
         private ubivtasService: UbivtasService,
         private vendedoresService : VendedoresService,
         private cartapromService: CartapromService,
+        private ciudadesService: CiudadesService,
     )
     {}
 
@@ -241,6 +246,10 @@ export class VentasService {
         // Movimientos
         //}
         try {
+            const cia = 1;
+            let idciudad = -1;
+            const ciudad = await this.ciudadesService.getOnebyCodigo(cia, data.poblac);
+            if(ciudad) idciudad = ciudad.id;
             const cliente = {
                 id: data.idcli,
                 appat: data.appat,
@@ -255,14 +264,13 @@ export class VentasService {
                 colonia: data.colonia,
                 telefono: data.telefono,
                 email:data.email,
-                idciudad:data.poblac,
+                idciudad:idciudad,
                 idregimen:data.idregimen,
                 cia:data.cia,
                 status:'A',
                 idnombre: -1,
                 rfc:data.rfc,
             }
-            const cia = 1;
             let idcliente = data.idcli;
             const clienteold = await this.clientesService.getOnebyCodigo(cia, data.numcli)
             if(clienteold) {

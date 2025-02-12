@@ -42,7 +42,7 @@ export class SolicitudesController {
     async importarSolicitdCompleta(
         @Body() dto: any
     ) {
-        console.log("Edtoy en post solicitudes", dto);
+        // console.log("Edtoy en post solicitudes", dto);
         return this.solicitudesService.importarSolicitudCompleta(dto);
     }
 

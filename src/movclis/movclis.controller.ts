@@ -30,6 +30,16 @@ export class MovclisController {
     }
 
     @ApiBearerAuth()
+    @Get('/recargos/:cia/:idventa/:letra')
+    getRecargosCobrados(
+        @Param('cia') cia: number,
+        @Param('idventa') idventa: number,
+        @Param('letra') letra: number
+    ) {
+        return this.movclisService.getRecargosCobrados(idventa, letra, cia);
+    }
+
+    @ApiBearerAuth()
     @Post()
     async createOne(
         @Body() dto: CreateMovclisDto

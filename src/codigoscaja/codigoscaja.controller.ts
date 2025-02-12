@@ -29,6 +29,15 @@ export class CodigoscajaController {
         return this.codigoscajaService.getOne(cia, id);
     }
 
+    @ApiBearerAuth()
+    @Get('/codigosusuario/:cia/:idusuario')
+    getCodigosCajaUsuario(
+        @Param('cia') cia: number,
+        @Param('idusuario') idusuario: number
+    ) {
+        return this.codigoscajaService.getCodigosCajaUsuario(cia, idusuario);
+    }
+
 
     @ApiBearerAuth()
     @Post()

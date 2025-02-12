@@ -23,8 +23,13 @@ export class RegimenesService {
     }
 
     async getOne(cia:number, id: number) : Promise<Regimenes> {
-        const Regimenes = await this.RegimenesRepository.findOneBy({cia, id});
-        if(!Regimenes) throw new NotFoundException ('Régimen Inexistente');
+       const Regimenes = await this.RegimenesRepository.findOneBy({cia, id});
+       if(!Regimenes) throw new NotFoundException ('Régimen Inexistente');
+       return Regimenes;
+    }
+
+    async getOnebyCodigo(cia:number, clave: string) : Promise<Regimenes> {
+       const Regimenes = await this.RegimenesRepository.findOneBy({cia, clave});
        return Regimenes;
     }
 

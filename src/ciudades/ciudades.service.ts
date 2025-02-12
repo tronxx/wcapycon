@@ -29,6 +29,11 @@ export class CiudadesService {
        return ciudad;
     }
 
+    async getOnebyCodigo(cia:number, ciudad: string) : Promise<Ciudades> {
+        const city = await this.CiudadesesRepository.findOneBy({cia, ciudad});
+       return city;
+    }
+
     async editOne(id: number, dto: EditCiudadesDto) {
         const ciudad = await this.CiudadesesRepository.findOneBy({id});
         if(!ciudad) throw new NotFoundException ('Ciudad Inexistente');

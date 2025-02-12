@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateCodigoscajaDto, EditCosigoscajaDto } from './dtos';
 
-import { Codigoscaja } from './entities';
+import { Codigoscaja, Codigosusuario } from './entities';
 
 @Injectable()
 export class CodigoscajaService {
@@ -22,6 +22,17 @@ export class CodigoscajaService {
                 order: { tda: 'ASC'}
             }
         );
+    }
+
+    async getCodigosCajaUsuario(cia: number, idusuario: number) :Promise <Codigoscaja[]>  {
+            const miventa =  await this.codigoscajaRepository
+            .createQueryBuilder('a')
+            .select('a.*')
+            .leftJoin(Codigosusuario, 'b', 'a.id = b.idcodigo')
+            .where('b.idusuario = :idusuario',  {idusuario})
+            .andWhere('a.cia =:cia', {cia})
+            .getRawMany();
+            return (miventa);
     }
 
 

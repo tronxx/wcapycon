@@ -7,10 +7,14 @@ import { Renfac } from '../renfac/entities';
 import { Usocfdi } from '../usdocfdi/entities';
 import { Metodopago } from '../metodopago/entities';
 import { Datosolicitud } from '../solicitudes/entities';
+import { Clientes } from '../clientes/entities';
+import { Regimenes } from '../regimenes/entities';
 import { RenfacService } from '../renfac/renfac.service';
 import { SolicitudesService } from '../solicitudes/solicitudes.service';
 import { UsocfdiService } from '../usdocfdi/usocfdi.service';
-import { MetodopagoService } from 'src/metodopago/metodopago.service';
+import { MetodopagoService } from '../metodopago/metodopago.service';
+import { ClientesService } from '../clientes/clientes.service';
+import { RegimenesService } from '../regimenes/regimenes.service';
 
 @Injectable()
 export class FacturasService {
@@ -26,10 +30,17 @@ export class FacturasService {
         private readonly renfacRepository: Repository<Renfac>,
         @InjectRepository(Datosolicitud)
         private readonly datossolicitudRepository: Repository<Datosolicitud>,
+        @InjectRepository(Clientes)
+        private readonly clientesRepository: Repository<Clientes>,
+        @InjectRepository(Regimenes)
+        private readonly regimenesRepository: Repository<Regimenes>,
+
         private renfacService : RenfacService,
         private solicitudService: SolicitudesService,
         private usocfdiService: UsocfdiService,
+        private clientesSerivce: ClientesService,
         private metodopagoService: MetodopagoService,
+        private regimenesService: RegimenesService,
 
     )
     {}
@@ -142,16 +153,29 @@ export class FacturasService {
         for(let mifac of misfac) { 
             const uuid = await this.solicitudService.buscaconcepto({cia:cia, concepto:mifac.uuid});
             //console.log("Ya busque uuid", uuid, mifac.uuid);
-            let iduuid = uuid.id;
-            if(!iduuid) iduuid = -1;
+            let iduuid = -1; 
+            if(iduuid) iduuid = uuid.id;
             const usocfdi = await this.usocfdiService.getOnebyCodigo(cia, mifac.cveusocfdi);
             //console.log("Ya busque usocfdi", usocfdi);
-            let idusocfdi = usocfdi.id;
-            if(!usocfdi) idusocfdi = -1;
+            let idusocfdi = -1;
+            if(usocfdi) idusocfdi = usocfdi.id;;
             const metodopago = await this.metodopagoService.getOnebyCodigo(cia, mifac.cvemetodopago);
             //console.log("Ya busque metodopago", metodopago);
-            let idmetodopago = metodopago.id;
-            if(!metodopago) idmetodopago = -1;
+            let idmetodopago = -1;
+            if(metodopago) idmetodopago = metodopago.id;;
+            const rfc = mifac.rfc;
+            const regimen = await this.regimenesService.getOnebyCodigo(cia, mifac.regimen);
+            let idregimen = -1;
+            if(regimen) idregimen = regimen.id;
+
+            const idcli = mifac.idcli;
+            let cliente = await this.clientesSerivce.getOne(cia, idcli);
+            // * Solo voy a actualiza si tengo cliente, rfc y regimen
+            if(cliente && (rfc != '' || idregimen != -1)) {
+                const dtocliente = { rfc: rfc, idregimen: idregimen};
+                const clientemodificado = await this.clientesSerivce.editOneRfc(idcli, dtocliente);
+            }
+
             const nvafacdto = {
                 serie: mifac.serie,
                 numero: mifac.numero,
@@ -168,6 +192,7 @@ export class FacturasService {
             }
             let nvafac = await this.createOne(nvafacdto);
             const idfactura = nvafac.id;
+
             for(let renglonfac of mifac.renglones) {
                 //console.log("1.- Voy a a agregar renfac", renglonfac);
                 const  preciou = Math.round(renglonfac.preciou / (renglonfac.piva / 100 + 1) * 10000) / 10000;

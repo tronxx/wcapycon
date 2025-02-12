@@ -5,29 +5,29 @@ import {
     CreateDateColumn,
     ManyToOne,
     JoinColumn,
-    UpdateDateColumn,
-    PrimaryColumn
+    Unique,
+    UpdateDateColumn
   } from 'typeorm';
 
-@Entity('regimenes')
-
-export class Regimenes {
+@Entity('codigosusuario')
+@Unique(['idusuario', 'idcodigo'])
+export class Codigosusuario {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({type: 'varchar', length:30, nullable: false})
-    clave: string;
+    @Column({type: 'integer'})
+    idusuario: number;
 
-    @Column({type: 'varchar', length:100, nullable: false})
-    nombre: string;
+    @Column({type: 'integer'})
+    idcodigo: number;
 
     @Column({type: 'integer'})
     cia: number;
 
-    @Column({type: 'varchar', length:1})
-    status: string;
-    
     @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
     createdAt: Date;
+
+    @UpdateDateColumn({name: "updated_at", type: 'timestamp'})
+    updatedAt: Date
   
 }

@@ -25,9 +25,9 @@ export class RenpolService {
         const misrenpol =  await this.renpolRepository
         .createQueryBuilder('a')
         .select('a.*')
-        .addSelect ('b.codigo, b.id as idventa')
+        .addSelect ('b.codigo, b.idventa')
         .addSelect ('c.codigo as codcli, c.nombre')
-        .leftJoin(Ventas, 'b', 'a.idventa = b.id')
+        .leftJoin(Ventas, 'b', 'a.idventa = b.idventa')
         .leftJoin(Clientes, 'c', 'b.idcliente = c.id')
         .where('a.idpoliza = :idpoliza', { idpoliza})
         .andWhere('a.cia =:cia', {cia})
