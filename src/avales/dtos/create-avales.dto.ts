@@ -1,6 +1,6 @@
 import { IsInt, IsNumber, IsString } from "class-validator";
 
-export class CreateClientesDto {
+export class CreateAvalesDto {
 
     @IsInt()
     id: number;
@@ -31,6 +31,9 @@ export class CreateClientesDto {
 
     @IsInt()
     idciudad: number;
+
+    @IsInt()
+    idventa: number;
 
     @IsInt()
     idnombre: number;

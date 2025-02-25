@@ -43,6 +43,15 @@ export class VentasController {
     }
 
     @ApiBearerAuth()
+    @Get('/busquedaxnombre/:cia/:nombre')
+    getManyByNombre(
+        @Param('cia') cia: number,
+        @Param('nombre') nombre: string
+    ) {
+        return this.ventasService.getManybyNombre(cia, nombre);
+    }
+
+    @ApiBearerAuth()
     @Post()
     async createOne(
         @Body() dto: CreateVentasDto

@@ -1,8 +1,9 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { SolicitudesService } from './solicitudes.service';
-import { CreateSolicitudDto, EditDatosolicitudDto } from './dtos';
+import { CreateSolicitudDto, EditDatosolicitudDto, DatoClienteSolicitud } from './dtos';
 import { JwtAuthGuard } from  '../usuarios/jwt-auth.guard';
+import { Datosolicitud } from './entities';
 
 @UseGuards(JwtAuthGuard)
 @ApiTags('solcitudes')
@@ -14,18 +15,42 @@ export class SolicitudesController {
 
     @Get(':cia')
     async getMany(
-        @Param('cia') cia: number
+        @Param('idcliente') idcliente: number,
+        @Param('tipo') tipo: number        
     ) {
-        return await this.solicitudesService.getMany(cia);
+        return await this.solicitudesService.getMany(idcliente, tipo);
     }
 
     @ApiBearerAuth()
-    @Get(':cia/:idcliente')
+    @Get(':cia/:idcliente/:tipo')
     getOne(
         @Param('cia') cia: number,
-        @Param('idcliente') idcliente: number
+        @Param('idcliente') idcliente: number,
+        @Param('tipo') tipo: number,        
     ) {
-        return this.solicitudesService.getMany(idcliente);
+        return this.solicitudesService.getMany(idcliente, tipo);
+    }
+
+    @ApiBearerAuth()
+    @Get('/datoespecifico/:cia/:idcliente/:iddato/:tipo')
+    getDatoEspecifico(
+        @Param('cia') cia: number,
+        @Param('idcliente') idcliente: number,
+        @Param('iddato') iddato: number,
+        @Param('tipo') tipo: number
+
+    ) {
+        return this.solicitudesService.getDatoEspecifico(cia, idcliente, iddato, tipo);
+    }
+
+    @ApiBearerAuth()
+    @Get('/letrasimpresas/:cia/:idcliente/:tipo')
+    getLetrasImpresas(
+        @Param('cia') cia: number,
+        @Param('idcliente') idcliente: number,
+        @Param('tipo') tipo: number,
+    ) {
+        return this.solicitudesService.getLetrasImpresas(cia, idcliente, tipo);
     }
 
     @ApiBearerAuth()
@@ -35,6 +60,15 @@ export class SolicitudesController {
     ) {
         console.log("Edtoy en post solicitudes", dto);
         return this.solicitudesService.createSolicitudCompleta(dto);
+    }
+
+    @ApiBearerAuth()
+    @Post('/agregardato')
+    async agregarDatoSolicitud(
+        @Body() dto: DatoClienteSolicitud
+    ) {
+        // console.log("Edtoy en post solicitudes", dto);
+        return this.solicitudesService.crearDatoSolicitud(dto);
     }
 
     @ApiBearerAuth()

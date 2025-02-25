@@ -29,6 +29,9 @@ export class Renpol {
     @Column({type: 'varchar', length:100, nullable: false, default: ''})
     concepto: string;
 
+    @Column({type: 'varchar', length:2, nullable: true, default: 'C'})
+    ace: string;
+
     @Column({type: 'varchar', length:2, nullable: true, default: 'AB'})
     tipo: string;
 
@@ -58,6 +61,9 @@ export class Renpol {
 
     @Column({type: 'integer'})
     iduuid: number;
+
+    @Column({type: 'integer'})
+    idusuario: number;
 
     @Column({type: 'integer'})
     idfactura: number;

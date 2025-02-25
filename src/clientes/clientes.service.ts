@@ -3,6 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Like } from 'typeorm';
 import { NombresDto, CreateClientesDto, EditClienteDto } from './dtos';
 import { Clientes, Nombres } from './entities';
+import { CiudadesService } from '../ciudades/ciudades.service';
+import { Ciudades } from '../ciudades/entities';
 
 @Injectable()
 export class ClientesService {
@@ -11,7 +13,10 @@ export class ClientesService {
         @InjectRepository(Clientes)
         private readonly clientesRepository: Repository<Clientes>,
         @InjectRepository(Nombres)
-        private readonly nombresRepository: Repository<Nombres>
+        private readonly nombresRepository: Repository<Nombres>,
+        @InjectRepository(Ciudades)
+        private readonly ciudadesRepository: Repository<Ciudades>,
+        private ciudadesService: CiudadesService,
     )
     {}
 
@@ -156,15 +161,12 @@ export class ClientesService {
     }
     
     async getManybyNombre(cia: number, nombre:string) :Promise <Clientes[]>  {
-        return await this.clientesRepository.find(
-            {
-                where: { 
-                    nombre: Like(`${nombre}`),
-                    cia : cia
-                },
-                order: { nombre: "ASC", codigo: "ASC"}
-            }
-        );
+        return await this.clientesRepository.createQueryBuilder('clientes')
+        .where('clientes.nombre LIKE :nombre', { nombre: `%${nombre}%` })
+        .andWhere('clientes.cia = :cia', { cia })
+        .orderBy('clientes.nombre', 'ASC')
+        .addOrderBy('clientes.codigo', 'ASC')
+        .getMany();        
     }
 
 }

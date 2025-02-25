@@ -1,7 +1,7 @@
 
 import { Injectable,  NotAcceptableException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DriverOptionNotSetError, Repository } from 'typeorm';
 import { CreateRenpolDto, EditRenpolDto } from './dtos';
 
 import { Renpol } from './entities';
@@ -25,6 +25,16 @@ export class RenpolService {
         const misrenpol =  await this.renpolRepository
         .createQueryBuilder('a')
         .select('a.*')
+        .addSelect(`
+            CASE
+                WHEN a.tipo = 'AR' THEN a.rob
+                ELSE NULL
+            END as recargos,
+            CASE
+                WHEN a.tipo != 'AR' THEN a.rob
+                ELSE NULL
+            END as bonificacion
+        `)
         .addSelect ('b.codigo, b.idventa')
         .addSelect ('c.codigo as codcli, c.nombre')
         .leftJoin(Ventas, 'b', 'a.idventa = b.idventa')
@@ -40,6 +50,16 @@ export class RenpolService {
         const misrenpol =  await this.renpolRepository
         .createQueryBuilder('a')
         .select('a.*')
+        .addSelect(`
+            CASE
+                WHEN a.tipo = 'AR' THEN a.rob
+                ELSE NULL
+            END as recargos,
+            CASE
+                WHEN a.tipo != 'AR' THEN a.rob
+                ELSE NULL
+            END as bonificacion
+        `)
         .addSelect ('b.codigo, b.id as idventa')
         .addSelect ('c.codigo as codcli, c.nombre')
         .leftJoin(Ventas, 'b', 'a.idventa = b.id')
@@ -69,5 +89,47 @@ export class RenpolService {
         const nvomovcli = this.renpolRepository.create(dto);
         return await this.renpolRepository.save(nvomovcli);
     }
+
+    async agregaRenpol(dto: any) {
+            const signosparam = '?,'.repeat(21) + '?';
+            const conse = 1;
+            const iduuid = -1;
+            const idfactura = -1;
+            try {
+                const agregamov = await this.renpolRepository
+                .query(`CALL add_renpol(${signosparam})`, 
+                  [ 
+                    dto.idpoliza,
+                    dto.idventa,
+                    dto.fecha,
+                    conse,
+                    dto.siono,
+                    dto.concepto,
+                    dto.ace,
+                    dto.tipo,
+                    dto.recobon,
+                    dto.importe,
+                    dto.vence,
+                    dto.comision,
+                    dto.dias,
+                    dto.tienda,
+                    dto.cobratario,
+                    dto.letra,
+                    dto.iduuid,
+                    dto.idfactura,
+                    dto.cia,
+                    dto.usuario,
+                    dto.idcobratario,
+                    dto.idusuario
+                  ]
+                );
+                return agregamov;
+            } catch (error) {
+                // Aquí puedes manejar el error como prefieras
+                console.error('Error al ejecutar el query:', error);
+                throw new Error(error);
+            }            
+        }
+    
 
 }

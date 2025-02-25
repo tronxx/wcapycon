@@ -33,10 +33,10 @@ export class RenpolController {
 
     @ApiBearerAuth()
     @Post()
-    async createOne(
-        @Body() dto: CreateRenpolDto
+    async agregarenpol(
+        @Body() dto: any
     ) {
-        return this.renpolService.createOne(dto);
+        return this.renpolService.agregaRenpol(dto)
     }
 
     @ApiBearerAuth()

@@ -1,3 +1,3 @@
 
-export * from './create-aval.dto';
+export * from './create-avales.dto';
 export * from './edit-aval.dto';

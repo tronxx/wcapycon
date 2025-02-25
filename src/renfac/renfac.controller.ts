@@ -20,6 +20,14 @@ export class RenfacController {
     }
 
     @ApiBearerAuth()
+    @Get('/compra/:idfactura')
+    async getCompra(
+        @Param('idfactura') idfactura: number
+    ) {
+        return await this.renfacService.getCompra(idfactura);
+    }
+
+    @ApiBearerAuth()
     @Get(':cia/:id')
     getOne(
         @Param('cia') cia: number,

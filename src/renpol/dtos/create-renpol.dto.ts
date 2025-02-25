@@ -14,6 +14,9 @@ export class CreateRenpolDto {
     concepto: string;
 
     @IsString()
+    ace: string;
+
+    @IsString()
     tipo: string;
 
     @IsNumber()
@@ -46,6 +49,9 @@ export class CreateRenpolDto {
 
     @IsInt()
     idfactura: number;
+
+    @IsInt()
+    idusuario: number;
 
     @IsInt()
     cia: number;

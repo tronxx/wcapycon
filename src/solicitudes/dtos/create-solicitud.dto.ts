@@ -6,6 +6,9 @@ export class CreateSolicitudDto {
     idcliente: number;
 
     @IsInt()
+    tipo: number;
+
+    @IsInt()
     iddato: number;
 
     @IsInt()

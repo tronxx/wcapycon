@@ -65,9 +65,26 @@ export class VentasService {
           startDate: fechainicial,
           endDate: fechafinal,
         })
-        .andWhere(`c.codigo ='${ubica}'`)
+        .andWhere('c.codigo =:ubica', {ubica:`${ubica}`})
         .andWhere('a.cia =:cia', {cia})
         .orderBy( {codigo: 'ASC'})
+        .limit(1000) // Limita los resultados a 1000 registros
+        .getRawMany();
+        return (misventas);
+    }
+
+    async getManybyNombre(cia: number, nombre:string) :Promise <Ventas[]>  {
+        const misventas =  await this.ventasRepository
+        .createQueryBuilder('a')
+        .select('a.*')
+        .addSelect ('b.nombre, d.numero as numfac, d.serie as seriefac, c.codigo as ubica ')
+        .leftJoin(Clientes, 'b', 'a.idcliente = b.id')
+        .leftJoin(Facturas, 'd', 'a.idventa = d.idventa')
+        .leftJoin(Ubivtas, 'c', 'a.idubica = c.id')
+        .where('a.cargos > a.abonos')
+        .andWhere('a.cia =:cia', {cia})
+        .andWhere(`b.nombre like :nombre`, { nombre: `%${nombre}%` })
+        .orderBy( {nombre: 'ASC'})
         .getRawMany();
         return (misventas);
     }

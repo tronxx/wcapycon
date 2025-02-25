@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import {  AvalesService  } from './avales.service'
-import { CreateAvalDto, EditAvalDto } from './dtos'
+import { CreateAvalesDto, EditAvalDto } from './dtos'
 import { JwtAuthGuard } from  '../usuarios/jwt-auth.guard';
 
 
@@ -29,9 +29,28 @@ export class AvalesController {
     @ApiBearerAuth()
     @Post()
     async createOne(
-        @Body() dto: CreateAvalDto
+        @Body() dto: CreateAvalesDto
     ) {
         return this.avalesService.createOne(dto);
+    }
+
+    @ApiBearerAuth()
+    @Post('/importar')
+    async createOneAval(
+        @Body() dto: any
+    ) {
+        return this.avalesService.importarAval(dto);
+    }
+
+
+    @ApiBearerAuth()
+    @Get(':cia/:id/:idventa/')
+    getOneAvalbyCodigo(
+        @Param('cia') cia: number,
+        @Param('id') id: number,
+        @Param('idventa') idventa: number,
+    ) {
+        return this.avalesService.getOneAvalbyIdVenta(cia, idventa);
     }
 
     @ApiBearerAuth()

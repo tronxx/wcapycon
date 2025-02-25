@@ -69,7 +69,7 @@ import { Usocfdi } from './usdocfdi/entities';
 import { PromotoresModule } from './promotores/promotores.module';
 import { Promotor } from './promotores/entities';
 import { AvalesModule } from './avales/avales.module';
-import { Aval } from './avales/entities';
+import { Avales } from './avales/entities';
 import { VentasModule } from './ventas/ventas.module';
 import { CartapromModule } from './cartaprom/cartaprom.module';
 import { Cartaprom } from './cartaprom/entities';
@@ -160,7 +160,7 @@ const {
         ServMantos, ServmantosxVehiculo, Usuarios, Poligas, Renpogas, 
         Poliserv, Renposerv, Ciasedocta, Inven, Kardex, Exist, Series,
         Clientes, Vendedor, Proveedor, Regimenes, Promotor, Usocfdi,
-        Aval, Ventas, Cartaprom, Movclis, Conceptos, Facturas, Renfac,
+        Avales, Ventas, Cartaprom, Movclis, Conceptos, Facturas, Renfac,
         Polizas, Renpol, Nombres, Ubivtas, Metodopago, 
         Solicitudes, Datosolicitud, Codigoscaja, Codigoscartera,
         Codigosusuario,

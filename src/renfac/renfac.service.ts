@@ -34,6 +34,23 @@ export class RenfacService {
        return renfac;
     }
 
+    async getCompra(idfactura: number) : Promise<any> {
+        const renglones =  await this.renfacRepository.find(
+            {
+                where: { idfactura : idfactura},
+                order: { conse: "ASC"}
+            }
+        );
+        let compra = "";
+        for(let mirenfac of renglones) {
+            compra += mirenfac.descri;
+            if(mirenfac.folio) compra += " # " + mirenfac.folio.toString();
+            if(mirenfac.serie) compra += " S/" + mirenfac.serie;
+            compra += " ";
+        }
+        return ({compra: compra});
+    }
+
     async editOne(id: number, dto: EditRenfacDto) {
         const renfac = await this.renfacRepository.findOneBy({id});
         if(!renfac) throw new NotFoundException ('Renglón de Factura Inexistente');

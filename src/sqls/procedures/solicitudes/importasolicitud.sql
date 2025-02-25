@@ -2,6 +2,7 @@ DELIMITER $$
 
 CREATE PROCEDURE importa_solicitud (
     IN p_idventa INT,
+    IN p_tipo INT,
     IN p_dato INT,
     IN p_concepto VARCHAR(100)
 )
@@ -31,9 +32,9 @@ BEGIN
     
         IF v_idsolicitud IS NULL THEN
             INSERT INTO solicitudes (
-                idcliente, iddato, iddatosolicitud, status, cia
+                idcliente, tipo, iddato, iddatosolicitud, status, cia
             ) VALUES (
-                p_idventa, p_dato, v_idconcepto, 'A', v_cia
+                p_idventa, p_tipo, p_dato, v_idconcepto, 'A', v_cia
             );
             SET v_idsolicitud = LAST_INSERT_ID();
         ELSE

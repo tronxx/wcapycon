@@ -19,6 +19,9 @@ export class Solicitudes {
     idcliente: number;
 
     @Column({type: 'integer'})
+    tipo: number;
+
+    @Column({type: 'integer'})
     iddato: number;
 
     @Column({type: 'integer'})

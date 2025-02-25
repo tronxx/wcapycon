@@ -15,18 +15,20 @@ import { SolicitudesService } from '../solicitudes/solicitudes.service';
 import { Regimenes } from '../regimenes/entities';
 import { RegimenesService } from '../regimenes/regimenes.service'
 import { ClientesService } from '../clientes/clientes.service';
+import { Ciudades } from 'src/ciudades/entities';
+import { CiudadesService } from 'src/ciudades/ciudades.service';
 
 
 @Module({
   imports:[
     TypeOrmModule.forFeature([Facturas, Usocfdi, Clientes,
-      Nombres,
+      Nombres, Ciudades,
       Metodopago, Renfac, Datosolicitud, Solicitudes, Regimenes])
   ],
 
   providers: [FacturasService, RenfacService, 
     UsocfdiService, MetodopagoService, SolicitudesService,
-    RegimenesService, ClientesService
+    RegimenesService, ClientesService, CiudadesService,
   ],
     
   controllers: [FacturasController]

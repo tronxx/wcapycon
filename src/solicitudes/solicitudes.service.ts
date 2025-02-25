@@ -1,7 +1,7 @@
 import { Injectable,  NotAcceptableException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CLAVES_SOLICIT, CreateDatosolicitudDto, EditDatosolicitudDto } from './dtos';
+import { CLAVES_SOLICIT, CreateDatosolicitudDto, EditDatosolicitudDto, TIPOS_SOLICIT } from './dtos';
 import { Solicitudes, Datosolicitud } from './entities';
 
 @Injectable()
@@ -13,7 +13,7 @@ export class SolicitudesService {
         private readonly datossolicitudRepository: Repository<Datosolicitud>,
     ) {}
 
-    async getMany(idcliente: number) :Promise <any[]>  {
+    async getMany(idcliente: number, tipo:number) :Promise <any[]>  {
         const misventas =  await this.solicitudesRepository
         .createQueryBuilder('a')
         .select('a.*')
@@ -22,13 +22,46 @@ export class SolicitudesService {
         .where('a.idcliente = :idcliente', {
           idcliente: idcliente
         })
+        .andWhere('a.tipo =:tipo', {tipo})
         .orderBy( {iddato: 'ASC'})
         .getRawMany();
         return (misventas);
     }
 
-    async getOne(cia:number, idcliente: number) : Promise<any> {
-        const solicitud = await this.solicitudesRepository.findBy({cia, idcliente});
+    async getDatoEspecifico(cia: number, idcliente: number, iddato:number, tipo: number) :Promise <any>  {
+        const misventas =  await this.solicitudesRepository
+        .createQueryBuilder('a')
+        .select('a.*')
+        .addSelect ('concepto')
+        .leftJoin(Datosolicitud, 'b', 'a.iddatosolicitud = b.id')
+        .where('a.idcliente = :idcliente', {
+          idcliente: idcliente
+        })
+        .andWhere('a.tipo =:tipo', {tipo})
+        .andWhere('a.iddato = :iddato' , {iddato: iddato})
+        .getRawOne();
+        return (misventas);
+    }
+
+    async getLetrasImpresas(cia: number, idcliente: number, tipo: number) :Promise <any>  {
+        const iddatoini = CLAVES_SOLICIT.LETRASIMPRESAS;
+        const iddatofin = iddatoini + 99;
+        const misventas =  await this.solicitudesRepository
+        .createQueryBuilder('a')
+        .select('a.*')
+        .addSelect ('concepto')
+        .leftJoin(Datosolicitud, 'b', 'a.iddatosolicitud = b.id')
+        .where('a.idcliente = :idcliente', {
+          idcliente: idcliente
+        })
+        .andWhere('a.tipo = :TIPO', {tipo:tipo})
+        .andWhere('a.iddato between :iddatoini and :iddatofin' , {iddatoini: iddatoini, iddatofin: iddatofin})
+        .getRawOne();
+        return (misventas);
+    }
+
+    async getOne(cia:number, idcliente: number, tipo: number) : Promise<any> {
+        const solicitud = await this.solicitudesRepository.findBy({cia, idcliente, tipo});
         if(!solicitud) throw new NotFoundException ('Solicitud Inexistente');
        return solicitud;
     }
@@ -53,6 +86,7 @@ export class SolicitudesService {
         //console.log("Solicitud", dto);
         const cia = dto.cia;
         const idcliente = dto.idcliente;
+        const tipo = dto.tipo;
         let  misolicitud = null;
         let minvasolicitud = null;
         for(let midatosolicit of dto.datos) {
@@ -64,6 +98,7 @@ export class SolicitudesService {
             const miconcepto = await this.buscaconcepto(nvoconcepto);
             const midtosolicitud = {
                 idcliente: idcliente,
+                tipo: tipo,
                 iddato: midatosolicit.id,
                 iddatosolicitud: miconcepto.id,
                 status: 'A',
@@ -91,12 +126,14 @@ export class SolicitudesService {
         let solicit = [];
         //console.log("Solicitud", dto);
         const cia = dto.cia;
+        const tipo = TIPOS_SOLICIT.VENTA;
         let idcliente = 1;
         let iddatosol = 0;
         let datosol = 0;
         let concepto = "";
         let midatosol = {
             idcli: -1,
+            tipo: tipo,
             datosol:CLAVES_SOLICIT.CLIENTE_SEXO, 
             concepto:"" 
         }
@@ -106,6 +143,7 @@ export class SolicitudesService {
             if (dto.sexo) {
                 midatosol = {
                     idcli: idcliente, 
+                    tipo: tipo,
                     datosol:CLAVES_SOLICIT.CLIENTE_SEXO, 
                     concepto:dto.sexo 
                 }
@@ -378,12 +416,13 @@ export class SolicitudesService {
     }
 
     async crearDatoSolicitud(dto: any) {
-        const signosparam = '?,'.repeat(2) + '?';
+        const signosparam = '?,'.repeat(3) + '?';
         let concepto = (dto.concepto + " ").trim();
         const agregadatosol = await this.datossolicitudRepository
         .query( `CALL importa_solicitud(${signosparam})`,
           [ 
             dto.idcli,
+            dto.tipo,
             dto.datosol,
             concepto
           ]

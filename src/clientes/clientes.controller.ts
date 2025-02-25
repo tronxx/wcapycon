@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ClientesService } from './clientes.service'
-import { NombresDto, CreateClientesDto, EditClienteDto } from './dtos'
+import { NombresDto, CreateClientesDto, EditClienteDto, } from './dtos'
 import { JwtAuthGuard } from  '../usuarios/jwt-auth.guard';
 
 
@@ -26,6 +26,7 @@ export class ClientesController {
         return this.clientesService.getOne(cia, id);
     }
 
+    @ApiBearerAuth()
     @Get(':cia/:id/:codigo')
     getOnebyCodigo(
         @Param('cia') cia: number,
@@ -34,6 +35,7 @@ export class ClientesController {
     ) {
         return this.clientesService.getOnebyCodigo(cia, codigo);
     }
+
 
     @ApiBearerAuth()
     @Get(':cia/:id/:codigo/:nombre')
@@ -63,6 +65,7 @@ export class ClientesController {
     ) {
         return this.clientesService.createOne(dto);
     }
+
 
     @ApiBearerAuth()
     @Post(':nombres')

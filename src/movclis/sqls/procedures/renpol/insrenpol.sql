@@ -7,6 +7,7 @@ CREATE PROCEDURE add_renpol (
     IN p_conse INT,
     IN p_sino VARCHAR(1),
     IN p_concepto VARCHAR(100),
+    IN p_ace VARCHAR(2),
     IN p_tipo VARCHAR(2),
     IN p_rob DOUBLE,
     IN p_importe DOUBLE,
@@ -34,7 +35,7 @@ BEGIN
     -- Verificar si el cliente existe
     SELECT COUNT(*) INTO v_cliente_exists
     FROM ventas
-    WHERE id = p_idventa;
+    WHERE idventa = p_idventa;
 
     IF v_cliente_exists = 0 THEN
         -- Si el cliente no existe, lanzar un error
@@ -53,13 +54,13 @@ BEGIN
 
     -- Agregar el registro en la tabla renpol
     INSERT INTO renpol (
-        idpoliza, conse, idventa, sino, concepto, tipo, 
+        idpoliza, conse, idventa, sino, concepto, ace, tipo, 
         rob, importe, vence, comision, dias, tienda, cobratario, 
-        letra, iduuid, idfactura, cia
+        letra, iduuid, idfactura, idusuario, cia
     ) VALUES (
-        p_idpoliza, p_conse, p_idventa, p_sino, p_concepto, p_tipo, 
+        p_idpoliza, p_conse, p_idventa, p_sino, p_concepto,p_ace, p_tipo, 
         p_rob, p_importe, p_vence, p_comision, p_dias, p_tienda, p_cobratario,
-        p_letra, p_iduuid, p_idfactura, p_cia
+        p_letra, p_iduuid, p_idfactura, p_idusuario, p_cia
     );
 
     SET v_idrenpol = LAST_INSERT_ID();
@@ -99,7 +100,7 @@ BEGIN
 
     SET v_idmovcli = LAST_INSERT_ID();
 
-    UPDATE ventas SET abonos = abonos + p_importe, fechasaldo = p_fecha WHERE id = p_idventa;
+    UPDATE ventas SET abonos = abonos + p_importe, fechasaldo = p_fecha WHERE idventa = p_idventa;
 
 
 
