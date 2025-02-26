@@ -72,6 +72,15 @@ export class SolicitudesController {
     }
 
     @ApiBearerAuth()
+    @Post('/grabarletrasimpresas')
+    async grabarLetrasImpresas(
+        @Body() dto: any
+    ) {
+        //console.log("Edtoy en post solicitudes/grabarletrasimpresas", dto);
+        return this.solicitudesService.grabarLetrasImpresas(dto);
+    }
+
+    @ApiBearerAuth()
     @Post('/importar')
     async importarSolicitdCompleta(
         @Body() dto: any

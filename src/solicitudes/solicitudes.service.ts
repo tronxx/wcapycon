@@ -46,7 +46,7 @@ export class SolicitudesService {
     async getLetrasImpresas(cia: number, idcliente: number, tipo: number) :Promise <any>  {
         const iddatoini = CLAVES_SOLICIT.LETRASIMPRESAS;
         const iddatofin = iddatoini + 99;
-        const misventas =  await this.solicitudesRepository
+        const midatosol =  await this.solicitudesRepository
         .createQueryBuilder('a')
         .select('a.*')
         .addSelect ('concepto')
@@ -54,10 +54,11 @@ export class SolicitudesService {
         .where('a.idcliente = :idcliente', {
           idcliente: idcliente
         })
-        .andWhere('a.tipo = :TIPO', {tipo:tipo})
-        .andWhere('a.iddato between :iddatoini and :iddatofin' , {iddatoini: iddatoini, iddatofin: iddatofin})
-        .getRawOne();
-        return (misventas);
+        .andWhere('a.tipo = :tipo', {tipo:tipo})
+        .andWhere('a.iddato BETWEEN :iddatoini and :iddatofin', 
+            {iddatoini: iddatoini, iddatofin: iddatofin})
+        .getRawMany();
+        return (midatosol);
     }
 
     async getOne(cia:number, idcliente: number, tipo: number) : Promise<any> {
@@ -90,21 +91,64 @@ export class SolicitudesService {
         let  misolicitud = null;
         let minvasolicitud = null;
         for(let midatosolicit of dto.datos) {
-            const nvoconcepto = {
+            const midatosol = await this.grabarDatoSolicitud(midatosolicit);
+            solicit.push(midatosol);
+        }
+        return solicit;
+
+    }
+
+    async grabarLetrasImpresas(dto: any) {
+        let solicit = [];
+        const cia = dto.cia;
+        const idcliente = dto.idcliente;
+        const tipo = dto.tipo;
+        const ltaini = dto.ltaini;
+        const ltafin = dto.ltafin;
+        let  misolicitud = null;
+        let minvasolicitud = null;
+        let jj_z = 0;
+        let midatosolicit = {
+            cia: cia,
+            concepto: "",
+            id: jj_z,
+            idcliente: idcliente,
+            tipo: tipo,
+        }
+
+        for(let ii_z = ltaini; ii_z <= ltafin; ii_z++) {
+            jj_z = ii_z + CLAVES_SOLICIT.LETRASIMPRESAS;
+            midatosolicit.concepto = jj_z.toString().padStart(2, '0');
+            midatosolicit.id = jj_z;
+            const midatosol = await this.grabarDatoSolicitud(midatosolicit);
+            solicit.push(midatosol);
+        }
+        return solicit;
+
+    }
+
+    async grabarDatoSolicitud(dto: any) {
+        //console.log("Solicitud", dto);
+        const cia = dto.cia;
+        const idcliente = dto.idcliente;
+        const tipo = dto.tipo;
+        const iddato = dto.id;
+        let  misolicitud = null;
+        const nvoconcepto = {
                 cia: cia,
-                concepto: midatosolicit.concepto,
-                iddatosolicitud: midatosolicit.id
-            }
+                concepto: dto.concepto,
+                iddatosolicitud: iddato
+        }
+        let minvasolicitud = null;
             const miconcepto = await this.buscaconcepto(nvoconcepto);
             const midtosolicitud = {
                 idcliente: idcliente,
                 tipo: tipo,
-                iddato: midatosolicit.id,
+                iddato: iddato,
                 iddatosolicitud: miconcepto.id,
                 status: 'A',
                 cia: cia
             }
-            const iddato = midatosolicit.id;
             const misolicitudx = await this.solicitudesRepository.findOneBy({idcliente, iddato});
             if(!misolicitudx) {
                 misolicitud = this.solicitudesRepository.create(midtosolicitud);
@@ -113,14 +157,10 @@ export class SolicitudesService {
                 const id = misolicitudx.id;
                 misolicitud = Object.assign(misolicitudx, midtosolicitud);
                 minvasolicitud =await this.solicitudesRepository.update(id, misolicitud);
-
             }
-
-            solicit.push(minvasolicitud);
-        }
-        return solicit;
-
+            return(minvasolicitud);
     }
+
 
     async importarSolicitudCompleta(dto: any) {
         let solicit = [];
