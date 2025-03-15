@@ -38,6 +38,7 @@ export class FacturasController {
     ) {
         if(modo == "ULTIMO_FOLIO") return this.facturasService.getLastNum (cia, numero, serie);
         if(modo == "BUSQUEDA_SERIE_NUMERO") return this.facturasService.getOnebyCodigo (cia, numero, serie);
+        if(modo == "BUSQUEDA_REGIMEN") return this.facturasService.getRegimen(numero);
     }
 
     @ApiBearerAuth()
@@ -55,6 +56,15 @@ export class FacturasController {
         @Body() dto: EditFacturaDto
     ) {
         return this.facturasService.editOne(id, dto);
+    }
+
+    @ApiBearerAuth()
+    @Put('/grabaruuid/:id')
+    grabarUuid(
+        @Param('id') id: number,
+        @Body() dto: any
+    ) {
+        return this.facturasService.grabariduuid(id, dto);
     }
 
     @ApiBearerAuth()

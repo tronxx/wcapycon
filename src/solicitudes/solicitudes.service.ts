@@ -475,6 +475,7 @@ export class SolicitudesService {
     async buscaconcepto(midatosolicit: any) {
         const cia = midatosolicit.cia;
         const concepto = midatosolicit.concepto;
+        //console.log("Estoy buscando concepto", midatosolicit);
 
         let miconcepto = await this.datossolicitudRepository.findOneBy({cia, concepto});
         if(!miconcepto) {

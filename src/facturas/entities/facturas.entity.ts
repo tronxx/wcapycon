@@ -8,6 +8,7 @@ import {
     Unique,
     UpdateDateColumn
   } from 'typeorm';
+import { Expose, Transform } from 'class-transformer';
 
 @Entity('facturas')
 @Unique(['serie', 'numero', 'cia'])
@@ -25,6 +26,7 @@ export class Facturas {
     idventa: number;
 
     @Column({type: 'date', nullable:false})
+    @Transform(({ value }) => value.toISOString().split('T')[0], { toClassOnly: true })
     fecha: string;
 
     @Column({type: 'integer'})

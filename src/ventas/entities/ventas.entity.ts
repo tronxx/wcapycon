@@ -9,6 +9,7 @@ import {
     UpdateDateColumn,
     PrimaryColumn
   } from 'typeorm';
+  import { Expose, Transform } from 'class-transformer';
 
 @Entity('ventas')
 @Unique(['codigo', 'cia'])
@@ -23,6 +24,7 @@ export class Ventas {
     idcliente: number;
 
     @Column({type: 'date', nullable:false})
+    @Transform(({ value }) => value.toISOString().split('T')[0], { toClassOnly: true })
     fecha: string;
 
     @Column({type: 'integer'})
@@ -101,6 +103,7 @@ export class Ventas {
     updatedAt: Date
   
     @Column({type: 'date', nullable:true})
+    @Transform(({ value }) => value.toISOString().split('T')[0], { toClassOnly: true })
     fechasaldo: string;
 
 }

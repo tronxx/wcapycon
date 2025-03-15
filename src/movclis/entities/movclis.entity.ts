@@ -8,6 +8,7 @@ import {
     Unique,
     UpdateDateColumn
   } from 'typeorm';
+  import { Expose, Transform } from 'class-transformer';
 
 @Entity('movclis')
 export class Movclis {
@@ -18,6 +19,7 @@ export class Movclis {
     idventa: number;
 
     @Column({type: 'date', nullable:false})
+    @Transform(({ value }) => value.toISOString().split('T')[0], { toClassOnly: true })
     fecha: string;
 
     @Column({type: 'varchar', length:1, nullable: false})

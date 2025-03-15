@@ -116,13 +116,31 @@ export class FacturasService {
        return factura;
     }
 
-
     async editOne(id: number, dto: EditFacturaDto) {
         const factura = await this.facturasrepository.findOneBy({id});
         if(!factura) throw new NotFoundException ('Factura Inexistente');
-        const editedfactura = Object.assign(Facturas, dto);
+        const editedfactura = Object.assign(factura, dto);
+        //console.log("Edit One", editedfactura, "id", id, "dto", dto);
         return await this.facturasrepository.update(id, editedfactura);
 
+    }
+
+    async grabariduuid(id: number, dto: any) {
+        const uuid = dto.uuid;
+        const factura = await this.facturasrepository.findOneBy({id});
+        if(!factura) throw new NotFoundException ('Factura Inexistente');
+        const cia = factura.cia;
+        const datosol = await this.solicitudService.buscaconcepto({cia:cia, concepto:uuid});
+        //console.log("Ya busque uuid", uuid, datosol);
+        let iduuid = -1; 
+        if(iduuid) iduuid = datosol.id;
+        const nvodto = {
+            iduuid: iduuid,
+            status: 'C'
+        }
+        factura.iduuid = iduuid;
+        const editedfactura = Object.assign(factura, nvodto);
+        return await this.facturasrepository.update(id, editedfactura);
     }
 
     async deleteOne(id: number) {
@@ -130,6 +148,10 @@ export class FacturasService {
         if(!factura) throw new NotFoundException ('Factura Inexistente');
         return await this.facturasrepository.delete(id);
 
+    }
+
+    async getRegimen(id: number) {
+        return (await this.regimenesRepository.findOneBy({id}));
     }
 
     async createOne(dto: CreateFacturasDto) {
@@ -192,6 +214,7 @@ export class FacturasService {
             }
             let nvafac = await this.createOne(nvafacdto);
             const idfactura = nvafac.id;
+            let conse = 1;
 
             for(let renglonfac of mifac.renglones) {
                 //console.log("1.- Voy a a agregar renfac", renglonfac);
@@ -212,11 +235,12 @@ export class FacturasService {
                     iva: nvoiva,
                     folio: renglonfac.folio,
                     status: 'A',
-                    conse: 0,
+                    conse: conse,
                     cia: cia
                             
                 }
                 const renfac = this.renfacService.createOne(nvorenfac);
+                conse += 1;
             }
             resultado.push(nvafac);
         }
