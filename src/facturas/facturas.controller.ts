@@ -29,6 +29,15 @@ export class FacturasController {
     }
 
     @ApiBearerAuth()
+    @Get('/idventa/:cia/:id')
+    getManyByIdVenta(
+        @Param('cia') cia: number,
+        @Param('id') id: number
+    ) {
+        return this.facturasService.getManybyIdVenta(cia, id);
+    }
+
+    @ApiBearerAuth()
     @Get(':cia/:numero/:serie/:modo')
     getLastNum(
         @Param('cia') cia: number,

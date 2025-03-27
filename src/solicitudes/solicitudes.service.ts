@@ -40,12 +40,36 @@ export class SolicitudesService {
         .andWhere('a.tipo =:tipo', {tipo})
         .andWhere('a.iddato = :iddato' , {iddato: iddato})
         .getRawOne();
-        return (misventas);
+        console.log("Estoy en getDatoEspecifico", cia, idcliente, iddato, tipo);
+        if(!misventas) {
+            return ({concepto: 'false'});
+        } else {
+            return (misventas);
+        }
+        
     }
 
     async getLetrasImpresas(cia: number, idcliente: number, tipo: number) :Promise <any>  {
         const iddatoini = CLAVES_SOLICIT.LETRASIMPRESAS;
         const iddatofin = iddatoini + 99;
+        const midatosol =  await this.solicitudesRepository
+        .createQueryBuilder('a')
+        .select('a.*')
+        .addSelect ('concepto')
+        .leftJoin(Datosolicitud, 'b', 'a.iddatosolicitud = b.id')
+        .where('a.idcliente = :idcliente', {
+          idcliente: idcliente
+        })
+        .andWhere('a.tipo = :tipo', {tipo:tipo})
+        .andWhere('a.iddato BETWEEN :iddatoini and :iddatofin', 
+            {iddatoini: iddatoini, iddatofin: iddatofin})
+        .getRawMany();
+        return (midatosol);
+    }
+
+    async getDatoSolicit(cia: number, idcliente: number, tipo: number, tipodato: number) :Promise <any>  {
+        const iddatoini = tipodato;
+        const iddatofin = tipodato;
         const midatosol =  await this.solicitudesRepository
         .createQueryBuilder('a')
         .select('a.*')

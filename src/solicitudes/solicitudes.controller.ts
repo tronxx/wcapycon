@@ -54,6 +54,17 @@ export class SolicitudesController {
     }
 
     @ApiBearerAuth()
+    @Get('/datosol/:cia/:idcliente/:tipo')
+    getDatoSol(
+        @Param('cia') cia: number,
+        @Param('idcliente') idcliente: number,
+        @Param('tipo') tipo: number,
+        @Param('tipodato') tipodato: number,
+    ) {
+        return this.solicitudesService.getDatoSolicit(cia, idcliente, tipo, tipodato);
+    }
+
+    @ApiBearerAuth()
     @Post()
     async createOne(
         @Body() dto: any
@@ -78,6 +89,15 @@ export class SolicitudesController {
     ) {
         //console.log("Edtoy en post solicitudes/grabarletrasimpresas", dto);
         return this.solicitudesService.grabarLetrasImpresas(dto);
+    }
+
+    @ApiBearerAuth()
+    @Post('/grabardatosolicitud')
+    async grabarDatoSolicitud(
+        @Body() dto: any
+    ) {
+        //console.log("Edtoy en post solicitudes/grabarletrasimpresas", dto);
+        return this.solicitudesService.grabarDatoSolicitud(dto);
     }
 
     @ApiBearerAuth()

@@ -1,7 +1,7 @@
 import { Injectable,  NotAcceptableException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateFacturasDto, EditFacturaDto } from './dtos';
+import { CreateFacturasDto, EditFacturaDto, TIPOS_FAC } from './dtos';
 import { Facturas } from './entities';
 import { Renfac } from '../renfac/entities';
 import { Usocfdi } from '../usdocfdi/entities';
@@ -60,6 +60,27 @@ export class FacturasService {
         .leftJoin(Datosolicitud, 'd', 'a.iduuid = d.id')
         .where("a.fecha between :fechaini and :fechafin", 
             {fechaini: fechaini, fechafin: fechafin})
+        .andWhere('a.cia =:cia', {cia})
+        .orderBy( {serie: 'ASC', numero:'ASC'})
+        const respu =  await query.getRawMany();
+        //console.log(query.getSql(), "respu:", respu);
+        return (respu);
+    }
+
+    async getManybyIdVenta(cia: number, idventa: number) :Promise <Facturas[]>  {
+        const fechaini = "";
+        const fechafin = "zz"
+        const query = this.facturasrepository.createQueryBuilder('a')
+        .select(['a.*','b.clave as codigousocfdi',
+        'b.nombre as conceptousofdi',
+        'c.clave as codigometodopago',
+        'c.nombre as conceptometodopago',
+        'd.concepto as uuid'
+        ])
+        .leftJoin(Usocfdi, 'b', 'a.idusocfdi = b.id')
+        .leftJoin(Metodopago, 'c', 'a.idmetodopago = c.id')
+        .leftJoin(Datosolicitud, 'd', 'a.iduuid = d.id')
+        .where(`a.idventa = :idventa`, {idventa})
         .andWhere('a.cia =:cia', {cia})
         .orderBy( {serie: 'ASC', numero:'ASC'})
         const respu =  await query.getRawMany();
@@ -185,6 +206,9 @@ export class FacturasService {
             //console.log("Ya busque metodopago", metodopago);
             let idmetodopago = -1;
             if(metodopago) idmetodopago = metodopago.id;;
+            let tipofac = mifac.tipo;
+            if(!tipofac) tipofac = TIPOS_FAC.VENTA;
+
             const rfc = mifac.rfc;
             const regimen = await this.regimenesService.getOnebyCodigo(cia, mifac.regimen);
             let idregimen = -1;
@@ -210,6 +234,7 @@ export class FacturasService {
                 iva: 0,
                 total: 0,
                 status: 'C',
+                tipofac: tipofac,
                 cia: cia
             }
             let nvafac = await this.createOne(nvafacdto);

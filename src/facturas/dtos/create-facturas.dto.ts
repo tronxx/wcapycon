@@ -37,4 +37,7 @@ export class CreateFacturasDto {
     @IsInt()
     cia: number;
 
+    @IsInt()
+    tipofac: number;
+
 }

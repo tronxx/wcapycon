@@ -53,6 +53,9 @@ export class Facturas {
     @Column({type: 'integer'})
     cia: number;
 
+    @Column({type: 'integer'})
+    tipofac: number;
+
     @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
     createdAt: Date;
 
