@@ -41,6 +41,18 @@ export class PolizasController {
         return this.polizasService.getManyByFecha(cia, idtienda, fechaini, fechafin);
     }
 
+    @ApiBearerAuth()
+    @Get('/resumen/:fechaini/:fechafin/:codigoini/:codigofin/:cia')
+    getResumen(
+        @Param('cia') cia: number,
+        @Param('fechaini') fechaini: string,
+        @Param('fechafin') fechafin: string,
+        @Param('codigofin') codigofin: string,
+        @Param('codigoini') codigoini: string,
+    ) {
+        return this.polizasService.getPolizasResumen(fechaini, fechafin, codigoini, codigofin, cia);
+    }
+
 
 
     @ApiBearerAuth()

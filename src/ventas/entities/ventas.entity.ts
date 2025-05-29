@@ -43,6 +43,9 @@ export class Ventas {
     letra1: number;
 
     @Column({type: 'double precision'})
+    piva: number;
+
+    @Column({type: 'double precision'})
     enganc: number;
 
     @Column({type: 'integer'})
@@ -65,6 +68,9 @@ export class Ventas {
 
     @Column({type: 'double precision'})
     comision: number;
+
+    @Column({type: 'double precision'})
+    descuento: number;
 
     @Column({type: 'double precision'})
     prodfin: number;
@@ -92,6 +98,9 @@ export class Ventas {
 
     @Column({type: 'varchar', length:1})
     status: string;
+
+    @Column({type: 'varchar', length:1})
+    opcion: string;
 
     @Column({type: 'integer'})
     cia: number;

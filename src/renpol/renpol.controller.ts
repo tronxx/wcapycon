@@ -54,4 +54,14 @@ export class RenpolController {
         return this.renpolService.deleteOne(id);
     }
 
+    @ApiBearerAuth()
+    @Post('/importar')
+    async importarenpol(
+        @Body() dto: any
+    ) {
+        return this.renpolService.importaRenpol(dto)
+    }
+
+
+
 }

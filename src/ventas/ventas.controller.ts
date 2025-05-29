@@ -43,6 +43,17 @@ export class VentasController {
     }
 
     @ApiBearerAuth()
+    @Get('/busquedaxsigteanterior/:cia/:codigo/:haciadonde')
+    getSigteAnterbyCodigo(
+        @Param('cia') cia: number,
+        @Param('codigo') codigo: string,
+        @Param('haciadonde') haciadonde: string,
+    ) {
+        return this.ventasService.getSigteAnterbyCodigo(cia, codigo, haciadonde);
+    }
+
+
+    @ApiBearerAuth()
     @Get('/busquedaxnombre/:cia/:nombre')
     getManyByNombre(
         @Param('cia') cia: number,

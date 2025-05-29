@@ -40,7 +40,7 @@ export class SolicitudesService {
         .andWhere('a.tipo =:tipo', {tipo})
         .andWhere('a.iddato = :iddato' , {iddato: iddato})
         .getRawOne();
-        console.log("Estoy en getDatoEspecifico", cia, idcliente, iddato, tipo);
+        // console.log("Estoy en getDatoEspecifico", cia, idcliente, iddato, tipo);
         if(!misventas) {
             return ({concepto: 'false'});
         } else {

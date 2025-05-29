@@ -41,7 +41,7 @@ BEGIN
 
     SELECT max(conse + 1) INTO v_conse
     FROM renfac 
-    WHERE id = p_idfactura;
+    WHERE idfactura = p_idfactura;
 
     IF v_conse is null THEN
        SET v_conse = 1;

@@ -25,7 +25,10 @@ export class CreateRenpolDto {
     @IsNumber()
     importe: number;
 
-    @IsString()
+    @IsNumber()
+    salcli: number;
+
+   @IsString()
     vence: string;
 
     @IsNumber()

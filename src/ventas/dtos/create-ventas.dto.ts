@@ -30,6 +30,9 @@ export class CreateVentasDto {
     letra1: number;
 
     @IsNumber()
+    piva: number;
+
+    @IsNumber()
     enganc: number;
 
     @IsInt()
@@ -52,6 +55,9 @@ export class CreateVentasDto {
 
     @IsNumber()
     comision: number;
+    
+    @IsNumber()
+    descto: number;
     
     @IsNumber()
     prodfin: number;
@@ -79,6 +85,9 @@ export class CreateVentasDto {
 
     @IsString()
     status: string;
+
+    @IsString()
+    opcion: string;
 
     @IsInt()
     cia: number;

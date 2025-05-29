@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateMovclisDto, EditMovcliDto } from './dtos';
 import { Movclis } from './entities';
+import { Codigoscaja } from '../codigoscaja/entities'
 import { Conceptos } from 'src/conceptos/entities';
 
 @Injectable()
@@ -19,11 +20,13 @@ export class MovclisService {
         .createQueryBuilder('a')
         .select('a.*')
         .addSelect ('b.concepto ')
+        .addSelect('c.tda as tda')
         .addSelect(`(case coa when 'C' then importe else null end) as cargos`)
         .addSelect(`(case coa when 'A' then importe else null end) as abonos`)
         .addSelect(`(case tipopago when 'AB' then recobon else null end) as bonifica`)
         .addSelect(`(case tipopago when 'AR' then recobon else null end) as recargo`)
         .leftJoin(Conceptos, 'b', 'a.idconcepto = b.id')
+        .leftJoin(Codigoscaja, 'c', 'a.idpoliza = c.id')
         .where('a.idventa =:idventa',  {idventa})
         .andWhere('a.cia =:cia', {cia})
         .orderBy( {fecha: 'ASC', consecutivo:'ASC'})
@@ -67,10 +70,6 @@ export class MovclisService {
 
     }
 
-    async xxcreateOne(dto: CreateMovclisDto) {
-        const nvomovcli = this.movclisRepository.create(dto);
-        return await this.movclisRepository.save(nvomovcli);
-    }
 
     async importarManyMovclis(movclis: any[]) {
         let  movsagregados = [];

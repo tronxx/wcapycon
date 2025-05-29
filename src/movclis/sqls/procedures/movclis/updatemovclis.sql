@@ -13,9 +13,9 @@ BEGIN
 
     -- Ajustar el campo correspondiente en la tabla clientes según el valor de coa anterior
     IF v_old_coa = 'A' THEN
-        UPDATE ventas SET abonos = abonos - v_old_importe WHERE id = OLD.idventa;
+        UPDATE ventas SET abonos = abonos - v_old_importe WHERE idventa = OLD.idventa;
     ELSEIF v_old_coa = 'C' THEN
-        UPDATE ventas SET cargos = cargos - v_old_importe WHERE id = OLD.idventa;
+        UPDATE ventas SET cargos = cargos - v_old_importe WHERE idventa = OLD.idventa;
     END IF;
 END$$
 

@@ -18,6 +18,7 @@ import { Vendedor } from '../vendedores/entities';
 import { Solicitudes } from '../solicitudes/entities';
 import { CartapromService } from '../cartaprom/cartaprom.service';
 import { CiudadesService } from '../ciudades/ciudades.service';
+import { privateDecrypt } from 'crypto';
 
 @Injectable()
 export class VentasService {
@@ -89,7 +90,7 @@ export class VentasService {
         return (misventas);
     }
 
-    async getOnebyCodigo(cia:number, codigo: string) : Promise<Ventas> {
+    async xgetOnebyCodigo(cia:number, codigo: string) : Promise<Ventas> {
         const misventas =  await this.ventasRepository
         .createQueryBuilder('a')
         .select('a.*')
@@ -104,6 +105,39 @@ export class VentasService {
         return (misventas);
     }
 
+    async getOnebyCodigo(cia:number, codigo: string) : Promise<Ventas> {
+        const Ventas = await this.ventasRepository.findOneBy({codigo, cia});
+        const idventa = Ventas.idventa;
+        return this.getOne(cia, idventa);
+    }    
+
+    async getSigteAnterbyCodigo(cia: number, codigo: string, haciadonde: string): Promise<Ventas> {
+        let wheresql = '';
+        let micod = '';
+        if(haciadonde === 'anterior') {
+            micod = 'min (codigo) as codigo';
+            wheresql = ' codigo > :codigo';
+        } else if (haciadonde === 'siguiente') {
+            micod  = 'max (codigo) as codigo';
+            wheresql = ' codigo < :codigo';
+        }
+        
+        const micodigo = await this.ventasRepository
+            .createQueryBuilder('a')
+            .select(micod)
+            .where(wheresql, { codigo })
+            .andWhere('a.cia =:cia', {cia})
+            .getRawOne();
+            
+        if (!micodigo) {
+            throw new Error('No se encontró el registro');
+        }
+        
+        const cod = micodigo.codigo;
+        return this.getOnebyCodigo(cia, cod);
+    }    
+
+
     async getOne(cia:number, id: number) : Promise<Ventas> {
         const miventa =  await this.ventasRepository
         .createQueryBuilder('a')
@@ -116,8 +150,6 @@ export class VentasService {
         .andWhere('a.cia =:cia', {cia})
         .getRawOne();
         return (miventa);
-        if(!miventa) throw new NotFoundException ('Venta Inexistente');
-       return miventa;
     }
 
     async editOne(idventa: number, dto: EditVentaDto) {
@@ -319,6 +351,8 @@ export class VentasService {
                 codigo: data.numcli,
                 idcliente: idcliente,
                 fecha:data.fechavta,
+                opcion: data.opcion,
+                descto: data.descuento,
                 idtienda: idtienda,
                 siono: data.status,
                 qom: data.qom,
@@ -328,6 +362,7 @@ export class VentasService {
                 nulets: data.nulet,
                 canle: data.canle,
                 bonifi:data.bonificacion,
+                piva: data.piva,
                 servicio: data.servicio,
                 precon: data.preciolista,
                 idvendedor: idvendedor,

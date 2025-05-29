@@ -54,7 +54,7 @@ export class SolicitudesController {
     }
 
     @ApiBearerAuth()
-    @Get('/datosol/:cia/:idcliente/:tipo')
+    @Get('/datosol/:cia/:idcliente/:tipo/:tipodato')
     getDatoSol(
         @Param('cia') cia: number,
         @Param('idcliente') idcliente: number,
@@ -69,14 +69,14 @@ export class SolicitudesController {
     async createOne(
         @Body() dto: any
     ) {
-        console.log("Edtoy en post solicitudes", dto);
+        // console.log("Edtoy en post solicitudes", dto);
         return this.solicitudesService.createSolicitudCompleta(dto);
     }
 
     @ApiBearerAuth()
     @Post('/agregardato')
     async agregarDatoSolicitud(
-        @Body() dto: DatoClienteSolicitud
+        @Body() dto: any
     ) {
         // console.log("Edtoy en post solicitudes", dto);
         return this.solicitudesService.crearDatoSolicitud(dto);

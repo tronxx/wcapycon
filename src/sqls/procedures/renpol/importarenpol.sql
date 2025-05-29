@@ -1,6 +1,6 @@
 DELIMITER $$
 
-CREATE PROCEDURE add_renpol (
+CREATE PROCEDURE add_renpol_sin_movclis (
     IN p_idpoliza INT,
     IN p_idventa INT,
     IN p_fecha DATE,
@@ -37,6 +37,8 @@ BEGIN
     SELECT COUNT(*) INTO v_cliente_exists
     FROM ventas
     WHERE id = p_idventa;
+
+    set v_idmovcli = -1;
 
     IF v_cliente_exists = 0 THEN
         -- Si el cliente no existe, lanzar un error
@@ -88,22 +90,7 @@ BEGIN
         SET v_idconcepto = LAST_INSERT_ID();
     END IF;
 
-    -- Agregar el registro en la tabla movclis
-    INSERT INTO movclis (
-        idventa, fecha, coa, idconcepto, idpoliza, consecutivo, tipopago, 
-        recobon, importe, cobratario, usuario, status, idcobratario, 
-        idusuario, cia
-    ) VALUES (
-        p_idventa, p_fecha, 'A', v_idconcepto, p_idpoliza, p_conse, p_tipo, 
-        p_rob, p_importe, p_cobratario, p_usuario, p_sino, p_idcobratario, 
-        p_idusuario, p_cia
-    );
-
-    SET v_idmovcli = LAST_INSERT_ID();
-
-    UPDATE ventas SET abonos = abonos + p_importe, fechasaldo = p_fecha WHERE id = p_idventa;
-
-
+    -- Elimino que no se actualicen los movimientos de clientes
 
     -- Devolver el registro insertado
     select v_idrenpol, v_idmovcli;

@@ -41,6 +41,9 @@ export class Renpol {
     @Column({type: 'double precision'})
     importe: number;
 
+    @Column({type: 'double precision'})
+    salcli: number;
+
     @Column({type: 'date', nullable:true})
     vence: string;
 

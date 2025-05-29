@@ -83,7 +83,7 @@ import { Facturas } from './facturas/entities';
 import { RenfacModule } from './renfac/renfac.module';
 import { Renfac } from './renfac/entities';
 import { PolizasModule } from './polizas/polizas.module';
-import { Polizas } from './polizas/entities';
+import { Car_anuscartera, Polizas, Car_corlarpzo, Car_corlarpzodet } from './polizas/entities';
 import { RenpolModule } from './renpol/renpol.module';
 import { Renpol } from './renpol/entities';
 import { Nombres } from './clientes/entities';
@@ -163,8 +163,8 @@ const {
         Avales, Ventas, Cartaprom, Movclis, Conceptos, Facturas, Renfac,
         Polizas, Renpol, Nombres, Ubivtas, Metodopago, 
         Solicitudes, Datosolicitud, Codigoscaja, Codigoscartera,
-        Codigosusuario,
-         join(__dirname, './**/**/*entity*{.ts,.js}')],
+        Codigosusuario, Car_anuscartera, Car_corlarpzo, Car_corlarpzodet,         
+        join(__dirname, './**/**/*entity*{.ts,.js}')],
       synchronize: true,
     }),
     AlmacenesModule,

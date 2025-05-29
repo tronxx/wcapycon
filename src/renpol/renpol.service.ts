@@ -120,7 +120,52 @@ export class RenpolService {
                     dto.cia,
                     dto.usuario,
                     dto.idcobratario,
-                    dto.idusuario
+                    dto.idusuario,
+                    dto.salcli,
+
+                  ]
+                );
+                return agregamov;
+            } catch (error) {
+                // Aquí puedes manejar el error como prefieras
+                console.error('Error al ejecutar el query:', error);
+                throw new Error(error);
+            }            
+        }
+    
+        async importaRenpol(dto: any) {
+            const signosparam = '?,'.repeat(21) + '?';
+            const conse = 1;
+            const iduuid = -1;
+            const idfactura = -1;
+            try {
+                const agregamov = await this.renpolRepository
+                .query(`CALL add_renpol_sin_movclis (${signosparam})`, 
+                  [ 
+                    dto.idpoliza,
+                    dto.idventa,
+                    dto.fecha,
+                    conse,
+                    dto.siono,
+                    dto.concepto,
+                    dto.ace,
+                    dto.tipo,
+                    dto.recobon,
+                    dto.importe,
+                    dto.vence,
+                    dto.comision,
+                    dto.dias,
+                    dto.tienda,
+                    dto.cobratario,
+                    dto.letra,
+                    dto.iduuid,
+                    dto.idfactura,
+                    dto.cia,
+                    dto.usuario,
+                    dto.idcobratario,
+                    dto.idusuario,
+                    dto.salcli,
+
                   ]
                 );
                 return agregamov;
