@@ -243,9 +243,9 @@ export class FacturasService {
 
             for(let renglonfac of mifac.renglones) {
                 //console.log("1.- Voy a a agregar renfac", renglonfac);
-                const  preciou = Math.round(renglonfac.preciou / (renglonfac.piva / 100 + 1) * 10000) / 10000;
-                const miimporte = Math.round(renglonfac.importe / (renglonfac.piva / 100 + 1) * 10000) / 10000;
-                const nvoiva = renglonfac.importe - miimporte;
+                const  preciou =  renglonfac.preciou; // Math.round(renglonfac.preciou / (renglonfac.piva / 100 + 1) * 10000) / 10000;
+                const miimporte = renglonfac.importe; // Math.round(renglonfac.importe / (renglonfac.piva / 100 + 1) * 10000) / 10000;
+                const nvoiva = Math.round(renglonfac.preciou * (renglonfac.piva / 100 )  * 10000) / 10000;
 
                 const nvorenfac = {
                     idfactura: idfactura,

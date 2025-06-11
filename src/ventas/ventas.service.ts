@@ -107,7 +107,8 @@ export class VentasService {
 
     async getOnebyCodigo(cia:number, codigo: string) : Promise<Ventas> {
         const Ventas = await this.ventasRepository.findOneBy({codigo, cia});
-        const idventa = Ventas.idventa;
+        let idventa = -1;
+        if(Ventas) idventa = Ventas.idventa;
         return this.getOne(cia, idventa);
     }    
 
@@ -273,7 +274,7 @@ export class VentasService {
             const codigo = miventa.numcli;
             const yatengoventa = await this. getOnebyCodigo(cia, codigo);
             if(yatengoventa) {
-                // console.log("Ya Existe esta venta", codigo);
+                 console.log("Ya Existe esta venta", codigo);
             } else {
                 const ventaagregada = await this.importarVentas(miventa);
                 ventasagregadas.push(ventaagregada);
