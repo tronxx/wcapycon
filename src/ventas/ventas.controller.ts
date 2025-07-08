@@ -43,23 +43,37 @@ export class VentasController {
     }
 
     @ApiBearerAuth()
-    @Get('/busquedaxsigteanterior/:cia/:codigo/:haciadonde')
+    @Get('/busqueda/sigteanterior/:cia/:codigo/:haciadonde')
     getSigteAnterbyCodigo(
         @Param('cia') cia: number,
         @Param('codigo') codigo: string,
         @Param('haciadonde') haciadonde: string,
     ) {
+        //console.log("Buscando venta siguiente o anterior por codigo", cia, codigo, haciadonde);
         return this.ventasService.getSigteAnterbyCodigo(cia, codigo, haciadonde);
     }
 
 
     @ApiBearerAuth()
-    @Get('/busquedaxnombre/:cia/:nombre')
-    getManyByNombre(
+    @Get('/busqueda/nombre/:cia/:nombre')
+    getVentaByNombre(
         @Param('cia') cia: number,
-        @Param('nombre') nombre: string
+        @Param('nombre') nombre: string,
     ) {
+
+        //console.log("Buscando venta por nombre", cia, nombre);
         return this.ventasService.getManybyNombre(cia, nombre);
+    }
+
+
+    @ApiBearerAuth()
+    @Get('/busqueda/idcliente/:cia/:idcliente')
+    getManyByidCliente(
+        @Param('cia') cia: number,
+        @Param('idcliente') idcliente: number
+    ) {
+        //console.log("Buscando ventas por idcliente", cia, idcliente);
+        return this.ventasService.getManybyIdCli(cia, idcliente);
     }
 
     @ApiBearerAuth()

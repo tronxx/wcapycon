@@ -43,9 +43,6 @@ export class Ventas {
     letra1: number;
 
     @Column({type: 'double precision'})
-    piva: number;
-
-    @Column({type: 'double precision'})
     enganc: number;
 
     @Column({type: 'integer'})
@@ -101,6 +98,9 @@ export class Ventas {
 
     @Column({type: 'varchar', length:1})
     opcion: string;
+
+    @Column({type: 'double precision'})
+    piva: number;
 
     @Column({type: 'integer'})
     cia: number;

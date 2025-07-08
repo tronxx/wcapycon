@@ -90,18 +90,19 @@ export class VentasService {
         return (misventas);
     }
 
-    async xgetOnebyCodigo(cia:number, codigo: string) : Promise<Ventas> {
+    async getManybyIdCli(cia: number, idcli: number) :Promise <Ventas[]>  {
+        console.log("Buscando Ventas por idcliente", idcli);
         const misventas =  await this.ventasRepository
         .createQueryBuilder('a')
         .select('a.*')
         .addSelect ('b.nombre, d.numero as numfac, d.serie as seriefac, c.codigo as ubica ')
         .leftJoin(Clientes, 'b', 'a.idcliente = b.id')
-        .leftJoin(Facturas, 'd', 'a.idfactura = d.id')
+        .leftJoin(Facturas, 'd', 'a.idventa = d.idventa')
         .leftJoin(Ubivtas, 'c', 'a.idubica = c.id')
-        .where('a.codigo = :codigo', { codigo } )
+        .where('a.idcliente = :idcli', {idcli})
         .andWhere('a.cia =:cia', {cia})
-        .getRawOne();
-        //if(!misventas) throw new NotFoundException ('Venta Inexistente');
+        .orderBy( {fecha: 'ASC'})
+        .getRawMany();
         return (misventas);
     }
 
@@ -378,7 +379,7 @@ export class VentasService {
                 idubica: idubica,
                 status: 'C',
                 cia: 1,
-                fechasaldo: data.fechavta
+                fechasaldo: data.fechavta,
 
             }
             let nvaventa = await this.createOne(venta);
