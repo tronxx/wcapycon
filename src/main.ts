@@ -10,6 +10,7 @@ config();
 
 const {
   PRODUCTION,
+  APP_PORT = 3200, // Default to 4000 if not set
 } = process.env
 
 
@@ -61,7 +62,7 @@ async function bootstrap() {
       whitelist: true,
     }),
   );
-  await app.listen(3000);
+  await app.listen(APP_PORT);
   logger.log(`Server is running in ${await app.getUrl()} `);
   logger.log(`HttpsOptions: ${ JSON.stringify(httpsOptions)}`);
   const misentities = join(__dirname, './**/**/*entity{.ts,.js}');
