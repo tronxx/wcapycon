@@ -1,0 +1,10 @@
+  TYPE='mysql'
+  HOST='localhost'
+  PORT=3306
+  DB_USERNAME='xroot'
+  PASSWORD='xxx'
+  DATABASE='cartera'
+  APP_PORT=4000
+  JWT_SECRET='genesis.1.1'
+  PRODUCTION='false'
+

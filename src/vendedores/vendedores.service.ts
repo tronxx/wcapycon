@@ -14,9 +14,10 @@ export class VendedoresService {
     {}
 
     async getMany(cia: number) :Promise <Vendedor[]>  {
+        const status = 'A';
         return await this.VendedoresRepository.find(
             {
-                where: { cia : cia},
+                where: { cia : cia, status: status },
                 order: { codigo: "ASC"}
             }
         );

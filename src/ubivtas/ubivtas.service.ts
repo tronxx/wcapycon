@@ -15,9 +15,10 @@ export class UbivtasService {
     {}
 
     async getMany(cia: number) :Promise <Ubivtas[]>  {
+        const status = 'A';
         return await this.ubivtasRepository.find(
             {
-                where: { cia : cia},
+                where: { cia : cia, status: status },
                 order: { codigo: "ASC"}
             }
         );

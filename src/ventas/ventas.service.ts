@@ -91,7 +91,7 @@ export class VentasService {
     }
 
     async getManybyIdCli(cia: number, idcli: number) :Promise <Ventas[]>  {
-        console.log("Buscando Ventas por idcliente", idcli);
+        //console.log("Buscando Ventas por idcliente", idcli);
         const misventas =  await this.ventasRepository
         .createQueryBuilder('a')
         .select('a.*')

@@ -16,9 +16,10 @@ export class CodigoscajaService {
     {}
 
     async getMany(cia: number) :Promise <Codigoscaja[]>  {
+        const status = 'A';
         return await this.codigoscajaRepository.find(
             {
-                where: { cia },
+                where: { cia, status: status },
                 order: { tda: 'ASC'}
             }
         );

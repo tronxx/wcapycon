@@ -14,9 +14,10 @@ export class PromotoresService {
     {}
 
     async getMany(cia: number) :Promise <Promotor[]>  {
+        const status = 'A';
         return await this.promotoresRepository.find(
             {
-                where: { cia : cia},
+                where: { cia : cia, status: status },
                 order: { codigo: "ASC"}
             }
         );
