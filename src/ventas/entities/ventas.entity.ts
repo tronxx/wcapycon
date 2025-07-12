@@ -63,13 +63,13 @@ export class Ventas {
     @Column({type: 'integer'})
     idvendedor: number;
 
-    @Column({type: 'double precision'})
+    @Column({type: 'double precision', default: 0})
     comision: number;
 
-    @Column({type: 'double precision'})
-    descuento: number;
+    @Column({type: 'double precision', default: 0})
+    descuento: number; 
 
-    @Column({type: 'double precision'})
+    @Column({type: 'double precision', default: 0})
     prodfin: number;
 
     @Column({type: 'integer'})
@@ -81,13 +81,13 @@ export class Ventas {
     @Column({type: 'integer'})
     idpromotor: number;
 
-    @Column({type: 'double precision'})
+    @Column({type: 'double precision', default: 0})
     comisionpromotor: number;
 
-    @Column({type: 'double precision'})
+    @Column({type: 'double precision', default: 0})
     cargos: number;
 
-    @Column({type: 'double precision'})
+    @Column({type: 'double precision', default: 0})
     abonos: number;
 
     @Column({type: 'integer'})
