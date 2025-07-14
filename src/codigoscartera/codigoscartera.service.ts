@@ -16,14 +16,21 @@ export class CodigoscarteraService {
     {}
 
     async getMany(cia: number) :Promise <Codigoscartera[]>  {
+        const status = 'A';
         return await this.codigoscarteraRepository.find(
             {
-                where: { cia },
+                where: { cia, status },
                 order: { codigo: 'ASC'}
             }
         );
     }
 
+
+    async getOnebyCodigo(cia:number, codigo: string) : Promise<Codigoscartera> {
+        const Polizas = await this.codigoscarteraRepository.findOneBy({cia, codigo});
+        //if(!Polizas) throw new NotFoundException ('Codigo de Cartera Inexistente');
+       return Polizas;
+    }
 
     async getOne(cia:number, id: number) : Promise<Codigoscartera> {
         const Polizas = await this.codigoscarteraRepository.findOneBy({cia, id});

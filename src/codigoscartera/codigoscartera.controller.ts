@@ -19,6 +19,15 @@ export class CodigoscarteraController {
     }
 
     @ApiBearerAuth()
+    @Get('/codigo/:cia/:codigo')
+    async getByCodigo(
+        @Param('cia') cia: number,
+        @Param('codigo') codigo: string
+    ) {
+        return await this.codigoscarteraService.getOnebyCodigo(cia, codigo);
+    }
+
+    @ApiBearerAuth()
     @Get(':cia/:id')
     getOne(
         @Param('cia') cia: number,
