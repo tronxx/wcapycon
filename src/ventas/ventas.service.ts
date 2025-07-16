@@ -227,7 +227,7 @@ export class VentasService {
                     cia: cia
                             
                 }
-                const renfac = this.renfacService.createOne(nvorenfac);
+                const renfac = await this.renfacService.createOne(nvorenfac);
                 console.log("Renglon Agregado", renfac);
                 if(renglonfac.esmoto) {
                     const datos = [
@@ -255,7 +255,7 @@ export class VentasService {
                             cia: cia
                                     
                         }
-                        const renfac = this.renfacService.createOne(nvorenfac);
+                        const renfac = await this.renfacService.createOne(nvorenfac);
                         console.log("Moto Renglon Agregado", renfac);
 
                     }
