@@ -39,25 +39,25 @@ export class Ventas {
     @Column({type: 'varchar', length:3})
     ticte: string;
 
-    @Column({type: 'double precision'})
+    @Column({type: 'double precision', default: 0})
     letra1: number;
 
-    @Column({type: 'double precision'})
+    @Column({type: 'double precision', default: 0})
     enganc: number;
 
-    @Column({type: 'integer'})
+    @Column({type: 'integer', default: 0})
     nulets: number;
 
-    @Column({type: 'double precision'})
+    @Column({type: 'double precision', default: 0})
     canle: number;
 
-    @Column({type: 'double precision'})
+    @Column({type: 'double precision', default: 0})
     bonifi: number;
 
-    @Column({type: 'double precision'})
+    @Column({type: 'double precision', default: 0})
     servicio: number;
 
-    @Column({type: 'double precision'})
+    @Column({type: 'double precision', default: 0})
     precon: number;
 
     @Column({type: 'integer'})
