@@ -204,7 +204,8 @@ export class VentasService {
             // console.log("Renglones de Factura", data.renfac);
 
             for(let renglonfac of data.renfac) {
-                // console.log("1.- Voy a a agregar renfac", renglonfac);
+                let conse = 1;
+                console.log("1.- Voy a a agregar renfac", renglonfac);
                 const  preciou = Math.round(renglonfac.preciou / (renglonfac.piva / 100 + 1) * 10000) / 10000;
                 const miimporte = Math.round(renglonfac.importe / (renglonfac.piva / 100 + 1) * 10000) / 10000;
                 const nvoiva = renglonfac.importe - miimporte;
@@ -222,11 +223,12 @@ export class VentasService {
                     iva: nvoiva,
                     folio: renglonfac.folio,
                     status: 'A',
-                    conse: 0,
+                    conse: conse,
                     cia: cia
                             
                 }
                 const renfac = this.renfacService.createOne(nvorenfac);
+                console.log("Renglon Agregado", renfac);
                 if(renglonfac.esmoto) {
                     const datos = [
                         { titulo: "MOTOR S/", dato: renglonfac.seriemotor},
@@ -235,6 +237,7 @@ export class VentasService {
                         { titulo: "PEDIMIENTO:", dato: renglonfac.pedimento},
                     ]
                     for(let mirenglon of datos) {
+                        conse=conse++;
                         const nvorenfac = {
                             idfactura: idfactura,
                             idventa: idventa,
@@ -245,14 +248,16 @@ export class VentasService {
                             canti: 1,
                             piva: renglonfac.piva,
                             importe: 0,
-                            iva: 0,
+                            iva: 16,
                             folio: 0,
                             status: 'A',
-                            conse: 0,
+                            conse: conse,
                             cia: cia
                                     
                         }
                         const renfac = this.renfacService.createOne(nvorenfac);
+                        console.log("Moto Renglon Agregado", renfac);
+
                     }
                 }
             }
