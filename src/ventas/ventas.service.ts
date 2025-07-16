@@ -196,6 +196,7 @@ export class VentasService {
             const cia = data.venta.cia;
             const idventa = nvaventa.idventa;
             data.factura.idventa = idventa;
+            data.factura.fecha = data.factura.fecha.split('T')[0];
             const factura = await this.facturasService.createOne(data.factura);
             const idfactura = factura.id;
             data.venta.idfactura = idfactura;

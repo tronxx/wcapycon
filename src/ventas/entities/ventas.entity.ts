@@ -99,7 +99,7 @@ export class Ventas {
     @Column({type: 'varchar', length:1})
     opcion: string;
 
-    @Column({type: 'double precision'})
+    @Column({type: 'double precision', default: 16})
     piva: number;
 
     @Column({type: 'integer'})
