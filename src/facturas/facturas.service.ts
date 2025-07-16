@@ -104,7 +104,6 @@ export class FacturasService {
         .andWhere('a.cia =:cia', {cia})
 
         const factura =  await query.getRawOne();
-        if(!factura) throw new NotFoundException ('Factura Inexistente');
        return factura;
     }
 
@@ -140,6 +139,8 @@ export class FacturasService {
     async editOne(id: number, dto: EditFacturaDto) {
         const factura = await this.facturasrepository.findOneBy({id});
         if(!factura) throw new NotFoundException ('Factura Inexistente');
+        dto.fecha = dto.fecha.split('T')[0];
+        
         const editedfactura = Object.assign(factura, dto);
         //console.log("Edit One", editedfactura, "id", id, "dto", dto);
         return await this.facturasrepository.update(id, editedfactura);
@@ -179,6 +180,8 @@ export class FacturasService {
         let serie = dto.serie;
         let numero = dto.numero;
         let cia = dto.cia;
+        dto.fecha = dto.fecha.split('T')[0];
+
         const xfactura = await this.facturasrepository.findOneBy({serie, numero, cia});
         if(xfactura) {
             throw new NotAcceptableException ('Ya existe ese Factura');
