@@ -117,11 +117,11 @@ export class VentasService {
         let wheresql = '';
         let micod = '';
         if(haciadonde === 'anterior') {
-            micod = 'min (codigo) as codigo';
-            wheresql = ' codigo > :codigo';
-        } else if (haciadonde === 'siguiente') {
-            micod  = 'max (codigo) as codigo';
+            micod = 'max (codigo) as codigo';
             wheresql = ' codigo < :codigo';
+        } else if (haciadonde === 'siguiente') {
+            micod  = 'min (codigo) as codigo';
+            wheresql = ' codigo > :codigo';
         }
         
         const micodigo = await this.ventasRepository
@@ -205,7 +205,7 @@ export class VentasService {
 
             for(let renglonfac of data.renfac) {
                 let conse = 1;
-                console.log("1.- Voy a a agregar renfac", renglonfac);
+                //console.log("1.- Voy a a agregar renfac", renglonfac);
                 const  preciou = Math.round(renglonfac.preciou / (renglonfac.piva / 100 + 1) * 10000) / 10000;
                 const miimporte = Math.round(renglonfac.importe / (renglonfac.piva / 100 + 1) * 10000) / 10000;
                 const nvoiva = renglonfac.importe - miimporte;
@@ -228,7 +228,7 @@ export class VentasService {
                             
                 }
                 const renfac = await this.renfacService.createOne(nvorenfac);
-                console.log("Renglon Agregado", renfac);
+                //console.log("Renglon Agregado", renfac);
                 if(renglonfac.esmoto) {
                     const datos = [
                         { titulo: "MOTOR S/", dato: renglonfac.seriemotor},
@@ -256,7 +256,7 @@ export class VentasService {
                                     
                         }
                         const renfac = await this.renfacService.createOne(nvorenfac);
-                        console.log("Moto Renglon Agregado", renfac);
+                        //console.log("Moto Renglon Agregado", renfac);
 
                     }
                 }
@@ -281,7 +281,7 @@ export class VentasService {
             const codigo = miventa.numcli;
             const yatengoventa = await this. getOnebyCodigo(cia, codigo);
             if(yatengoventa) {
-                 console.log("Ya Existe esta venta", codigo);
+                 //console.log("Ya Existe esta venta", codigo);
             } else {
                 const ventaagregada = await this.importarVentas(miventa);
                 ventasagregadas.push(ventaagregada);

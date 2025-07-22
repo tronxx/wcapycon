@@ -57,11 +57,11 @@ BEGIN
     -- Agregar el registro en la tabla renfac
     INSERT INTO renfac (
         idfactura, idventa, conse, codigo, descri, serie, 
-        folio, canti, preciou, importe, piva, iva, cia  ) VALUES (
+        folio, canti, preciou, importe, piva, iva, cia, status  ) VALUES (
 
         p_idfactura, p_idventa, v_conse, p_codigo, p_descri, p_serie,
         p_folio,  p_canti, p_preciou, v_importe, p_piva, 
-        v_iva, p_cia
+        v_iva, p_cia, 'A'
     );
 
     -- Actualizar el cliente según el campo coa

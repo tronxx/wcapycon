@@ -5,18 +5,30 @@ import { CreateMovclisDto, EditMovcliDto } from './dtos';
 import { Movclis } from './entities';
 import { Codigoscaja } from '../codigoscaja/entities'
 import { Conceptos } from 'src/conceptos/entities';
+import { Renfac } from '../renfac/entities';
+import { RenfacService } from '../renfac/renfac.service';
+import { Ventas } from '../ventas/entities';
 
 @Injectable()
 export class MovclisService {
 
     constructor (
         @InjectRepository(Movclis)
-        private readonly movclisRepository: Repository<Movclis>
+        private readonly movclisRepository: Repository<Movclis>,
+        @InjectRepository(Movclis)
+        private readonly renfacRepository: Repository<Renfac>,
+        @InjectRepository(Ventas)
+        private readonly ventasRepository: Repository<Ventas>,
+        private renfacService : RenfacService,
     )
     {}
 
     async getMany(idventa: number, cia: number) :Promise <any[]>  {
-        const mismovtos =  await this.movclisRepository
+        const artcompra = await this.renfacService.getCompraByIdVenta(idventa);
+        const venta = await this.ventasRepository.findOneBy({idventa: idventa, cia: cia});
+        const fechacompra = venta.fecha
+
+        let mismovtos =  await this.movclisRepository
         .createQueryBuilder('a')
         .select('a.*')
         .addSelect ('b.concepto ')
@@ -31,6 +43,16 @@ export class MovclisService {
         .andWhere('a.cia =:cia', {cia})
         .orderBy( {fecha: 'ASC', consecutivo:'ASC'})
         .getRawMany();
+        
+        let compra = {
+            fecha: fechacompra,
+            id : -1,
+            concepto : artcompra.compra,
+            abonos: 0,
+            cargos: 0,
+            coa: 'C'
+        }
+        mismovtos = [compra, ...mismovtos];
         return (mismovtos);
     }
 
