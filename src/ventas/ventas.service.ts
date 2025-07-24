@@ -172,6 +172,7 @@ export class VentasService {
     async createOne(dto: CreateVentasDto) {
         let codigo = dto.codigo;
         let cia = dto.cia;
+        dto.fecha = dto.fecha.split('T')[0];
         const xVentas = await this.ventasRepository.findOneBy({codigo, cia});
         if(xVentas) {
             throw new NotAcceptableException ('Ya existe ese Venta');
