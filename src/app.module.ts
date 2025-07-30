@@ -96,6 +96,8 @@ import { CodigoscajaModule } from './codigoscaja/codigoscaja.module';
 import { Codigoscaja, Codigosusuario } from './codigoscaja/entities';
 import { CodigoscarteraModule } from './codigoscartera/codigoscartera.module';
 import { Codigoscartera } from './codigoscartera/entities';
+import { SabanavtasModule } from './sabanavtas/sabanavtas.module';
+import { Sabanavtas, Sabanvtasren } from './sabanavtas/entities';
 
 config();
 // const   
@@ -163,7 +165,8 @@ const {
         Avales, Ventas, Cartaprom, Movclis, Conceptos, Facturas, Renfac,
         Polizas, Renpol, Nombres, Ubivtas, Metodopago, 
         Solicitudes, Datosolicitud, Codigoscaja, Codigoscartera,
-        Codigosusuario, Car_anuscartera, Car_corlarpzo, Car_corlarpzodet,         
+        Codigosusuario, Car_anuscartera, Car_corlarpzo, Car_corlarpzodet,
+        Sabanavtas, Sabanvtasren,
         join(__dirname, './**/**/*entity*{.ts,.js}')],
       synchronize: true,
     }),
@@ -213,6 +216,7 @@ const {
     SolicitudesModule,
     CodigoscajaModule,
     CodigoscarteraModule,
+    SabanavtasModule,
     ],
   controllers: [AppController],
   providers: [AppService],

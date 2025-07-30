@@ -26,6 +26,14 @@ export class ClientesController {
         return this.clientesService.getOne(cia, id);
     }
 
+    @Get('codigo/:cia/:codigo')
+    getOneByCodigo(
+        @Param('cia') cia: number,
+        @Param('codigo') codigo: string
+    ) {
+        return this.clientesService.getOnebyCodigo(cia, codigo);
+    }
+
     @ApiBearerAuth()
     @Get(':cia/:id/:codigo')
     getOnebyCodigo(
