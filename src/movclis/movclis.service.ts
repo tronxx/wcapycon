@@ -25,8 +25,11 @@ export class MovclisService {
 
     async getMany(idventa: number, cia: number) :Promise <any[]>  {
         const artcompra = await this.renfacService.getCompraByIdVenta(idventa);
+        console.log("ArtCompra:", artcompra);
         const venta = await this.ventasRepository.findOneBy({idventa: idventa, cia: cia});
+        console.log("Venta:", venta);
         const fechacompra = venta.fecha.split('T')[0];
+        console.log("FechaCompra:", fechacompra);
 
         let mismovtos =  await this.movclisRepository
         .createQueryBuilder('a')
@@ -43,6 +46,7 @@ export class MovclisService {
         .andWhere('a.cia =:cia', {cia})
         .orderBy( {fecha: 'ASC', consecutivo:'ASC'})
         .getRawMany();
+        console.log("Movtos:", mismovtos);
         
         let compra = {
             fecha: fechacompra,
@@ -52,6 +56,7 @@ export class MovclisService {
             cargos: 0,
             coa: 'C'
         }
+        console.log("Compra:", compra);
         mismovtos = [compra, ...mismovtos];
         return (mismovtos);
     }
