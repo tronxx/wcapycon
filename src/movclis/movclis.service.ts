@@ -26,7 +26,7 @@ export class MovclisService {
     async getMany(idventa: number, cia: number) :Promise <any[]>  {
         const artcompra = await this.renfacService.getCompraByIdVenta(idventa);
         const venta = await this.ventasRepository.findOneBy({idventa: idventa, cia: cia});
-        const fechacompra = venta.fecha
+        const fechacompra = venta.fecha.split('T')[0];
 
         let mismovtos =  await this.movclisRepository
         .createQueryBuilder('a')
