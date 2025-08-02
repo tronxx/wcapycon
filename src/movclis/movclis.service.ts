@@ -49,7 +49,6 @@ export class MovclisService {
         .getRawMany();
         console.log("Movtos:", mismovtos);
         let compra = JSON.parse(JSON.stringify(mismovtos[0] ? mismovtos[0] : null));
-        compra.fecha = mismovtos[0] ? mismovtos[0].fecha : new Date().toISOString().split('T')[0];
         compra.fecha = fechacompra;
         compra.id = -1;
         compra.concepto = artcompra.compra;
@@ -57,8 +56,13 @@ export class MovclisService {
         compra.cargos = 0;
         compra.coa = 'C';
 
+
         console.log("Compra:", compra);
         mismovtos = [compra, ...mismovtos];
+        for (let ii = 0; ii < mismovtos.length; ii++) {
+            mismovtos[ii].fecha = mismovtos[ii].fecha.toISOString().split('T')[0];
+        }
+        
         console.log("Mis movtos completos:", mismovtos);
         return (mismovtos);
     }
