@@ -47,6 +47,10 @@ export class MovclisService {
         .andWhere('a.cia =:cia', {cia})
         .orderBy( {fecha: 'ASC', consecutivo:'ASC'})
         .getRawMany();
+        for (let ii = 0; ii < mismovtos.length; ii++) {
+            mismovtos[ii].fecha = mismovtos[ii].fecha.toISOString().split('T')[0];
+        }
+
         console.log("Movtos:", mismovtos);
         let compra = JSON.parse(JSON.stringify(mismovtos[0] ? mismovtos[0] : null));
         compra.fecha = fechacompra;
@@ -59,9 +63,6 @@ export class MovclisService {
 
         console.log("Compra:", compra);
         mismovtos = [compra, ...mismovtos];
-        for (let ii = 0; ii < mismovtos.length; ii++) {
-            mismovtos[ii].fecha = mismovtos[ii].fecha.toISOString().split('T')[0];
-        }
         
         console.log("Mis movtos completos:", mismovtos);
         return (mismovtos);
