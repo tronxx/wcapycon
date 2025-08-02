@@ -47,17 +47,17 @@ export class MovclisService {
         .orderBy( {fecha: 'ASC', consecutivo:'ASC'})
         .getRawMany();
         console.log("Movtos:", mismovtos);
+        let compra = mismovtos[0] ? mismovtos[0] : null;
+        compra.fecha = fechacompra;
+        compra.id = -1;
+        compra.concepto = artcompra.compra;
+        compra.abonos = 0;
+        compra.cargos = 0;
+        compra.coa = 'C';
         
-        let compra = {
-            fecha: fechacompra,
-            id : -1,
-            concepto : artcompra.compra,
-            abonos: 0,
-            cargos: 0,
-            coa: 'C'
-        }
         console.log("Compra:", compra);
         mismovtos = [compra, ...mismovtos];
+        console.log("Mis movtos completos:", mismovtos);
         return (mismovtos);
     }
 
