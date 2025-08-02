@@ -28,7 +28,7 @@ export class MovclisService {
         console.log("ArtCompra:", artcompra);
         const venta = await this.ventasRepository.findOneBy({idventa: idventa, cia: cia});
         console.log("Venta:", venta);
-        const fechacompra = venta.fecha.split('T')[0];
+        const fechacompra = venta.fecha;
         console.log("FechaCompra:", fechacompra);
 
         let mismovtos =  await this.movclisRepository
