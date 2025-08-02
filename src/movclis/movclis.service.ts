@@ -8,6 +8,7 @@ import { Conceptos } from 'src/conceptos/entities';
 import { Renfac } from '../renfac/entities';
 import { RenfacService } from '../renfac/renfac.service';
 import { Ventas } from '../ventas/entities';
+import { json } from 'stream/consumers';
 
 @Injectable()
 export class MovclisService {
@@ -47,14 +48,14 @@ export class MovclisService {
         .orderBy( {fecha: 'ASC', consecutivo:'ASC'})
         .getRawMany();
         console.log("Movtos:", mismovtos);
-        let compra = mismovtos[0] ? mismovtos[0] : null;
+        let compra = JSON.parse(JSON.stringify(mismovtos[0] ? mismovtos[0] : null));
         compra.fecha = fechacompra;
         compra.id = -1;
         compra.concepto = artcompra.compra;
         compra.abonos = 0;
         compra.cargos = 0;
         compra.coa = 'C';
-        
+
         console.log("Compra:", compra);
         mismovtos = [compra, ...mismovtos];
         console.log("Mis movtos completos:", mismovtos);
