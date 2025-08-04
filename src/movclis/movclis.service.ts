@@ -69,6 +69,8 @@ export class MovclisService {
 
         console.log("Compra:", compra);
         mismovtos = [compra, ...mismovtos];
+        const nvomov = JSON.parse(JSON.stringify(mismovtos));
+        mismovtos = JSON.parse(JSON.stringify(nvomov));
 
         }
         
