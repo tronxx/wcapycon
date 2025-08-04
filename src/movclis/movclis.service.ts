@@ -29,7 +29,10 @@ export class MovclisService {
         console.log("ArtCompra:", artcompra);
         const venta = await this.ventasRepository.findOneBy({idventa: idventa, cia: cia});
         console.log("Venta:", venta);
-        const fechacompra = venta.fecha;
+        let fechacompra = new Date().toISOString().split('T')[0];
+        if(venta) {
+            fechacompra = venta.fecha
+        }
         console.log("FechaCompra:", fechacompra);
 
         let mismovtos =  await this.movclisRepository
@@ -47,11 +50,14 @@ export class MovclisService {
         .andWhere('a.cia =:cia', {cia})
         .orderBy( {fecha: 'ASC', consecutivo:'ASC'})
         .getRawMany();
+        if(mismovtos.length > 0) {
         for (let ii = 0; ii < mismovtos.length; ii++) {
-            mismovtos[ii].fecha = mismovtos[ii].fecha.toISOString().split('T')[0];
+            console.log("Movto:", mismovtos[ii]);
+            const fecha = new Date(mismovtos[ii].fecha).toISOString().split('T')[0]; 
+            mismovtos[ii].fecha = fecha
         }
 
-        console.log("Movtos:", mismovtos);
+          console.log("Movtos:", mismovtos);
         let compra = JSON.parse(JSON.stringify(mismovtos[0] ? mismovtos[0] : null));
         compra.fecha = fechacompra;
         compra.id = -1;
@@ -63,6 +69,8 @@ export class MovclisService {
 
         console.log("Compra:", compra);
         mismovtos = [compra, ...mismovtos];
+
+        }
         
         console.log("Mis movtos completos:", mismovtos);
         return (mismovtos);
