@@ -50,6 +50,17 @@ export class MovclisService {
         .andWhere('a.cia =:cia', {cia})
         .orderBy( {fecha: 'ASC', consecutivo:'ASC'})
         .getRawMany();
+        const compra = {
+            id: -1,
+            fecha: fechacompra,
+            concepto: artcompra ? artcompra.compra : 'Compra',
+            coa: 'C',
+            cargos: 0,
+            abonos: 0,
+            bonifica: 0,
+            recargo: 0,
+        }
+        mismovtos = [compra, ...mismovtos];
         return (mismovtos);
     }
 
