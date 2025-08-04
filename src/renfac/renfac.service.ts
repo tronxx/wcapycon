@@ -44,8 +44,8 @@ export class RenfacService {
         let compra = "";
         for(let mirenfac of renglones) {
             compra += mirenfac.descri;
-            if(mirenfac.folio) compra += " # " + mirenfac.folio.toString();
             if(mirenfac.serie) compra += " S/" + mirenfac.serie;
+            if(mirenfac.folio) compra += " # " + mirenfac.folio.toString();
             compra += " ";
         }
         return ({compra: compra});

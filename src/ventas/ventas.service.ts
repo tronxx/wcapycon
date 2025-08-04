@@ -155,8 +155,8 @@ export class VentasService {
     }
 
     async editOne(idventa: number, dto: EditVentaDto) {
-        dto.fecha = dto.fecha.split('T')[0];
-        dto.fechasaldo = dto.fechasaldo.split('T')[0];
+        if (dto.fecha)  dto.fecha = dto.fecha.split('T')[0];
+        if (dto.fechasaldo) dto.fechasaldo = dto.fechasaldo.split('T')[0];
         const Ventas = await this.ventasRepository.findOneBy({idventa});
         if(!Ventas) throw new NotFoundException ('Venta Inexistente');
         const editedVentas = Object.assign(Ventas, dto);
