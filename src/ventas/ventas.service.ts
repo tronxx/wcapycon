@@ -181,9 +181,15 @@ export class VentasService {
             return;
         }
         dto.fechasaldo=dto.fecha;
+        console.log("Creando Venta", dto);
 
-        const Ventas = this.ventasRepository.create(dto);
-        return await this.ventasRepository.save(Ventas);
+        try {
+          const Ventas = this.ventasRepository.create(dto);
+          return await this.ventasRepository.save(Ventas);
+        } catch (err) {
+            console.log("Error al crear la Venta", err);
+            throw new NotAcceptableException ('Error al crear la Venta', err);
+        }
 
     }
 
