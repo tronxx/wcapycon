@@ -89,7 +89,8 @@ export class VentasController {
     async createNuevaVentacompleta(
         @Body() venta: any
     ) {
-        //console.log("Creando venta nueva", venta);
+        const fechayhora = new Date();
+        console.log("Controller: Creando venta nueva", venta, "Fecha y Hora", fechayhora.toDateString() );
         return this.ventasService.createVenta(venta);
     }
 

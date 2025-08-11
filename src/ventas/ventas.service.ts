@@ -194,6 +194,8 @@ export class VentasService {
         // factura
         // renfac
         //}
+        const fechayhora = new Date();
+        console.log("Fecha y Hora", fechayhora.toDateString(),  "Crear Venta", data);
         try {
             let nvaventa = await this.createOne(data.venta);
             console.log("Nueva Venta", nvaventa);
