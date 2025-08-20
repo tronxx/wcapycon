@@ -116,10 +116,10 @@ export class SolicitudesService {
         let minvasolicitud = null;
         for(let midatosolicit of dto.datos) {
             const nvodatosol = {
-                    idcli: idcliente, 
+                    idcliente: idcliente, 
                     tipo: tipo,
                     cia: cia,
-                    datosol:midatosolicit.id,
+                    id:midatosolicit.id,
                     concepto:midatosolicit.concepto,
                     status: 'A',
             }
@@ -182,14 +182,17 @@ export class SolicitudesService {
                 status: 'A',
                 cia: cia
             }
+            console.log("grabarDatoSolicitud midtosolicitud", midtosolicitud);
             const misolicitudx = await this.solicitudesRepository.findOneBy({idcliente, iddato});
             if(!misolicitudx) {
                 misolicitud = this.solicitudesRepository.create(midtosolicitud);
                 minvasolicitud = await this.solicitudesRepository.save(misolicitud);
+                console.log("Se crea el dato ", minvasolicitud);
             } else {
                 const id = misolicitudx.id;
                 misolicitud = Object.assign(misolicitudx, midtosolicitud);
                 minvasolicitud =await this.solicitudesRepository.update(id, misolicitud);
+                console.log("Se actualiza el dato ", minvasolicitud);
             }
             return(minvasolicitud);
     }
