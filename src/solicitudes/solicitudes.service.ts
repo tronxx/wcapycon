@@ -115,7 +115,16 @@ export class SolicitudesService {
         let  misolicitud = null;
         let minvasolicitud = null;
         for(let midatosolicit of dto.datos) {
-            const midatosol = await this.grabarDatoSolicitud(midatosolicit);
+            const nvodatosol = {
+                    idcli: idcliente, 
+                    tipo: tipo,
+                    cia: cia,
+                    datosol:midatosolicit.id,
+                    concepto:midatosolicit.concepto,
+                    status: 'A',
+            }
+
+            const midatosol = await this.grabarDatoSolicitud(nvodatosol);
             solicit.push(midatosol);
         }
         return solicit;
